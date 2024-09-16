@@ -2,6 +2,7 @@ import { AppDataSource } from "../repository/database";
 import Auth from "../models/auth.entity"
 import { encrypt } from "../utils/helper";
 import { WrongUserError } from "../errors/wrongUserError";
+import { WrongPasswordError } from "../errors/wrongPasswordError";
 
 export class userService{
     public async createUser(registerData:any){
@@ -36,7 +37,7 @@ export class userService{
             console.log("And the token is :", token);
             return token;
         }else{
-            return null;
+            throw new WrongPasswordError("");
         }
     }
 }

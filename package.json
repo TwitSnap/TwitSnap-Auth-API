@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "node ./dist/app.js",
-    "dev": "nodemon -L -e ts --exec \"npm run build && npm start\"",
+    "dev": "nodemon -L -e ts --exec \"npm run build && node ./src/utils/swagger.js && npm start\"",
     "build": "tsc"
   }
 }

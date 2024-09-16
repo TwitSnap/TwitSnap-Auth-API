@@ -56,7 +56,7 @@ class sessionController{
                 required: true,
                 schema: {
                     data: {
-                        username: "user",
+                        id: "user",
                         password: "1234"
                     }
                 } 

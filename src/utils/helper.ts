@@ -17,6 +17,7 @@ export class encrypt {
     return bcrypt.compareSync(password, hashPassword);
   }
 
+  
   static generateToken(payload: String) {
     return jwt.sign({userId: payload},JWT_SECRET, { expiresIn: "1d" });
   }
