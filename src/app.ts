@@ -10,8 +10,12 @@ import { Pool } from "pg";
 
 dotenv.config();
 
-
+var cors = require('cors')
+const corsOptions = {
+  origin:"*" // Whitelist the domains you want to allow
+};
 const app = express();
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/",router)

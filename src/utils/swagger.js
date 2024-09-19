@@ -8,7 +8,7 @@ const doc = {
       description: 'Description'
     },
     host: process.env.LOCAL_HOST || "localhost:5000",
-    schemes: ["https"],
+    schemes: ['http',"https"],
   };
 const outputFile = './swagger_output.json'
 const endpointsFiles = [

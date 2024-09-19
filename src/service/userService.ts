@@ -21,7 +21,8 @@ export class userService{
             });
             return encryptedPassword;
         }
-        catch{
+        catch (e){
+            console.log(e);
             console.log("Ocurrio un error inesperado");
             throw new CreateUserError("");
         }
