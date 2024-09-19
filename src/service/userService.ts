@@ -3,21 +3,29 @@ import Auth from "../models/auth.entity"
 import { encrypt } from "../utils/helper";
 import { WrongUserError } from "../errors/wrongUserError";
 import { WrongPasswordError } from "../errors/wrongPasswordError";
+import { CreateUserError } from "../errors/createUserError";
 
 export class userService{
     public async createUser(registerData:any){
-        let repo = AppDataSource.getRepository(Auth);
-        const encryptedPassword = await encrypt.encryptpass(registerData.password);
-        const rep = new Auth();
-        rep.hashed_pass = encryptedPassword;
-        rep.id = registerData.id;
-        repo.save(rep);
-        console.log("Se guardo correctamente usuario con contrasenia: ",registerData.password);
-        console.log("Con la encriptada: ", encryptedPassword);
-        (await AppDataSource.getRepository(Auth).find({take:100})).forEach(query =>{
-            console.log(query);
-        });
-        return encryptedPassword;
+        try{
+            let repo = AppDataSource.getRepository(Auth);
+            const encryptedPassword = await encrypt.encryptpass(registerData.password);
+            const rep = new Auth();
+            rep.hashed_pass = encryptedPassword;
+            rep.id = registerData.id;
+            repo.save(rep);
+            console.log("Se guardo correctamente usuario con contrasenia: ",registerData.password);
+            console.log("Con la encriptada: ", encryptedPassword);
+            (await AppDataSource.getRepository(Auth).find({take:100})).forEach(query =>{
+                console.log(query);
+            });
+            return encryptedPassword;
+        }
+        catch{
+            console.log("Ocurrio un error inesperado");
+            throw new CreateUserError("");
+        }
+
     }
 
     public async logInUser(userData: any){

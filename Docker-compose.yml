@@ -3,7 +3,9 @@ services:
   api:
     container_name: api
     restart: always
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     ports:
       - ${PORT}:${PORT}
     stdin_open: true 
@@ -12,7 +14,7 @@ services:
       db:
         condition: service_healthy
     volumes:
-    - .:/usr/src/app
+    - api:/usr/src/app
 
   db:
     image: postgres:16.4-alpine3.20
@@ -32,3 +34,4 @@ services:
 
 volumes:
   pgdata:
+  api:

@@ -36,8 +36,8 @@ class sessionController{
         try{
             let ans = this.service.register(req.body.data);
             this.setUpAndSendResponse(res,ans,200);
-        } catch{
-
+        } catch (error){
+            this.setUpAndSendResponse(res,{title:"Error al crea ususario"},404);
        }
     }
     
