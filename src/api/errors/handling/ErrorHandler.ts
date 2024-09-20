@@ -18,11 +18,11 @@ class ErrorHandler{
     private _httpResponseSender: HttpResponseSender;
     private _errorFormatter: ErrorFormatter;
 
-    constructor(error: Error, res: Response){
+    constructor(error: Error, res: Response, errorFormatter: ErrorFormatter, httpResponseSender: HttpResponseSender) {
         this._error = error;
         this._res = res;
-        this._errorFormatter = new RFC7807ErrorFormatter();
-        this._httpResponseSender = new HttpResponseSender();
+        this._errorFormatter = errorFormatter;
+        this._httpResponseSender = httpResponseSender;
     }
 
     /**
@@ -70,5 +70,5 @@ class ErrorHandler{
  */
 export const errorMiddleware = (error: Error, _req: Request, res: Response, _next: NextFunction): void => {
     console.log(error)
-    new ErrorHandler(error, res).handle();
+    new ErrorHandler(error, res, new RFC7807ErrorFormatter(), new HttpResponseSender()).handle();
 }

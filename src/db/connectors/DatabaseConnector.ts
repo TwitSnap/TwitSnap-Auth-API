@@ -1,6 +1,6 @@
 import {DatabaseConnectorStrategy} from "./DatabaseConnectorStrategy";
-import {TypeORMDatabaseConnectorStrategy} from "./TypeORMDatabaseConnectorStrategy";
-import logger from "../../utilss/logger/Logger";
+import {autoInjectable} from "tsyringe";
+import {logger} from "../../utilss/container/container";
 
 /**
  * A generic class that manages database connections using a specified strategy.
@@ -11,7 +11,8 @@ import logger from "../../utilss/logger/Logger";
  * @template T - Type of the database connection instance.
  * @template Y - Type of the data source.
  */
-class DatabaseConnector<T, Y> {
+@autoInjectable()
+export class DatabaseConnector<T, Y> {
     private _strategy: DatabaseConnectorStrategy<T, Y>
 
     constructor(strategy: DatabaseConnectorStrategy<T, Y>) {
@@ -71,5 +72,3 @@ class DatabaseConnector<T, Y> {
         });
     }
 }
-
-export default new DatabaseConnector(new TypeORMDatabaseConnectorStrategy());

@@ -1,18 +1,18 @@
 import {LoggingStrategy} from "./LoggingStrategy";
-import {WinstonLoggerStrategy} from "./WinstonLoggerStrategy";
-import {LOGGING} from "../config";
+import {autoInjectable, inject} from "tsyringe";
 
 /**
  * Logger class that uses a logging strategy to log messages.
  * The strategy can be changed to use different logging implementations.
  */
+@autoInjectable()
 export class Logger {
     private _loggingStrategy: LoggingStrategy;
     private readonly _loggingEnabled: boolean;
 
-    constructor(loggingStrategy: LoggingStrategy) {
+    constructor(loggingStrategy: LoggingStrategy, loggingEnabled: boolean = true) {
         this._loggingStrategy = loggingStrategy;
-        this._loggingEnabled = LOGGING === 'true';
+        this._loggingEnabled = loggingEnabled;
     }
 
     /**
@@ -33,5 +33,3 @@ export class Logger {
         if (this._loggingEnabled) this._loggingStrategy.logError(message);
     }
 }
-
-export default new Logger(new WinstonLoggerStrategy());

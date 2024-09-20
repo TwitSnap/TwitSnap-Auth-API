@@ -5,8 +5,8 @@ import swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from "../src/utils/swagger_output.json";
 import cors from 'cors';
 import {errorMiddleware} from "./api/errors/handling/ErrorHandler";
-import databaseConnector from "./db/connectors/DatabaseConnector";
-import logger from "./utilss/logger/Logger";
+import {databaseConnector} from "./utilss/container/container";
+import {logger} from "./utilss/container/container";
 import {PORT} from "./utilss/config";
 
 const app = express();
@@ -23,9 +23,6 @@ databaseConnector.initializeConnection().then(() => {
         console.log(`Server is running on port ${PORT}`);
     });
 });
-
-//8. Usar dependency injection
-//5. Conectar controller con Routes
 
 //3. Terminar logIn
 //3.2 Login identidad federada

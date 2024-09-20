@@ -2,17 +2,18 @@ import {Controller} from "./Controller";
 import {HttpResponseSender} from "./HttpResponseSender";
 import {NextFunction, Request, Response} from "express";
 import {UserService} from "../../services/application/user/UserService";
-import {TokenSessionStrategy} from "../../services/application/session/strategy/TokenSessionStrategy";
 import {SessionService} from "../../services/application/session/SessionService";
+import {autoInjectable} from "tsyringe";
 
-class UserController extends Controller {
+@autoInjectable()
+export class UserController extends Controller {
     private userService: UserService;
     private sessionService: SessionService;
 
-    constructor() {
-        super(new HttpResponseSender());
-        this.userService = new UserService();
-        this.sessionService = new SessionService(new TokenSessionStrategy());
+    constructor(userService: UserService, sessionService: SessionService, httpResponseSender: HttpResponseSender) {
+        super(httpResponseSender);
+        this.userService = userService;
+        this.sessionService = sessionService;
     }
 
     public register = async (req: Request, res: Response, next: NextFunction) => {

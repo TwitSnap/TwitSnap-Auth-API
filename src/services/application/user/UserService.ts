@@ -1,16 +1,16 @@
 import {User} from "../../domain/User";
 import {UserRepository} from "../../../db/repositories/interfaces/UserRepository";
-import {TypeORMUserRepository} from "../../../db/repositories/impls/TypeORM/user/TypeORMUserRepository";
 import {Encrypter} from "../../../utilss/encrypter/Encrypter";
-import {BcryptEncrypter} from "../../../utilss/encrypter/BcryptEncrypter";
+import {autoInjectable} from "tsyringe";
 
+@autoInjectable()
 export class UserService {
     userRepository: UserRepository;
     encrypter: Encrypter;
 
-    constructor() {
-        this.userRepository = new TypeORMUserRepository();
-        this.encrypter = new BcryptEncrypter();
+    constructor(userRepository: UserRepository, encrypter: Encrypter) {
+        this.userRepository = userRepository;
+        this.encrypter = encrypter;
     }
 
     public async register(id: string, password: string): Promise<User> {

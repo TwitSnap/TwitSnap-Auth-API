@@ -1,9 +1,9 @@
-import { Router,  } from "express";
+import { Router } from "express";
+import { userController } from "../../utilss/container/container";
 
 const router = Router();
 
-// TODO
-router.use("/v1/login",);
-router.use("/v1/register", );
+router.use("/v1/login", userController.logIn);
+router.use("/v1/register", userController.register);
 
 export default router;

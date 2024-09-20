@@ -1,13 +1,14 @@
 import {SessionStrategy} from "./strategy/SessionStrategy";
-import {TokenSessionStrategy} from "./strategy/TokenSessionStrategy";
 import {UserService} from "../user/UserService";
+import {autoInjectable} from "tsyringe";
 
+@autoInjectable()
 export class SessionService{
     private strategy: SessionStrategy;
     private readonly userService: UserService;
 
-    constructor(strategy: SessionStrategy) {
-        this.userService = new UserService();
+    constructor(strategy: SessionStrategy, userService: UserService) {
+        this.userService = userService;
         this.strategy = strategy;
     }
 
@@ -22,5 +23,3 @@ export class SessionService{
         return this.strategy.logIn(email, password, this.userService);
     }
 }
-
-export const sessionService = new SessionService(new TokenSessionStrategy())
