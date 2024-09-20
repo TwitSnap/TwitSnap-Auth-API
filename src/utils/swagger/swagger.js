@@ -5,11 +5,10 @@ const endpointsFiles = [ "../../api/routes/*.ts" ]
 
 const doc = {
     info: {
-      title: 'My API',
-      description: 'Description'
+      title: 'Auth API',
+      description: 'Auth microservice API',
     },
-    host: process.env.LOCAL_HOST || "localhost:5000",
-    schemes: ['http',"https"],
+    schemes: ['http'],
 };
 
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {

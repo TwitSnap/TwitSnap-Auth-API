@@ -2,6 +2,9 @@ import {User} from "../../domain/User";
 import {UserRepository} from "../../../db/repositories/interfaces/UserRepository";
 import {Encrypter} from "../../../utils/encrypter/Encrypter";
 import {autoInjectable} from "tsyringe";
+import {InvalidCredentialsError} from "../errors/InvalidCredentialsError";
+
+const PASSWORD_MIN_LENGTH = 8;
 
 @autoInjectable()
 export class UserService {
@@ -23,7 +26,7 @@ export class UserService {
 
     private validateRegisterData(id: string, password: string): void {
         //TODO No debe ser un literal y faltan errores custom
-        if (this.userRepository.getById(id) != null) throw new Error("User already exists");
-        if (password.length < 8) throw new Error("Password must be at least 8 characters long");
+        if (this.userRepository.getById(id) != null) throw new InvalidCredentialsError("User already exists");
+        if (password.length < PASSWORD_MIN_LENGTH) throw new InvalidCredentialsError("Password must be at least 8 characters long");
     }
 }

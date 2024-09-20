@@ -1,7 +1,6 @@
 import "reflect-metadata";
 import express from "express";
 import router from "./api/routes/routes";
-import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import {errorMiddleware} from "./api/errors/handling/ErrorHandler";
 import {databaseConnector} from "./utils/container/container";
@@ -27,9 +26,6 @@ databaseConnector.initializeConnection().then(() => {
 //3.2 Login identidad federada
 //3.5. Implementar authenticate
 
-//1. Arreglar variables de entorno faltantes y definir las que no estan en el archivo .env
-//2. Crear un archivo .env.example
 //6. Mejorar el logger para que tenga distintos logLevels
-//9.5 Acomodar swagger
 
 //10. Agregar tests

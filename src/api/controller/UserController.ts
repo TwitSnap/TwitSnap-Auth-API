@@ -17,18 +17,9 @@ export class UserController extends Controller {
     }
 
     public register = async (req: Request, res: Response, next: NextFunction) => {
-        /*#swagger.parameters['body'] = {
-                in: 'body',
-                description: 'Register new user',
-                required: true,
-                schema: {
-                    data: {
-                        id: "uuid",
-                        password: "1234"
-                    }
-
-                }
-        }*/
+        /*
+            #swagger.parameters = registerUserDoc
+        */
 
         try {
             this.getFieldOrBadRequestError(req, 'id');
@@ -42,26 +33,11 @@ export class UserController extends Controller {
     }
 
     public logIn = (req: Request, res: Response, next: NextFunction) => {
-        /* #swagger.responses[202] = {
-                description: 'Succesful Login...',
-                schema: {
-                    data: {
-                        token: "unToken",
-                    }
-                }
-            }
-            #swagger.parameters['body'] = {
-                in: 'body',
-                description: 'Add new user.',
-                required: true,
-                schema: {
-                    data: {
-                        id: "user",
-                        password: "1234"
-                    }
-                }
-            }
+        /*
+            #swagger.parameters = loginDoc.parameters
+            #swagger.responses = loginDoc.responses
         */
+
         try {
             this.getFieldOrBadRequestError(req, 'email');
             this.getFieldOrBadRequestError(req, 'password');
