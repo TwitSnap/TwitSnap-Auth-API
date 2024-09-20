@@ -1,5 +1,6 @@
 import {Response} from "express";
 import {HttpResponseSender} from "./HttpResponseSender";
+import {BadRequestError} from "../errors/BadRequestError";
 
 /**
  * Abstract base class for controllers that handle HTTP responses.
@@ -32,5 +33,10 @@ export abstract class Controller {
      */
     protected createdResponse = <T>(res: Response, object: T): void => {
         this._responseSender.createdResponse(res, object);
+    }
+
+    protected getFieldOrBadRequestError = <T>(req: any, field: string): T => {
+        if(!req.body[field]) throw new BadRequestError(`${field} is required`);
+        return req.body[field];
     }
 }

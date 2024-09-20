@@ -1,6 +1,6 @@
 import {DataSource, DataSourceOptions} from "typeorm";
 import {DB_DATABASE, DB_HOST, DB_LOGGING, DB_PASSWORD, DB_PORT, DB_SYNCHRONIZE, DB_TYPE, DB_USERNAME, MIGRATIONS_PATH} from "../../utilss/config";
-//import {Message} from "../../services/domain/Message";
+import {User} from "../../services/domain/User";
 
 /**
  * The data source for TypeORM, configured with the database connection settings.
@@ -31,8 +31,7 @@ function getDatabaseConfig(): DataSourceOptions {
         database: DB_DATABASE,
         synchronize: dbSynchronize,
         logging: dbLogging,
-        entities: [],
-        //entities: [Message],
+        entities: [User],
         migrations: [migrationPath],
     };
 }

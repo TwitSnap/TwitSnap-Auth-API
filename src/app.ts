@@ -24,13 +24,16 @@ databaseConnector.initializeConnection().then(() => {
     });
 });
 
+//8. Usar dependency injection
+//5. Conectar controller con Routes
+
+//3. Terminar logIn
+//3.2 Login identidad federada
+//3.5. Implementar authenticate
+
 //1. Arreglar variables de entorno faltantes y definir las que no estan en el archivo .env
 //2. Crear un archivo .env.example
-//3. Terminar logIn
-//4. Terminar controller
-//5. Conectar controller con Routes
 //6. Mejorar el logger para que tenga distintos logLevels
-//7. Agregar errores custom
-//8. Usar dependency injection
-//9. Terminar repository
+//9.5 Acomodar swagger
+
 //10. Agregar tests

@@ -15,7 +15,7 @@ class UserController extends Controller {
         this.sessionService = new SessionService(new TokenSessionStrategy());
     }
 
-    public register = (req: Request, res: Response, next: NextFunction) => {
+    public register = async (req: Request, res: Response, next: NextFunction) => {
         /*#swagger.parameters['body'] = {
                 in: 'body',
                 description: 'Register new user',
@@ -30,7 +30,11 @@ class UserController extends Controller {
         }*/
 
         try {
-            //TODO
+            this.getFieldOrBadRequestError(req, 'id');
+            this.getFieldOrBadRequestError(req, 'password');
+
+            await this.userService.register(req.body.id, req.body.password);
+            return this.createdResponse(res, {message: 'User created successfully'});
         } catch (error) {
             next(error);
         }
@@ -58,7 +62,11 @@ class UserController extends Controller {
             }
         */
         try {
-            //TODO
+            this.getFieldOrBadRequestError(req, 'email');
+            this.getFieldOrBadRequestError(req, 'password');
+
+            const token = this.sessionService.login(req.body.id, req.body.password);
+            return this.okResponse(res, {token});
         } catch (error) {
             next(error);
         }

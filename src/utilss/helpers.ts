@@ -1,4 +1,5 @@
 import {StatusCodes} from "http-status-codes";
+import {MissingEnvVarError} from "../services/application/errors/MissingEnvVarError";
 
 /**
  * A utility class for various helper functions.
@@ -25,8 +26,7 @@ export class Helpers {
      * @param envVar - The name of the environment variable to validate.
      */
     public static validateEnvVar(envVar: string): void {
-        //TODO Falta error custom
-        if (!process.env[envVar]) throw new Error(`Environment variable ${envVar} is missing`);
+        if (!process.env[envVar]) throw new MissingEnvVarError(`Environment variable ${envVar} is missing`);
     }
 
     /**

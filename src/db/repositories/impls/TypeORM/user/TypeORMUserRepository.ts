@@ -8,12 +8,20 @@ export class TypeORMUserRepository extends TypeORMRepository<User> implements Us
     }
 
     async getById(id: string): Promise<User | null> {
-        //TODO
-        return null;
+        try {
+            return await this.typeOrmRepository.createQueryBuilder("User")
+                .where("user.id = :id", {id})
+                .getOne();
+        } catch (error: any) {
+            throw new StandardDatabaseError(error.message);
+        }
     }
 
     async save(user: User): Promise<User> {
-        //TODO
-        return user;
+        try {
+            return this.typeOrmRepository.save(user);
+        } catch (error: any) {
+            throw new StandardDatabaseError(error.message);
+        }
     }
 }
