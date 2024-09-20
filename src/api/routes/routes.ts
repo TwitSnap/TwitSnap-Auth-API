@@ -1,6 +1,9 @@
 import { Router,  } from "express";
 
 const router = Router();
-//router.use("/v1/messages", messageRouter);
+
+// TODO
+router.use("/v1/login",);
+router.use("/v1/register", );
 
 export default router;
