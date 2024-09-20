@@ -26,7 +26,7 @@ container.register<DatabaseConnectorStrategy<DataSource, DataSource>>("DatabaseC
 container.register<boolean>("loggingEnabled", {useValue: (LOGGING === "true") });
 
 export const logger = container.resolve(Logger);
-export const databaseConnector = container.resolve(DatabaseConnector);
+export const databaseConnector = container.resolve(DatabaseConnector<DataSource, DataSource>);
 export const userController = container.resolve(UserController);
 export const userService = container.resolve(UserService);
 export const sessionService = container.resolve(SessionService);

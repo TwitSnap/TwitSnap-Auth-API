@@ -1,5 +1,5 @@
 import {DataSource, DataSourceOptions} from "typeorm";
-import {DB_DATABASE, DB_HOST, DB_LOGGING, DB_PASSWORD, DB_PORT, DB_SYNCHRONIZE, DB_TYPE, DB_USERNAME, MIGRATIONS_PATH} from "../../utilss/config";
+import {DB_NAME, DB_HOST, DB_LOGGING, DB_PASSWORD, DB_PORT, DB_SYNCHRONIZE, DB_TYPE, DB_USERNAME, MIGRATIONS_PATH} from "../../utilss/config";
 import {User} from "../../services/domain/User";
 
 /**
@@ -28,7 +28,7 @@ function getDatabaseConfig(): DataSourceOptions {
         port: dbPort,
         username: DB_USERNAME,
         password: DB_PASSWORD,
-        database: DB_DATABASE,
+        database: DB_NAME,
         synchronize: dbSynchronize,
         logging: dbLogging,
         entities: [User],

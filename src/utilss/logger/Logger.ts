@@ -1,5 +1,5 @@
 import {LoggingStrategy} from "./LoggingStrategy";
-import {autoInjectable, inject} from "tsyringe";
+import {autoInjectable} from "tsyringe";
 
 /**
  * Logger class that uses a logging strategy to log messages.

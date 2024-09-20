@@ -1,5 +1,5 @@
 import {EntityTarget, ObjectLiteral, Repository} from "typeorm";
-import connector from "../../../connectors/DatabaseConnector";
+import {databaseConnector} from "../../../../utilss/container/container";
 
 /**
  * Abstract class for TypeORM-based repositories.
@@ -20,6 +20,6 @@ export abstract class TypeORMRepository<T extends ObjectLiteral> {
      * Initializes the `typeOrmRepository` with the repository for the specified entity.
      */
     protected constructor(entity: EntityTarget<T>) {
-        this.typeOrmRepository = connector.getDataSource().getRepository(entity);
+        this.typeOrmRepository = databaseConnector.getDataSource().getRepository(entity);
     }
 }
