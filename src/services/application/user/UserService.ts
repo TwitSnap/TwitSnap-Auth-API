@@ -23,7 +23,7 @@ export class UserService {
 
     private validateRegisterData(id: string, password: string): void {
         //TODO No debe ser un literal y faltan errores custom
-        if (id.length < 8) throw new Error("ID must be at least 8 characters long");
+        if (this.userRepository.getById(id) != null) throw new Error("User already exists");
         if (password.length < 8) throw new Error("Password must be at least 8 characters long");
     }
 }

@@ -2,7 +2,13 @@ import dotenv from 'dotenv';
 import { Helpers } from "./helpers";
 
 dotenv.config();
-Helpers.validateEnvVars();
+
+const requiredEnvVars = [
+    'PORT', 'DB_HOST', 'DB_PORT', 'DB_USERNAME', 'DB_PASSWORD', 'DB_DATABASE',
+    'DB_SYNCHRONIZE', 'DB_LOGGING', 'MIGRATIONS_PATH', 'DB_TYPE', "LOG_ROUTE", "LOGGING"
+];
+
+Helpers.validateEnvVarsList(requiredEnvVars);
 
 // ? Server config
 export const PORT = process.env.PORT;
