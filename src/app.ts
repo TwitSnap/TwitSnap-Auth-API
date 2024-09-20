@@ -2,12 +2,11 @@ import "reflect-metadata";
 import express from "express";
 import router from "./api/routes/routes";
 import swaggerUi from 'swagger-ui-express';
-import * as swaggerDocument from "../src/utils/swagger_output.json";
 import cors from 'cors';
 import {errorMiddleware} from "./api/errors/handling/ErrorHandler";
-import {databaseConnector} from "./utilss/container/container";
-import {logger} from "./utilss/container/container";
-import {PORT} from "./utilss/config";
+import {databaseConnector} from "./utils/container/container";
+import {logger} from "./utils/container/container";
+import {PORT} from "./utils/config";
 
 const app = express();
 app.use(cors({origin: "*"}));
@@ -15,7 +14,7 @@ app.use(express.json());
 app.use(router)
 app.use(errorMiddleware);
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+//app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 databaseConnector.initializeConnection().then(() => {
     app.listen(PORT, () => {

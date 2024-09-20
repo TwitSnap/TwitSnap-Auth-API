@@ -1,6 +1,6 @@
 import {User} from "../../domain/User";
 import {UserRepository} from "../../../db/repositories/interfaces/UserRepository";
-import {Encrypter} from "../../../utilss/encrypter/Encrypter";
+import {Encrypter} from "../../../utils/encrypter/Encrypter";
 import {autoInjectable} from "tsyringe";
 
 @autoInjectable()

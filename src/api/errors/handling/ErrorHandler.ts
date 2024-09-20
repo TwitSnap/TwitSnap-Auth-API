@@ -3,7 +3,7 @@ import {StatusCodes} from "http-status-codes";
 import {HttpResponseSender} from "../../controller/HttpResponseSender";
 import {ErrorFormatter} from "./ErrorFormatter";
 import {RFC7807ErrorFormatter} from "./RFC7807ErrorFormatter";
-import {Helpers} from "../../../utilss/helpers";
+import {Helpers} from "../../../utils/helpers";
 
 /**
  * Handles errors in the Express application and sends a formatted response.

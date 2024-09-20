@@ -1,6 +1,6 @@
 import {ErrorFormatter} from "./ErrorFormatter";
 import {StatusCodes} from "http-status-codes";
-import {Helpers} from "../../../utilss/helpers";
+import {Helpers} from "../../../utils/helpers";
 
 const STANDARD_INTERNAL_SERVER_ERROR_MESSAGE = "An internal server error occurred.";
 

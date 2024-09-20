@@ -1,6 +1,6 @@
 import {DatabaseConnectorStrategy} from "./DatabaseConnectorStrategy";
 import {autoInjectable} from "tsyringe";
-import {logger} from "../../utilss/container/container";
+import {logger} from "../../utils/container/container";
 
 /**
  * A generic class that manages database connections using a specified strategy.

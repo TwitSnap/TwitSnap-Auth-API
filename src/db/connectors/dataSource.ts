@@ -1,5 +1,5 @@
 import {DataSource, DataSourceOptions} from "typeorm";
-import {DB_NAME, DB_HOST, DB_LOGGING, DB_PASSWORD, DB_PORT, DB_SYNCHRONIZE, DB_TYPE, DB_USERNAME, MIGRATIONS_PATH} from "../../utilss/config";
+import {DB_NAME, DB_HOST, DB_LOGGING, DB_PASSWORD, DB_PORT, DB_SYNCHRONIZE, DB_TYPE, DB_USERNAME, MIGRATIONS_PATH} from "../../utils/config";
 import {User} from "../../services/domain/User";
 
 /**

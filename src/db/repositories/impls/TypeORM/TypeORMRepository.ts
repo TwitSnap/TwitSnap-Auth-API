@@ -1,5 +1,5 @@
 import {EntityTarget, ObjectLiteral, Repository} from "typeorm";
-import {databaseConnector} from "../../../../utilss/container/container";
+import {databaseConnector} from "../../../../utils/container/container";
 
 /**
  * Abstract class for TypeORM-based repositories.
