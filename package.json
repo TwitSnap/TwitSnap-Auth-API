@@ -33,6 +33,7 @@
   "scripts": {
     "start": "node ./dist/app.js",
     "dev": "nodemon -L -e ts --exec \"npm run build && node src/utils/swagger/swagger.js && npm start\"",
-    "build": "tsc"
+    "build": "tsc",
+    "swagger": "node src/utils/swagger/swagger.js"
   }
 }

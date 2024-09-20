@@ -6,6 +6,8 @@ import {errorMiddleware} from "./api/errors/handling/ErrorHandler";
 import {databaseConnector} from "./utils/container/container";
 import {logger} from "./utils/container/container";
 import {PORT} from "./utils/config";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from './utils/swagger/swagger_output.json';
 
 const app = express();
 app.use(cors({origin: "*"}));
@@ -13,7 +15,7 @@ app.use(express.json());
 app.use(router)
 app.use(errorMiddleware);
 
-//app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 databaseConnector.initializeConnection().then(() => {
     app.listen(PORT, () => {
