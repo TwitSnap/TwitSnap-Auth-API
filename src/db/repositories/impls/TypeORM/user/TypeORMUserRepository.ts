@@ -3,6 +3,10 @@ import {TypeORMRepository} from "../TypeORMRepository";
 import {User} from "../../../../../services/domain/User";
 
 export class TypeORMUserRepository extends TypeORMRepository<User> implements UserRepository {
+    constructor() {
+        super(User);
+    }
+
     async getById(id: string): Promise<User | null> {
         //TODO
         return null;

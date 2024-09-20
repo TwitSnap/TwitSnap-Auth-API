@@ -16,19 +16,19 @@ class UserController extends Controller {
     }
 
     public register = (req: Request, res: Response, next: NextFunction) => {
-    /*  #swagger.parameters['body'] = {
-            in: 'body',
-            description: 'Register new user',
-            required: true,
-            schema: {
-                data: {
-                    id: "uuid",
-                    password: "1234"
-                }
+        /*#swagger.parameters['body'] = {
+                in: 'body',
+                description: 'Register new user',
+                required: true,
+                schema: {
+                    data: {
+                        id: "uuid",
+                        password: "1234"
+                    }
 
-            }
-        }
-    */
+                }
+        }*/
+
         try {
             //TODO
         } catch (error) {
