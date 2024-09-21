@@ -16,4 +16,11 @@ export interface LoggingStrategy{
      * @param message - The error message to log.
      */
     logError(message: string): void;
+
+    /**
+     * Logs a debug message.
+     *
+     * @param message - The debug message to log.
+     */
+    logDebug(message: string): void;
 }

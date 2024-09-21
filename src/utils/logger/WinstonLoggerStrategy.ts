@@ -11,7 +11,7 @@ export class WinstonLoggerStrategy implements LoggingStrategy {
 
     constructor() {
         this._logger = winston.createLogger(
-            { level: 'info', format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+            { level: 'debug', format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
             transports: [ new winston.transports.File({ filename: LOG_ROUTE })],
         });
     }
@@ -32,5 +32,14 @@ export class WinstonLoggerStrategy implements LoggingStrategy {
      */
     public logError = (message: string): void => {
         this._logger.error(message);
+    }
+
+    /**
+     * Logs a debug message using Winston.
+     *
+     * @param message - The debug message to log.
+     */
+    public logDebug = (message: string): void => {
+        this._logger.debug(message);
     }
 }
