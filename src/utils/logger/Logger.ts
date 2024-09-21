@@ -108,6 +108,11 @@ export class Logger {
         this.logInColor(message, chalk.green);
     }
 
+    /**
+     * Logs a message in the specified color.
+     * @param message
+     * @param colorFn
+     */
     private logInColor = (message: string, colorFn: (msg: string) => string): void => {
         console.log(colorFn(message));
     }
