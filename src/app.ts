@@ -24,10 +24,14 @@ databaseConnector.initializeConnection().then(() => {
     });
 });
 
-//3. Terminar logIn
-//3.2 Login identidad federada
-//3.5. Implementar authenticate
+//TODO:
+//1. Levantar base de datos
+//2. Probar de levantar el servidor
+//3. Mejorar el logger para que tenga distintos logLevels
+//3.1. Documentar
 
-//6. Mejorar el logger para que tenga distintos logLevels
+//4. Terminar logIn
+//5. Login identidad federada
+//6. Implementar authenticate con Passport
 
 //10. Agregar tests
