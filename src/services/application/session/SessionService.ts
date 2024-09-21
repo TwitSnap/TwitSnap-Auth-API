@@ -19,7 +19,7 @@ export class SessionService{
      * @param email
      * @param password
      */
-    public login = async (email: string, password: string) => {
+    public login = async (email: string, password: string): Promise<string> => {
         return this.strategy.logIn(email, password, this.userService);
     }
 }

@@ -1,5 +1,7 @@
-import {StatusCodes} from "http-status-codes";
-import {MissingEnvVarError} from "../services/application/errors/MissingEnvVarError";
+import { StatusCodes } from "http-status-codes";
+import { MissingEnvVarError } from "../services/application/errors/MissingEnvVarError";
+import {InvalidCredentialsError} from "../services/application/errors/InvalidCredentialsError";
+import {BadRequestError} from "../api/errors/BadRequestError";
 
 /**
  * A utility class for various helper functions.
@@ -13,7 +15,7 @@ export class Helpers {
      *
      * @param envVarsList - An array of environment variable names to validate.
      */
-    public static validateEnvVarsList(envVarsList: string[]): void {
+    public static validateEnvVarsList = (envVarsList: string[]): void => {
         envVarsList.forEach((envVar) => {
             Helpers.validateEnvVar(envVar);
         });
@@ -25,7 +27,7 @@ export class Helpers {
      *
      * @param envVar - The name of the environment variable to validate.
      */
-    public static validateEnvVar(envVar: string): void {
+    public static validateEnvVar = (envVar: string): void => {
         if (!process.env[envVar]) throw new MissingEnvVarError(`Environment variable ${envVar} is missing`);
     }
 
@@ -36,7 +38,7 @@ export class Helpers {
      * @param error - The error to map to an HTTP status code.
      * @returns The HTTP status code corresponding to the error.
      */
-    public static mapErrorToStatusCode(error: Error): StatusCodes {
+    public static mapErrorToStatusCode = (error: Error): StatusCodes => {
         if (Helpers._errorStatusCodeMap.size === 0) Helpers.initializeErrorStatusCodeMap();
         return Helpers.getErrorStatusCode(error);
     }
@@ -58,5 +60,9 @@ export class Helpers {
      * Initializes the map of error types to HTTP status codes.
      */
     private static initializeErrorStatusCodeMap = (): void => {
+        Helpers._errorStatusCodeMap.set(MissingEnvVarError, StatusCodes.INTERNAL_SERVER_ERROR);
+        Helpers._errorStatusCodeMap.set(StandardDatabaseError, StatusCodes.INTERNAL_SERVER_ERROR);
+        Helpers._errorStatusCodeMap.set(InvalidCredentialsError, StatusCodes.BAD_REQUEST);
+        Helpers._errorStatusCodeMap.set(BadRequestError, StatusCodes.BAD_REQUEST);
     }
 }
