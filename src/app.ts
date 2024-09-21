@@ -25,10 +25,8 @@ databaseConnector.initializeConnection().then(() => {
 });
 
 //TODO:
-//3.1. Documentar
-
-//4. Terminar logIn
-//5. Login identidad federada
-//6. Implementar authenticate con Passport
-
-//10. Agregar tests
+//0. Testear lo hecho hasta ahora desde Postman
+//1. Terminar logIn con y sin identidad federada
+//2. Implementar authenticate usando Passport
+//3. Testear lo hecho desde Postman
+//4. Agregar tests unitarios
