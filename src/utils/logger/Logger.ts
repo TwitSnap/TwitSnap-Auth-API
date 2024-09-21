@@ -34,6 +34,7 @@ export class Logger {
      * @param message - The informational message to log.
      */
     public logInfo = (message: string): void => {
+        console.log(`- [INFO]: ${message}`);
         if (this.logInfoIsEnabled()) this._loggingStrategy.logInfo(message);
     }
 
@@ -43,6 +44,7 @@ export class Logger {
      * @param message - The error message to log.
      */
     public logError = (message: string): void => {
+        console.log(`- [ERROR]: ${message}`);
         if (this.logErrorIsEnabled()) this._loggingStrategy.logError(message);
     }
 
@@ -52,6 +54,7 @@ export class Logger {
      * @param message - The debug message to log.
      */
     public logDebug = (message: string): void => {
+        console.log(`- [DEBUG]: ${message}`);
         if (this.logDebugIsEnabled()) this._loggingStrategy.logDebug(message);
     }
 

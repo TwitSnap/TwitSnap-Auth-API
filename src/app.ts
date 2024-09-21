@@ -10,6 +10,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerDocument from './utils/swagger/swagger_output.json';
 
 const app = express();
+
 app.use(cors({origin: "*"}));
 app.use(express.json());
 app.use(router)
@@ -20,14 +21,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 databaseConnector.initializeConnection().then(() => {
     app.listen(PORT, () => {
         logger.logInfo(`Server is running on port ${PORT}`);
-        console.log(`Server is running on port ${PORT}`);
     });
 });
 
 //TODO:
-//1. Levantar base de datos
-//2. Probar de levantar el servidor
-//3. Mejorar el logger para que tenga distintos logLevels
 //3.1. Documentar
 
 //4. Terminar logIn

@@ -4,6 +4,7 @@ import {HttpResponseSender} from "../../controller/HttpResponseSender";
 import {ErrorFormatter} from "./ErrorFormatter";
 import {RFC7807ErrorFormatter} from "./RFC7807ErrorFormatter";
 import {Helpers} from "../../../utils/helpers";
+import {logger} from "../../../utils/container/container";
 
 /**
  * Handles errors in the Express application and sends a formatted response.
@@ -69,6 +70,6 @@ class ErrorHandler{
  * @param _next
  */
 export const errorMiddleware = (error: Error, _req: Request, res: Response, _next: NextFunction): void => {
-    console.log(error)
+    logger.logError(error.message);
     new ErrorHandler(error, res, new RFC7807ErrorFormatter(), new HttpResponseSender()).handle();
 }

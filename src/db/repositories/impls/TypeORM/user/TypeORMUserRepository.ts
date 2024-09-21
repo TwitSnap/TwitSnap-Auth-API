@@ -7,6 +7,9 @@ export class TypeORMUserRepository extends TypeORMRepository<User> implements Us
         super(User);
     }
 
+    /**
+     * @inheritDoc
+     */
     getById = async (id: string): Promise<User | null> => {
         try {
             return await this.typeOrmRepository.createQueryBuilder("User")
@@ -17,6 +20,9 @@ export class TypeORMUserRepository extends TypeORMRepository<User> implements Us
         }
     };
 
+    /**
+     * @inheritDoc
+     */
     save = async (user: User): Promise<User> => {
         try {
             return await this.typeOrmRepository.save(user);

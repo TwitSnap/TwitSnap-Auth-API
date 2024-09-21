@@ -30,12 +30,9 @@ export class DatabaseConnector<T, Y> {
      */
     public initializeConnection = async (): Promise<void> => {
         return await this._strategy.initializeConnection().then(() => {
-            console.log("Database connected");
             logger.logInfo("Database connected");
         } ).catch((error) => {
-            console.log(`Failed to connect to database: ${error}`);
             logger.logError(`Failed to connect to database: ${error}`);
-
             throw error;
         });
     }
@@ -62,12 +59,9 @@ export class DatabaseConnector<T, Y> {
      */
     public shutdownConnection = async (): Promise<void> => {
         return await this._strategy.shutdownConnection().then(() => {
-            console.log("Database connection closed");
             logger.logInfo("Database connection closed");
         }).catch((error) => {
-            console.log(`Failed to close database connection: ${error}`);
             logger.logError(`Failed to close database connection: ${error}`);
-
             throw error;
         });
     }
