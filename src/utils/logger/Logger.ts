@@ -1,5 +1,6 @@
 import {LoggingStrategy} from "./LoggingStrategy";
 import {inject, injectable} from "tsyringe";
+import chalk from "chalk";
 
 /**
  * Logger class that uses a logging strategy to log messages.
@@ -34,7 +35,7 @@ export class Logger {
      * @param message - The informational message to log.
      */
     public logInfo = (message: string): void => {
-        console.log(`- [INFO]: ${message}`);
+        this.logGreen(`- [INFO]: ${message}`);
         if (this.logInfoIsEnabled()) this._loggingStrategy.logInfo(message);
     }
 
@@ -44,7 +45,7 @@ export class Logger {
      * @param message - The error message to log.
      */
     public logError = (message: string): void => {
-        console.log(`- [ERROR]: ${message}`);
+        this.logRed(`- [ERROR]: ${message}`);
         if (this.logErrorIsEnabled()) this._loggingStrategy.logError(message);
     }
 
@@ -54,7 +55,7 @@ export class Logger {
      * @param message - The debug message to log.
      */
     public logDebug = (message: string): void => {
-        console.log(`- [DEBUG]: ${message}`);
+        this.logBlue(`- [DEBUG]: ${message}`);
         if (this.logDebugIsEnabled()) this._loggingStrategy.logDebug(message);
     }
 
@@ -80,5 +81,34 @@ export class Logger {
      * */
     private logDebugIsEnabled = (): boolean => {
         return this._logging && this._logDebug;
+    }
+
+
+    /**
+     * Logs a message in red color.
+     * @param message
+     */
+    private logRed = (message: string): void => {
+        this.logInColor(message, chalk.red);
+    }
+
+    /**
+     * Logs a message in blue color.
+     * @param message
+     */
+    private logBlue = (message: string): void => {
+        this.logInColor(message, chalk.blue);
+    }
+
+    /**
+     * Logs a message in green color.
+     * @param message
+     */
+    private logGreen = (message: string): void => {
+        this.logInColor(message, chalk.green);
+    }
+
+    private logInColor = (message: string, colorFn: (msg: string) => string): void => {
+        console.log(colorFn(message));
     }
 }
