@@ -16,5 +16,6 @@ COPY ./src ./src
 RUN npm install
 
 RUN node ./src/utils/swagger.js
+
 # Runs the dev npm script to build & start the server
 CMD npm run dev

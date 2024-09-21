@@ -1,33 +1,32 @@
 import "reflect-metadata";
-import express, { NextFunction, Request, Response } from "express";
-import dotenv from "dotenv";
-import router from "./routes/routes"
-import {AppDataSource} from "./repository/database"
-import swaggerUi from 'swagger-ui-express';
-import * as swaggerDocument from "../src/utils/swagger_output.json";
+import express from "express";
+import router from "./api/routes/routes";
+import cors from 'cors';
+import {errorMiddleware} from "./api/errors/handling/ErrorHandler";
+import {databaseConnector} from "./utils/container/container";
+import {logger} from "./utils/container/container";
+import {PORT} from "./utils/config";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from './utils/swagger/swagger_output.json';
 
-import { Pool } from "pg";
-
-dotenv.config();
-
-var cors = require('cors')
-const corsOptions = {
-  origin:"*" // Whitelist the domains you want to allow
-};
 const app = express();
-app.use(cors(corsOptions))
+
+app.use(cors({origin: "*"}));
 app.use(express.json());
+app.use(router)
+app.use(errorMiddleware);
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use("/",router)
-app.get("/test", (req: Request, res: Response, next: NextFunction) => {
-  res.send("hi");
+
+databaseConnector.initializeConnection().then(() => {
+    app.listen(PORT, () => {
+        logger.logInfo(`Server is running on port ${PORT}`);
+    });
 });
 
-AppDataSource.initialize()
-  .then(async () => {
-    app.listen(process.env.PORT, () => {
-      console.log("Server is running on http://localhost:" + process.env.PORT);
-    });
-    console.log("Data Source has been initialized!");
-  })
-  .catch((error) => console.log(error));
+//TODO:
+//0. Testear lo hecho hasta ahora desde Postman
+//1. Terminar logIn con y sin identidad federada
+//2. Implementar authenticate usando Passport
+//3. Testear lo hecho desde Postman
+//4. Agregar tests unitarios
