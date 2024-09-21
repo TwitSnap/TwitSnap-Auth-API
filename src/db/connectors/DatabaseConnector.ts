@@ -1,5 +1,5 @@
 import {DatabaseConnectorStrategy} from "./DatabaseConnectorStrategy";
-import {autoInjectable} from "tsyringe";
+import {inject, injectable} from "tsyringe";
 import {logger} from "../../utils/container/container";
 
 /**
@@ -11,11 +11,11 @@ import {logger} from "../../utils/container/container";
  * @template T - Type of the database connection instance.
  * @template Y - Type of the data source.
  */
-@autoInjectable()
+@injectable()
 export class DatabaseConnector<T, Y> {
     private _strategy: DatabaseConnectorStrategy<T, Y>
 
-    constructor(strategy: DatabaseConnectorStrategy<T, Y>) {
+    constructor(@inject("DatabaseConnectorStrategy") strategy: DatabaseConnectorStrategy<T, Y>) {
         this._strategy = strategy;
     }
 

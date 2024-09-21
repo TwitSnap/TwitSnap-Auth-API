@@ -19,11 +19,11 @@ import {DataSource} from "typeorm";
 import {LOGGING} from "../config";
 
 container.registerSingleton<Encrypter>("Encrypter", BcryptEncrypter);
+container.register<LoggingStrategy>("LoggingStrategy", { useClass: WinstonLoggerStrategy});
+container.register<boolean>("loggingEnabled", {useValue: (LOGGING === "true") });
+container.register<DatabaseConnectorStrategy<DataSource, DataSource>>("DatabaseConnectorStrategy", TypeORMDatabaseConnectorStrategy);
 container.register<SessionStrategy>("SessionStrategy", TokenSessionStrategy);
 container.register<UserRepository>("UserRepository", TypeORMUserRepository);
-container.register<LoggingStrategy>("LoggingStrategy", WinstonLoggerStrategy);
-container.register<DatabaseConnectorStrategy<DataSource, DataSource>>("DatabaseConnectorStrategy", TypeORMDatabaseConnectorStrategy);
-container.register<boolean>("loggingEnabled", {useValue: (LOGGING === "true") });
 
 export const logger = container.resolve(Logger);
 export const databaseConnector = container.resolve(DatabaseConnector<DataSource, DataSource>);

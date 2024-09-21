@@ -1,13 +1,13 @@
 import {SessionStrategy} from "./strategy/SessionStrategy";
 import {UserService} from "../user/UserService";
-import {autoInjectable} from "tsyringe";
+import {inject, injectable} from "tsyringe";
 
-@autoInjectable()
+@injectable()
 export class SessionService{
     private strategy: SessionStrategy;
     private readonly userService: UserService;
 
-    constructor(strategy: SessionStrategy, userService: UserService) {
+    constructor(@inject("SessionStrategy") strategy: SessionStrategy, userService: UserService) {
         this.userService = userService;
         this.strategy = strategy;
     }

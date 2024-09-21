@@ -3,9 +3,9 @@ import {HttpResponseSender} from "./HttpResponseSender";
 import {NextFunction, Request, Response} from "express";
 import {UserService} from "../../services/application/user/UserService";
 import {SessionService} from "../../services/application/session/SessionService";
-import {autoInjectable} from "tsyringe";
+import {injectable} from "tsyringe";
 
-@autoInjectable()
+@injectable()
 export class UserController extends Controller {
     private userService: UserService;
     private sessionService: SessionService;

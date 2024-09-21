@@ -1,17 +1,17 @@
 import {User} from "../../domain/User";
 import {UserRepository} from "../../../db/repositories/interfaces/UserRepository";
 import {Encrypter} from "../../../utils/encrypter/Encrypter";
-import {autoInjectable} from "tsyringe";
+import {inject, injectable} from "tsyringe";
 import {InvalidCredentialsError} from "../errors/InvalidCredentialsError";
 
 const PASSWORD_MIN_LENGTH = 8;
 
-@autoInjectable()
+@injectable()
 export class UserService {
     userRepository: UserRepository;
     encrypter: Encrypter;
 
-    constructor(userRepository: UserRepository, encrypter: Encrypter) {
+    constructor(@inject("UserRepository") userRepository: UserRepository, @inject("Encrypter") encrypter: Encrypter) {
         this.userRepository = userRepository;
         this.encrypter = encrypter;
     }

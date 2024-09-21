@@ -1,5 +1,5 @@
 import {DataSource, DataSourceOptions} from "typeorm";
-import {DB_NAME, DB_HOST, DB_LOGGING, DB_PASSWORD, DB_PORT, DB_SYNCHRONIZE, DB_TYPE, DB_USERNAME, MIGRATIONS_PATH} from "../../utils/config";
+import {DB_NAME, DB_HOST, DB_LOGGING, DB_PASSWORD, DB_PORT, DB_SYNCHRONIZE, DB_TYPE, DB_USERNAME} from "../../utils/config";
 import {User} from "../../services/domain/User";
 
 /**
@@ -20,7 +20,6 @@ function getDatabaseConfig(): DataSourceOptions {
     const dbPort = parseInt(DB_PORT as string);
     const dbSynchronize = DB_SYNCHRONIZE === "true";
     const dbLogging = DB_LOGGING === "true";
-    const migrationPath = MIGRATIONS_PATH as string;
 
     return {
         type: dbType,
@@ -32,6 +31,5 @@ function getDatabaseConfig(): DataSourceOptions {
         synchronize: dbSynchronize,
         logging: dbLogging,
         entities: [User],
-        migrations: [migrationPath],
     };
 }

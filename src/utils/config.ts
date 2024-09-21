@@ -5,7 +5,7 @@ dotenv.config();
 
 const requiredEnvVars = [
     'PORT', 'DB_HOST', 'DB_PORT', 'DB_USERNAME', 'DB_PASSWORD', 'DB_NAME', "JWT_SECRET",
-    'DB_SYNCHRONIZE', 'DB_LOGGING', 'MIGRATIONS_PATH', 'DB_TYPE', "LOG_ROUTE", "LOGGING"
+    'DB_SYNCHRONIZE', 'DB_LOGGING', 'DB_TYPE', "LOG_ROUTE", "LOGGING"
 ];
 
 Helpers.validateEnvVarsList(requiredEnvVars);
