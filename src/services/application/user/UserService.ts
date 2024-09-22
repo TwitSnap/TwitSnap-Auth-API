@@ -38,9 +38,13 @@ export class UserService {
      */
 
     private async validateRegisterData(id: string, password: string):Promise<void> {
-        let user = await this.userRepository.getById(id);
+        let user = await this.getUserById(id);
         if (user != null) throw new InvalidCredentialsError("User already exists");
         
         if (password.length < PASSWORD_MIN_LENGTH) throw new InvalidCredentialsError("Password must be at least 8 characters long");
+    }
+
+    public async getUserById(id: string): Promise<User | null> {
+        return this.userRepository.getById(id);
     }
 }

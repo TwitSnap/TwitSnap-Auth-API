@@ -1,4 +1,4 @@
-import { InvalidTokenError } from './../api/resolver/errors/InvalidTokenError';
+import { InvalidTokenError } from '../api/resolver/errors/InvalidTokenError';
 import { UnknownTypeError } from '../api/resolver/errors/UnknownType';
 import { StatusCodes } from "http-status-codes";
 import { MissingEnvVarError } from "../services/application/errors/MissingEnvVarError";
