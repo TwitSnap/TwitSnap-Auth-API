@@ -39,13 +39,11 @@ export class UserController extends Controller {
     public logIn =async (req: Request, res: Response, next: NextFunction) => {
         try {
             this.getFieldOrBadRequestError(req,"type");
-            if (req.body.type === "Normal"){
-                const strategy= new NormalResolverStrategy();
+                const strategy = this.resolverBuilder.match(req.body.type);
                 this.getFieldOrBadRequestError(req, 'email');
                 this.getFieldOrBadRequestError(req, 'password');
                 const token = await strategy.LogIn(req,res,this.sessionService);
                 return this.okResponse(res, {token});
-            }
 
 
         } catch (error) {
