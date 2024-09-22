@@ -1,12 +1,10 @@
 import dotenv from 'dotenv';
 import { Helpers } from "./helpers";
-import { PassportStatic } from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 dotenv.config();
 
 const requiredEnvVars = [
-    'PORT', 'DB_HOST', 'DB_PORT', 'DB_USERNAME', 'DB_PASSWORD', 'DB_NAME', "JWT_SECRET",
+    'PORT', 'DB_HOST', 'DB_PORT', 'DB_USERNAME', 'DB_PASSWORD', 'DB_NAME', "JWT_SECRET","CLIENT_ID","CLIENT_SECRET","GOOGLE_REDIRECT_URI",
     'DB_SYNCHRONIZE', 'DB_LOGGING', 'DB_TYPE', "LOG_ROUTE", "LOGGING",
     "LOG_ERROR", "LOG_DEBUG", "LOG_INFO",
 ];
@@ -33,24 +31,6 @@ export const DB_SYNCHRONIZE = process.env.DB_SYNCHRONIZE;
 export const DB_LOGGING = process.env.DB_LOGGING;
 export const DB_TYPE = process.env.DB_TYPE;
 export const JWT_SECRET = process.env.JWT_SECRET;
-
-
-
-export default  (passport: PassportStatic) => {
-  passport.use(new GoogleStrategy({
-    clientID: process.env.CLIENT_ID as string,
-    clientSecret: process.env.GCLIENT_SECRET as string,
-    callbackURL: process.env.GOOGLE_REDIRECT_URI as string,
-  },
-  (accessToken, refreshToken, profile, done) => {
-    done(null, profile);
-  }));
-
-  passport.serializeUser((user, done) => {
-    done(null, user);
-  });
-
-  passport.deserializeUser((user: Express.User, done) => {
-    done(null, user);
-  });
-};
+export const CLIENT_ID = process.env.CLIENT_ID;
+export const CLIENT_SECRET = process.env.CLIENT_SECRET;
+export const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
