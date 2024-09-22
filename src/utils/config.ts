@@ -4,7 +4,7 @@ import { Helpers } from "./helpers";
 dotenv.config();
 
 const requiredEnvVars = [
-    'PORT', 'DB_HOST', 'DB_PORT', 'DB_USERNAME', 'DB_PASSWORD', 'DB_NAME', "JWT_SECRET","CLIENT_ID","CLIENT_SECRET","GOOGLE_REDIRECT_URI",
+    'PORT', 'DB_HOST', 'DB_PORT', 'DB_USERNAME', 'DB_PASSWORD', 'DB_NAME', "JWT_SECRET",
     'DB_SYNCHRONIZE', 'DB_LOGGING', 'DB_TYPE', "LOG_ROUTE", "LOGGING",
     "LOG_ERROR", "LOG_DEBUG", "LOG_INFO", "JWT_EXPIRATION_TIME"
 ];

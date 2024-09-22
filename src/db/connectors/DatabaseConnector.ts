@@ -32,8 +32,8 @@ export class DatabaseConnector<T, Y> {
         return await this._strategy.initializeConnection().then(() => {
             logger.logInfo("Database connected");
         } ).catch((error) => {
-            logger.logError(`Failed to connect to database: ${error}`);
-            throw error;
+            logger.logError(`Failed to connect to database: ${error}. Exiting...`);
+            process.exit(1);
         });
     }
 
