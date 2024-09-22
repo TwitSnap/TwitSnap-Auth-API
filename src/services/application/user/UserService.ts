@@ -36,10 +36,10 @@ export class UserService {
      * @param password The user's password.
      * @throws InvalidCredentialsError if the user already exists or if the password is too short.
      */
+
     private validateRegisterData(id: string, password: string):void {
-        let user = this.userRepository.getById(id).then(user =>{
-            if (user != null) throw new InvalidCredentialsError("User already exists");
-        });
+        let user = this.userRepository.getById(id);
+        if (user != null) throw new InvalidCredentialsError("User already exists");
         
         if (password.length < PASSWORD_MIN_LENGTH) throw new InvalidCredentialsError("Password must be at least 8 characters long");
     }
