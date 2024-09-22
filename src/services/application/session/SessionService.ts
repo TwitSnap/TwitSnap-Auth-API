@@ -16,8 +16,6 @@ export class SessionService{
      * Delegates user login to the authentication strategy.
      * @returns A promise that resolves with the result of the login operation.
      * @throws {Error} If any of the parameters inside userData is empty.
-     * @param email
-     * @param password
      */
     public login = async (email: string, password: string): Promise<string> => {
         //1. Obtener el id del usuario haciendo una api call al microservicio de usuarios

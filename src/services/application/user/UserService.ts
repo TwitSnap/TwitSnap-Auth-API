@@ -44,6 +44,10 @@ export class UserService {
         if (password.length < PASSWORD_MIN_LENGTH) throw new InvalidCredentialsError("Password must be at least 8 characters long");
     }
 
+    /**
+     * Retrieves a user by its id.
+     * @returns The user with the given id, or null if no user was found.
+     */
     public async getUserById(id: string): Promise<User | null> {
         return this.userRepository.getById(id);
     }
