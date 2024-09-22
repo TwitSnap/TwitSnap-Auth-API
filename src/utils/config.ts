@@ -6,13 +6,14 @@ dotenv.config();
 const requiredEnvVars = [
     'PORT', 'DB_HOST', 'DB_PORT', 'DB_USERNAME', 'DB_PASSWORD', 'DB_NAME', "JWT_SECRET","CLIENT_ID","CLIENT_SECRET","GOOGLE_REDIRECT_URI",
     'DB_SYNCHRONIZE', 'DB_LOGGING', 'DB_TYPE', "LOG_ROUTE", "LOGGING",
-    "LOG_ERROR", "LOG_DEBUG", "LOG_INFO",
+    "LOG_ERROR", "LOG_DEBUG", "LOG_INFO", "JWT_EXPIRATION_TIME"
 ];
 
 Helpers.validateEnvVarsList(requiredEnvVars);
 
 // ? Server config
 export const PORT = process.env.PORT;
+export const JWT_EXPIRATION_TIME = process.env.JWT_EXPIRATION_TIME;
 
 // ? Logger config
 export const LOG_ROUTE = process.env.LOG_ROUTE;

@@ -1,41 +1,42 @@
 import * as jwt from "jsonwebtoken";
-import { InvalidCredentialsError } from './../../errors/InvalidCredentialsError';
-import { User } from './../../../domain/User';
+import { InvalidCredentialsError } from '../../errors/InvalidCredentialsError';
 import {SessionStrategy} from "./SessionStrategy";
 import {UserService} from "../../user/UserService";
-import axios from 'axios';
-import { JWT_SECRET } from "../../../../utils/config";
+import { JWT_SECRET, JWT_EXPIRATION_TIME } from "../../../../utils/config";
+import {Encrypter} from "../../../../utils/encrypter/Encrypter";
+import {inject, injectable} from "tsyringe";
+import {User} from "../../../domain/User";
+
+const INVALID_CREDS_MSG = "Invalid credentials.";
+
+@injectable()
 export class TokenSessionStrategy implements SessionStrategy {
+    private encrypter: Encrypter;
+
+    constructor(@inject("Encrypter") encrypter: Encrypter) {
+        this.encrypter = encrypter;
+    }
+
     /**
      * @inheritDoc
      */
-    logIn = async (email: string, password: string, userService: UserService): Promise<string> => {
-        let UserAPIinCloud = false;
+    public logIn = async (id: string, password: string, userService: UserService): Promise<string> => {
+        const user = await userService.getUserById(id);
 
-        if (UserAPIinCloud){
-            let userAPI = process.env.PROCESS_API || "";
-            
-            await axios.post(userAPI,{
-                email:email
-            }).then(response =>{
-                if (response.status == axios.HttpStatusCode.BadRequest){
-                    throw new InvalidCredentialsError("Email incorrecto");
-                }
-                else{
-                    let id = response.data.id;
-                    return this.tokenise(id);
-                }
-            });
+        if (user == null) throw new InvalidCredentialsError(INVALID_CREDS_MSG);
+        if (!this.encrypter.compareEncryptedString(user.getPassword(), password)) throw new InvalidCredentialsError(INVALID_CREDS_MSG);
 
-        } 
-        else{
-            return this.tokenise(email);
-        }
-       
-        throw new Error("Method not implemented.");
+        return this.generateTokenForUser(user);
     }
 
-    tokenise = async(id:string): Promise<string> =>{
-        return jwt.sign({ userId: id }, JWT_SECRET as string, { expiresIn: "1d" });
+    /**
+     * @function generateTokenForUser
+     * @description Generates a token for the provided user.
+     *
+     * @param {User} user - The user object for which to generate the JWT token.
+     * @returns {string} A unique token for the user.
+     */
+    private generateTokenForUser = (user: User): string => {
+        return jwt.sign({userId: user.getId()}, (JWT_SECRET as string), {expiresIn: JWT_EXPIRATION_TIME});
     }
 }

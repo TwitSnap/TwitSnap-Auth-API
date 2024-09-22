@@ -2,7 +2,7 @@ import {JWT_SECRET} from "../../../utils/config";
 import { Strategy as JwtStrategy, ExtractJwt, StrategyOptions } from 'passport-jwt';
 import {userService} from "../../../utils/container/container";
 import passport from "passport";
-import {NextFunction} from "express";
+import {NextFunction, Request, Response} from "express";
 
 export class PassportAuthService {
     /**
@@ -48,7 +48,7 @@ export class PassportAuthService {
      *
      * @returns {Function} The Passport authentication middleware.
      */
-    public static async authenticate(req: Request, res: Response, next: NextFunction) {
+    public static async authenticate(req: Request, res: Response, next: NextFunction): Promise<void> {
         await passport.authenticate('jwt', {session: false})(req, res, next);
     }
 }

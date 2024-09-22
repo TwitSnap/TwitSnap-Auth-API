@@ -3,13 +3,18 @@ import {Column, Entity, PrimaryColumn} from "typeorm";
 @Entity()
 export class User {
     @PrimaryColumn()
-    private id: string;
+    private readonly id: string;
 
     @Column({ nullable: false })
-    private password: string;
+    private readonly password: string;
 
     constructor(id: string, password: string) {
         this.id = id;
         this.password = password;
     }
+
+    public getId = (): string => this.id;
+
+    public getPassword = (): string => this.password;
+
 }

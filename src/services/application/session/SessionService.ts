@@ -20,6 +20,8 @@ export class SessionService{
      * @param password
      */
     public login = async (email: string, password: string): Promise<string> => {
-        return this.strategy.logIn(email, password, this.userService);
+        //1. Obtener el id del usuario haciendo una api call al microservicio de usuarios
+        const id = "";
+        return this.strategy.logIn(id, password, this.userService);
     }
 }

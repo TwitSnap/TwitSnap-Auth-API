@@ -8,10 +8,10 @@ import {logger} from "./utils/container/container";
 import {PORT} from "./utils/config";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from './utils/swagger/docs/swaggerDocs.json';
-import {getPassport} from "./services/application/session/PassportAuthService";
+import {PassportAuthService} from "./services/application/session/PassportAuthService";
 
 const app = express();
-const passport = getPassport();
+const passport = PassportAuthService.getPassport();
 
 app.use(cors());
 app.use(express.json());
