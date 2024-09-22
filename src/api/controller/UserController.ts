@@ -36,6 +36,7 @@ export class UserController extends Controller {
     public logIn =async (req: Request, res: Response, next: NextFunction) => {
 
         try {
+            this.getFieldOrBadRequestError(req,"type");
             const strategy = this.resolverBuilder.match(req.body.type);
                 this.getFieldOrBadRequestError(req, 'email');
                 this.getFieldOrBadRequestError(req, 'password');
@@ -45,6 +46,19 @@ export class UserController extends Controller {
 
         } catch (error) {
             next(error);
+        }
+    }
+
+    public authenticate = async (req: Request, res: Response, next: NextFunction) =>{
+        try{
+            this.getFieldOrBadRequestError(req,"type");
+            const strategy =  this.resolverBuilder.match(req.body.type);
+            this.getFieldOrBadRequestError(req,"token");
+            await strategy.Authenticate(req.body.token);
+            return this.okResponse(res,{});
+        }
+        catch(error){
+            next(error)
         }
     }
 }

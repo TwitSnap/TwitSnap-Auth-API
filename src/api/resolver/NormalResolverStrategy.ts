@@ -16,7 +16,7 @@ export class NormalResolverStrategy implements ResolverStrategy<string>{
         return await userService.register(id, password);
     }
 
-    public Authenticate = (token:string) => {
+    public Authenticate = async (token:string): Promise<void> => {
         try{
             jwt.verify(token,JWT_SECRET);
         }

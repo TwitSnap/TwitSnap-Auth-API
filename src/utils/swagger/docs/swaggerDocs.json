@@ -79,6 +79,39 @@
             }
           }
         }
+      },
+      "/v1/authenticate":{
+        "post": {
+          "summary": "Authenticate token",
+          "description": "Use this endpoint to authenticate user.",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type":{
+                      "type":"string",
+                      "descrption":"The token type"
+                    },
+                    "token": {
+                      "type": "string",
+                      "description": "The user's token."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "User registered successfully"
+            },
+            "400": {
+              "description": "Invalid input data"
+            }
+          }
+        }
       }
     }
   }

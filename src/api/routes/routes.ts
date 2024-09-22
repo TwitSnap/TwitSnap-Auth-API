@@ -18,5 +18,6 @@ const router = Router();
     */
 router.use("/v1/login", userController.logIn);
 router.use("/v1/register", userController.register);
+router.use("/v1/authenticate",userController.authenticate);
 
 export default router;
