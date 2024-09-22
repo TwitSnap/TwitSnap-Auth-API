@@ -1,3 +1,4 @@
+import { InvalidCredentialsError } from './../../services/application/errors/InvalidCredentialsError';
 import { FederateRequest } from './../../services/domain/Requests';
 import * as jwt from "jsonwebtoken";
 import { SessionService } from "../../services/application/session/SessionService";
@@ -30,14 +31,17 @@ export class GoogleResolverStrategy implements ResolverStrategy{
     }
 
     public Authenticate = async (token:string): Promise<void> => {
-        const client = new OAuth2Client();
-        const verify = async(token:string) =>{
-          const ticket = await client.verifyIdToken({
-            idToken: token,
-            audience: process.env.CLIENT_ID
-        });
+        try{
+            const client = new OAuth2Client();
+            const verify = async(token:string) =>{
+                await client.verifyIdToken({
+                    idToken: token,
+                    audience: process.env.CLIENT_ID
+                });
+            }
+            await verify(token).catch(e=>{throw e})
+        }catch(e){
+            throw new InvalidCredentialsError("Timedout Or InvalidToken");
         }
-        verify(token)
-
     }
 }

@@ -38,11 +38,8 @@ export class FederateAuthController extends Controller{
     public googleAuthenticate = async(req:Request,res:Response,next:NextFunction) =>{
       try{
         let googleresolver = new GoogleResolverStrategy();
-        googleresolver.Authenticate(req.body.token).then(e =>{
-          this.okResponse(res,{})
-        }).catch(e=>{
-          next(new InvalidCredentialsError("TimedOut or Invalid Token"))
-        });
+        await googleresolver.Authenticate(req.body.token);
+        this.okResponse(res,{});
       }
       catch(e){
         next(e)
