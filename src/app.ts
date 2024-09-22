@@ -7,7 +7,7 @@ import {databaseConnector} from "./utils/container/container";
 import {logger} from "./utils/container/container";
 import {PORT} from "./utils/config";
 import swaggerUi from "swagger-ui-express";
-import swaggerDocument from './utils/swagger/swagger_output.json';
+import swaggerDocument from './utils/swagger/docs/swaggerDocs.json';
 
 const app = express();
 

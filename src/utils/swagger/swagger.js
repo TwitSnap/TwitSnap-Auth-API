@@ -9,6 +9,15 @@ const doc = {
       description: 'Auth microservice API',
     },
     schemes: ['http'],
+    definitions:{
+        registerUserDoc:{
+                data: {
+                    id: "uuid",
+                    password: "1234"
+            }
+        },
+    },
+    host: process.env.LOCAL_HOST || "localhost:5000",
 };
 
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {

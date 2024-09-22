@@ -1,0 +1,84 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "My API",
+      "description": "API documentation",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/v1/login": {
+        "post": {
+          "summary": "Login to the application",
+          "description": "Use this endpoint to login to the application.",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type":{
+                      "type":"string",
+                      "descrption":"Type of login"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "The user's email."
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "The user's password."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful login"
+            },
+            "400": {
+              "description": "Invalid credentials"
+            }
+          }
+        }
+      },
+      "/v1/register": {
+        "post": {
+          "summary": "Register a new user",
+          "description": "Use this endpoint to register a new user in the system.",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type":{
+                      "type":"string",
+                      "descrption":"The register type"
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "The user's ID."
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "The user's password."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "User registered successfully"
+            },
+            "400": {
+              "description": "Invalid input data"
+            }
+          }
+        }
+      }
+    }
+  }

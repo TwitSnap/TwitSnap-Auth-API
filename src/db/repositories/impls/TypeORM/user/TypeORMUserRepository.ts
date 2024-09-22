@@ -1,6 +1,7 @@
 import { UserRepository } from "../../../interfaces/UserRepository";
 import { TypeORMRepository } from "../TypeORMRepository";
 import { User } from "../../../../../services/domain/User";
+import { StandardDatabaseError } from "../../../../errors/StandardDatabaseError";
 
 export class TypeORMUserRepository extends TypeORMRepository<User> implements UserRepository {
     constructor() {
@@ -12,9 +13,9 @@ export class TypeORMUserRepository extends TypeORMRepository<User> implements Us
      */
     getById = async (id: string): Promise<User | null> => {
         try {
-            return await this.typeOrmRepository.createQueryBuilder("User")
-                .where("user.id = :id", { id })
-                .getOne();
+            return await this.typeOrmRepository.createQueryBuilder("user")
+            .where("user.id = :id", { id })
+            .getOne();
         } catch (error: any) {
             throw new StandardDatabaseError(error.message);
         }

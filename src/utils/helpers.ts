@@ -1,7 +1,10 @@
+import { InvalidTokenError } from './../api/resolver/errors/InvalidTokenError';
+import { UnknownTypeError } from '../api/resolver/errors/UnknownType';
 import { StatusCodes } from "http-status-codes";
 import { MissingEnvVarError } from "../services/application/errors/MissingEnvVarError";
 import {InvalidCredentialsError} from "../services/application/errors/InvalidCredentialsError";
 import {BadRequestError} from "../api/errors/BadRequestError";
+import {StandardDatabaseError} from "../db/errors/StandardDatabaseError"
 
 /**
  * A utility class for various helper functions.
@@ -64,5 +67,7 @@ export class Helpers {
         Helpers._errorStatusCodeMap.set(StandardDatabaseError, StatusCodes.INTERNAL_SERVER_ERROR);
         Helpers._errorStatusCodeMap.set(InvalidCredentialsError, StatusCodes.BAD_REQUEST);
         Helpers._errorStatusCodeMap.set(BadRequestError, StatusCodes.BAD_REQUEST);
+        Helpers._errorStatusCodeMap.set(UnknownTypeError,StatusCodes.BAD_REQUEST);
+        Helpers._errorStatusCodeMap.set(InvalidTokenError,StatusCodes.BAD_REQUEST);
     }
 }

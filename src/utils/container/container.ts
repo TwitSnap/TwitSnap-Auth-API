@@ -1,3 +1,4 @@
+import { ResolverStrategy } from './../../api/resolver/ResolverStrategy';
 import { container } from "tsyringe";
 import "reflect-metadata";
 import {DatabaseConnector} from "../../db/connectors/DatabaseConnector";

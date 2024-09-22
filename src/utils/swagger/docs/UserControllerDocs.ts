@@ -1,6 +1,4 @@
 export const registerUserDoc = {
-    parameters: {
-        body: {
             in: 'body',
             description: 'Register new user',
             required: true,
@@ -10,8 +8,6 @@ export const registerUserDoc = {
                     password: "1234"
                 }
             }
-        }
-    }
 };
 
 export const loginDoc = {
@@ -27,6 +23,9 @@ export const loginDoc = {
                 }
             }
         }
+
+
+        
     },
     responses: {
         202: {
