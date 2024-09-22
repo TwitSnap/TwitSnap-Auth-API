@@ -22,9 +22,9 @@ export class NormalResolverStrategy implements ResolverStrategy {
         return await userService.register(id, password);
     }
 
-    public Authenticate = async (token:string): Promise<void> => {
+    public Authenticate = async (req:Request, res: Response): Promise<void> => {
         try{
-            jwt.verify(token,JWT_SECRET);
+            jwt.verify(req.body.token,JWT_SECRET);
         }
         catch (e){
             throw new InvalidTokenError("Invalid token error");

@@ -25,8 +25,8 @@ export class UserController extends Controller {
     public register = async (req: Request, res: Response, next: NextFunction) => {
 
         try {
-            this.getFieldOrBadRequestError(req,"type");
-            const strategy = this.resolverBuilder.match(req.body.type);
+            //this.getFieldOrBadRequestError(req,"type");
+            const strategy = this.resolverBuilder.match("Normal");
                 this.getFieldOrBadRequestError(req, 'id');
                 this.getFieldOrBadRequestError(req, 'password');
                 const user = await strategy.Register(req.body.id,req.body.password,this.userService);
@@ -38,12 +38,12 @@ export class UserController extends Controller {
 
     public logIn =async (req: Request, res: Response, next: NextFunction) => {
         try {
-            this.getFieldOrBadRequestError(req,"type");
-                const strategy = this.resolverBuilder.match(req.body.type);
-                this.getFieldOrBadRequestError(req, 'email');
-                this.getFieldOrBadRequestError(req, 'password');
-                const token = await strategy.LogIn(req,res,this.sessionService);
-                return this.okResponse(res, {token});
+            //this.getFieldOrBadRequestError(req,"type");
+            const strategy = this.resolverBuilder.match("Normal");
+            this.getFieldOrBadRequestError(req, 'email');
+            this.getFieldOrBadRequestError(req, 'password');
+            const token = await strategy.LogIn(req,res,this.sessionService);
+            return this.okResponse(res, {token});
 
 
         } catch (error) {
@@ -53,10 +53,10 @@ export class UserController extends Controller {
 
     public authenticate = async (req: Request, res: Response, next: NextFunction) =>{
         try{
-            this.getFieldOrBadRequestError(req,"type");
-            const strategy =  this.resolverBuilder.match(req.body.type);
+            //this.getFieldOrBadRequestError(req,"type");
+            const strategy =  this.resolverBuilder.match("Normal");
             this.getFieldOrBadRequestError(req,"token");
-            await strategy.Authenticate(req.body.token);
+            await strategy.Authenticate(req,res);
             return this.okResponse(res,{});
         }
         catch(error){

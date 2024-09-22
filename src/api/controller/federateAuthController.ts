@@ -32,13 +32,13 @@ export class FederateAuthController extends Controller{
     }
     public googleLogIn  = async (req:Request, res:Response, next: NextFunction) =>{
       let googleresolver = new GoogleResolverStrategy();
-      googleresolver.LogIn(req,res,this.sessionService);
+      googleresolver.RedirectAuthScreen(req,res,this.sessionService);
     }
 
     public googleAuthenticate = async(req:Request,res:Response,next:NextFunction) =>{
       try{
         let googleresolver = new GoogleResolverStrategy();
-        await googleresolver.Authenticate(req.body.token);
+        await googleresolver.GoogleAuthenticate(req,res,this.sessionService);
         this.okResponse(res,{});
       }
       catch(e){

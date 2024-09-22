@@ -6,6 +6,6 @@ import { SessionService } from './../../services/application/session/SessionServ
 export interface ResolverStrategy{
     LogIn(req:Request, res: Response, sessionService: SessionService): Promise<string>;
     Register(id:string, password:string,userService: UserService):Promise<User>;
-    Authenticate(token:string):Promise<void>;
+    Authenticate(req:Request, res: Response):Promise<void>;
 
 }

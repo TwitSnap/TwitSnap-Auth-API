@@ -16,10 +16,6 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "type":{
-                      "type":"string",
-                      "descrption":"Type of login"
-                    },
                     "email": {
                       "type": "string",
                       "description": "The user's email."
@@ -54,10 +50,6 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "type":{
-                      "type":"string",
-                      "descrption":"The register type"
-                    },
                     "id": {
                       "type": "string",
                       "description": "The user's ID."
@@ -91,10 +83,6 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "type":{
-                      "type":"string",
-                      "descrption":"The token type"
-                    },
                     "token": {
                       "type": "string",
                       "description": "The user's token."
@@ -116,8 +104,8 @@
       },
       "/v1/google":{
         "get":{
-          "summary": "Authenticate token",
-          "description": "Use this endpoint to authenticate user.",
+          "summary": "Login and return acces token via Google",
+          "description": "Use this endpoint to login user with Google.",
           "requestBody": {
             "content": {
               "application/json": {
@@ -129,7 +117,7 @@
       },
       "/v1/federate/google/authenticate":{
         "post": {
-          "summary": "Authenticate token",
+          "summary": "Authenticate google token",
           "description": "Use this endpoint to authenticate user.",
           "requestBody": {
             "content": {
@@ -137,10 +125,6 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "type":{
-                      "type":"string",
-                      "descrption":"The token type"
-                    },
                     "token": {
                       "type": "string",
                       "description": "The user's token."
