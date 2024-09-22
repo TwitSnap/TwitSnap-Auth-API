@@ -23,7 +23,7 @@ export class UserService {
      * @return The created user.
      */
     public async register(id: string, password: string): Promise<User> {
-        this.validateRegisterData(id, password);
+        await this.validateRegisterData(id, password);
         password = this.encrypter.encryptString(password);
 
         const user = new User(id, password);
@@ -37,8 +37,8 @@ export class UserService {
      * @throws InvalidCredentialsError if the user already exists or if the password is too short.
      */
 
-    private validateRegisterData(id: string, password: string):void {
-        let user = this.userRepository.getById(id);
+    private async validateRegisterData(id: string, password: string):Promise<void> {
+        let user = await this.userRepository.getById(id);
         if (user != null) throw new InvalidCredentialsError("User already exists");
         
         if (password.length < PASSWORD_MIN_LENGTH) throw new InvalidCredentialsError("Password must be at least 8 characters long");
