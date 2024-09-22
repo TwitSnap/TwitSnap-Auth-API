@@ -2,3 +2,5 @@ node_modules
 dist
 .env
 app.log
+.idea
+src/utils/swagger/swagger_output.json
