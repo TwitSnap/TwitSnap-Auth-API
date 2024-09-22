@@ -1,3 +1,4 @@
+import { FederateAuthController } from './../../api/controller/federateAuthController';
 import { ResolverStrategy } from './../../api/resolver/ResolverStrategy';
 import { container } from "tsyringe";
 import "reflect-metadata";
@@ -38,3 +39,4 @@ export const databaseConnector = container.resolve(DatabaseConnector<DataSource,
 export const userController = container.resolve(UserController);
 export const userService = container.resolve(UserService);
 export const sessionService = container.resolve(SessionService);
+export const federateAuthController = container.resolve(FederateAuthController);

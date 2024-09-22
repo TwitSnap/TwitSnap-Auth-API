@@ -10,7 +10,28 @@
   "schemes": [
     "http"
   ],
-  "paths": {},
+  "paths": {
+    "/v1/oauth/google": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/v1/federate/google": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
   "definitions": {
     "registerUserDoc": {
       "type": "object",

@@ -1,3 +1,5 @@
+import { NormalResolverStrategy } from './../resolver/NormalResolverStrategy';
+import { NormalLoginRequest, FederateRequest } from './../../services/domain/Requests';
 import { ResolverBuilder } from './../resolver/ResolverBuilder';
 import {Controller} from "./Controller";
 import {HttpResponseSender} from "./HttpResponseSender";
@@ -5,6 +7,7 @@ import {NextFunction, Request, Response} from "express";
 import {UserService} from "../../services/application/user/UserService";
 import {SessionService} from "../../services/application/session/SessionService";
 import {injectable} from "tsyringe";
+import { GoogleResolverStrategy } from '../resolver/GoogleAuthResolverStrategy';
 
 @injectable()
 export class UserController extends Controller {
@@ -34,15 +37,16 @@ export class UserController extends Controller {
     }
 
     public logIn =async (req: Request, res: Response, next: NextFunction) => {
-
         try {
             this.getFieldOrBadRequestError(req,"type");
-            const strategy = this.resolverBuilder.match(req.body.type);
+            if (req.body.type === "Normal"){
+                const strategy= new NormalResolverStrategy();
                 this.getFieldOrBadRequestError(req, 'email');
                 this.getFieldOrBadRequestError(req, 'password');
-    
-                const token = await strategy.LogIn(req.body.email, req.body.password,this.sessionService);
+                const token = await strategy.LogIn(req,res,this.sessionService);
                 return this.okResponse(res, {token});
+            }
+
 
         } catch (error) {
             next(error);

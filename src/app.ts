@@ -8,13 +8,19 @@ import {logger} from "./utils/container/container";
 import {PORT} from "./utils/config";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from './utils/swagger/docs/swaggerDocs.json';
+import passport  from "passport";
+
+import passportStrategy from './utils/config';
 
 const app = express();
 
-app.use(cors({origin: "*"}));
+
+app.use(cors());
 app.use(express.json());
 app.use(router)
 app.use(errorMiddleware);
+
+
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

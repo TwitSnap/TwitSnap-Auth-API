@@ -1,5 +1,6 @@
+import { FederateAuthController } from './../controller/federateAuthController';
 import { Router } from "express";
-import { userController } from "../../utils/container/container";
+import { federateAuthController, userController } from "../../utils/container/container";
 
 const router = Router();
 
@@ -19,5 +20,8 @@ const router = Router();
 router.use("/v1/login", userController.logIn);
 router.use("/v1/register", userController.register);
 router.use("/v1/authenticate",userController.authenticate);
+router.get("/v1/oauth/google",federateAuthController.googleCallback);
+router.get("/v1/federate/google",federateAuthController.googleLogIn);
+router.use("/v1/federate/google/authenticate",federateAuthController.googleAuthenticate);
 
 export default router;
