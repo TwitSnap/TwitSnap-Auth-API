@@ -1,17 +1,27 @@
 import {JWT_SECRET} from "../../../utils/config";
-import { Strategy as JwtStrategy, ExtractJwt, StrategyOptions } from 'passport-jwt';
+import {JwtFromRequestFunction, Strategy as JwtStrategy, StrategyOptions} from 'passport-jwt';
 import {userService} from "../../../utils/container/container";
 import passport from "passport";
 import {NextFunction, Request, Response} from "express";
 
 export class PassportAuthService {
     /**
+     * @function authenticate
+     * @description Authenticates the user using the Passport service.
+     *
+     * @returns {Function} The Passport authentication middleware.
+     */
+    public static async authenticate(req: Request, res: Response, next: NextFunction): Promise<void> {
+        await passport.authenticate('jwt', {session: false})(req, res, next);
+    }
+
+    /**
      * @function getPassport
      * @description Configures the Passport service with the strategy.
      */
     public static getPassport() {
         const options: StrategyOptions = {
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: PassportAuthService.getTokenExtractor(),
             secretOrKey: (JWT_SECRET as string),
         };
 
@@ -19,6 +29,12 @@ export class PassportAuthService {
         passport.use(strategy);
 
         return passport;
+    }
+
+    public static getTokenExtractor(): JwtFromRequestFunction {
+        return (req: Request) => {
+            return req.params.token || null;
+        };
     }
 
     /**
@@ -40,16 +56,6 @@ export class PassportAuthService {
         } catch (error) {
             return done(error, false);
         }
-    }
-
-    /**
-     * @function authenticate
-     * @description Authenticates the user using the Passport service.
-     *
-     * @returns {Function} The Passport authentication middleware.
-     */
-    public static async authenticate(req: Request, res: Response, next: NextFunction): Promise<void> {
-        await passport.authenticate('jwt', {session: false})(req, res, next);
     }
 }
 
