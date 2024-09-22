@@ -7,7 +7,7 @@ import {NextFunction, Request, Response} from "express";
 export class PassportAuthService {
     /**
      * @function getPassport
-     * @description Initializes the Passport service with the JWT strategy.
+     * @description Configures the Passport service with the strategy.
      */
     public static getPassport() {
         const options: StrategyOptions = {
