@@ -10,7 +10,6 @@ import swaggerUi from "swagger-ui-express";
 import swaggerDocument from './utils/swagger/docs/swaggerDocs.json';
 import passport  from "passport";
 
-import passportStrategy from './utils/config';
 
 const app = express();
 
