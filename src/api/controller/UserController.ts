@@ -4,7 +4,6 @@ import {NextFunction, Request, Response} from "express";
 import {UserService} from "../../services/application/user/UserService";
 import {SessionService} from "../../services/application/session/SessionService";
 import {injectable} from "tsyringe";
-import {PassportAuthService} from "../../services/application/session/PassportAuthService";
 
 @injectable()
 export class UserController extends Controller {
@@ -33,7 +32,7 @@ export class UserController extends Controller {
         }
     }
 
-    public logIn = (req: Request, res: Response, next: NextFunction) => {
+    public logIn = async (req: Request, res: Response, next: NextFunction) => {
         /*
             #swagger.parameters = loginDoc.parameters
             #swagger.responses = loginDoc.responses
@@ -43,16 +42,16 @@ export class UserController extends Controller {
             this.getFieldOrBadRequestError(req, 'email');
             this.getFieldOrBadRequestError(req, 'password');
 
-            const token = this.sessionService.login(req.body.id, req.body.password);
-            return this.okResponse(res, {token});
+            const token = await this.sessionService.logIn(req.body.email, req.body.password);
+            return this.okResponse(res, {token: token});
         } catch (error) {
             next(error);
         }
     }
 
-    public authenticate = async (req: Request, res: Response, next: NextFunction) => {
+    public authenticate = async (_req: Request, res: Response, next: NextFunction) => {
         try {
-            await PassportAuthService.authenticate(req, res, next);
+            return this.okNoContentResponse(res);
         } catch (error) {
             next(error);
         }

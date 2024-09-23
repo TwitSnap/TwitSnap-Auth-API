@@ -1,24 +1,12 @@
 import { Router } from "express";
 import { federateAuthController, userController } from "../../utils/container/container";
+import {PassportAuthService} from "../../services/application/session/PassportAuthService";
 
 const router = Router();
 
-    /*  #swagger.parameters['body'] = {
-            in: 'body',
-            description: 'Register new user',
-            required: true,
-            schema: {
-                data: {
-                    id: "uuid",
-                    password: "1234"
-                }
-                
-            } 
-        }
-    */
-router.use("/v1/login", userController.logIn);
-router.use("/v1/register", userController.register);
-router.use("/v1/auth/:token",userController.authenticate);
+router.post("/v1/register", userController.register);
+router.post("/v1/login", userController.logIn);
+router.get("/v1/auth/:token", PassportAuthService.authenticate, userController.authenticate);
 
 
 

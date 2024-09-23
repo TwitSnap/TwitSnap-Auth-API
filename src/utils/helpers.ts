@@ -5,6 +5,8 @@ import { MissingEnvVarError } from "../services/application/errors/MissingEnvVar
 import {InvalidCredentialsError} from "../services/application/errors/InvalidCredentialsError";
 import {BadRequestError} from "../api/errors/BadRequestError";
 import {StandardDatabaseError} from "../db/errors/StandardDatabaseError"
+import {InvalidRegisterCredentialsError} from "../services/application/errors/InvalidRegisterCredentialsError";
+import {UnauthorizedError} from "../api/errors/UnauthorizedError";
 
 /**
  * A utility class for various helper functions.
@@ -65,9 +67,11 @@ export class Helpers {
     private static initializeErrorStatusCodeMap = (): void => {
         Helpers._errorStatusCodeMap.set(MissingEnvVarError, StatusCodes.INTERNAL_SERVER_ERROR);
         Helpers._errorStatusCodeMap.set(StandardDatabaseError, StatusCodes.INTERNAL_SERVER_ERROR);
-        Helpers._errorStatusCodeMap.set(InvalidCredentialsError, StatusCodes.BAD_REQUEST);
+        Helpers._errorStatusCodeMap.set(InvalidCredentialsError, StatusCodes.UNAUTHORIZED);
+        Helpers._errorStatusCodeMap.set(InvalidRegisterCredentialsError, StatusCodes.CONFLICT);
         Helpers._errorStatusCodeMap.set(BadRequestError, StatusCodes.BAD_REQUEST);
         Helpers._errorStatusCodeMap.set(UnknownTypeError,StatusCodes.BAD_REQUEST);
         Helpers._errorStatusCodeMap.set(InvalidTokenError,StatusCodes.BAD_REQUEST);
+        Helpers._errorStatusCodeMap.set(UnauthorizedError,StatusCodes.UNAUTHORIZED);
     }
 }

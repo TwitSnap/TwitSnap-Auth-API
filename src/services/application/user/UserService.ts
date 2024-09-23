@@ -3,6 +3,7 @@ import {UserRepository} from "../../../db/repositories/interfaces/UserRepository
 import {Encrypter} from "../../../utils/encrypter/Encrypter";
 import {inject, injectable} from "tsyringe";
 import {InvalidCredentialsError} from "../errors/InvalidCredentialsError";
+import {InvalidRegisterCredentialsError} from "../errors/InvalidRegisterCredentialsError";
 
 const PASSWORD_MIN_LENGTH = 8;
 
@@ -39,9 +40,9 @@ export class UserService {
 
     private async validateRegisterData(id: string, password: string):Promise<void> {
         let user = await this.getUserById(id);
-        if (user != null) throw new InvalidCredentialsError("User already exists");
+        if (user != null) throw new InvalidRegisterCredentialsError("User already exists.");
         
-        if (password.length < PASSWORD_MIN_LENGTH) throw new InvalidCredentialsError("Password must be at least 8 characters long");
+        if (password.length < PASSWORD_MIN_LENGTH) throw new InvalidRegisterCredentialsError("Password must be at least 8 characters long.");
     }
 
     /**

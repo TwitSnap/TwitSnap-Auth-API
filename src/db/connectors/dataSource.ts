@@ -31,6 +31,5 @@ function getDatabaseConfig(): DataSourceOptions {
         synchronize: dbSynchronize,
         logging: dbLogging,
         entities: [User],
-        ssl:true
     };
 }

@@ -48,10 +48,9 @@ export class PassportAuthService {
      */
     public static async jwtVerify(payload: any, done: any): Promise<void> {
         try {
-            const user = await userService.getUserById(payload.id);
-            if (user) {
-                return done(null, user);
-            }
+            const user = await userService.getUserById(payload.userId);
+
+            if (user) return done(null, user);
             return done(null, false);
         } catch (error) {
             return done(error, false);

@@ -19,6 +19,14 @@ export class HttpResponseSender {
     }
 
     /**
+     * Sends the response with status code 204 and no response body.
+     * @param res - The Response object to send.
+     */
+    public okNoContentResponse = (res: Response): void => {
+        this.setUpAndSendResponse(res, null, StatusCodes.NO_CONTENT);
+    }
+
+    /**
      * Sets the provided object as the response body and sends the response with status code 201.
      * @param res - The Response object to send.
      * @param object - The object to set as the response body.

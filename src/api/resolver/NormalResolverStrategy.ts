@@ -15,7 +15,7 @@ export class NormalResolverStrategy implements ResolverStrategy {
 
     public  LogIn = async (req:Request,res:Response, sessionService: SessionService ):Promise<string> => {
 
-        return await sessionService.login(req.body.email, req.body.password);
+        return await sessionService.logIn(req.body.email, req.body.password);
     }
 
     public Register = async (id:string, password:string, userService:UserService): Promise<User> =>{
