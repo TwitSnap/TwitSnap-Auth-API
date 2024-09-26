@@ -11,7 +11,7 @@
     "http"
   ],
   "paths": {
-    "/v1/register": {
+    "/v1/auth/register": {
       "post": {
         "description": "",
         "responses": {
@@ -21,7 +21,7 @@
         }
       }
     },
-    "/v1/login": {
+    "/v1/auth/login": {
       "post": {
         "description": "",
         "responses": {
@@ -49,7 +49,7 @@
         }
       }
     },
-    "/v1/oauth/google": {
+    "/v1/test/login/google": {
       "get": {
         "description": "",
         "responses": {
@@ -59,7 +59,7 @@
         }
       }
     },
-    "/v1/federate/google": {
+    "/v1/auth/federate/google/login": {
       "get": {
         "description": "",
         "responses": {

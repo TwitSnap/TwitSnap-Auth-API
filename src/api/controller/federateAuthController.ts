@@ -8,7 +8,7 @@ import {NextFunction, Request, Response} from "express";
 import axios from 'axios';
 import qs from 'qs';
 import { GoogleResolverStrategy } from '../resolver/GoogleAuthResolverStrategy';
-import { FederateRequest } from '../../services/domain/Requests';
+import jwt_decode from 'jwt-decode';
 import * as jwt from "jsonwebtoken";
 import { UserService } from '../../services/application/user/UserService';
 import { OAuth2Client } from 'google-auth-library';
@@ -25,20 +25,10 @@ export class FederateAuthController extends Controller{
         this.OAuthClient = new OAuth2Client(CLIENT_ID)
     }
     public googleCallback = async (req:Request, res:Response, next: NextFunction) =>{
-        const code = req.query.code as string;
        
         try{ 
-          const { id_token, access_token } = await getGoogleOAuthTokens({ code });
-          const ticket = await this.OAuthClient.verifyIdToken({
-            idToken:id_token,
-            audience: CLIENT_ID
-          });
-          const payload = ticket.getPayload();
-          if (!payload){
-            throw new InvalidCredentialsError("");
-          }
-          console.log(payload["email"]);
-          return this.okResponse(res,{id_token,access_token});
+          let googleresolver = new GoogleResolverStrategy();
+          googleresolver.RedirectAuthScreen(req,res,this.sessionService);
         }
         catch(error){
             next(error)
@@ -46,9 +36,28 @@ export class FederateAuthController extends Controller{
 
     }
     public googleLogIn  = async (req:Request, res:Response, next: NextFunction) =>{
-      
-      let googleresolver = new GoogleResolverStrategy();
-      googleresolver.RedirectAuthScreen(req,res,this.sessionService);
+      const code = req.query.code as string;
+       
+      try{ 
+        const { id_token, access_token } = await getGoogleOAuthTokens({ code });
+        const ticket = await this.OAuthClient.verifyIdToken({
+          idToken:id_token,
+          audience: CLIENT_ID
+        });
+        const payload = ticket.getPayload();
+        if (!payload){
+          throw new InvalidCredentialsError("");
+        }
+        if (!payload["email"]){
+          throw new InvalidCredentialsError("");
+        }
+        const token = await this.sessionService.logInFederated(payload["email"]);
+        return this.okResponse(res,{token:token});
+      }
+      catch(error){
+          next(error)
+      }
+
     }
 
     public googleAuthenticate = async(req:Request,res:Response,next:NextFunction) =>{
@@ -88,7 +97,6 @@ export async function getGoogleOAuthTokens({
       redirect_uri: process.env.GOOGLE_REDIRECT_URI,
       grant_type: "authorization_code",
     };
-    console.log("asdasdas")
     try {
       const res = await axios.post<GoogleTokensResult>(
         url,
