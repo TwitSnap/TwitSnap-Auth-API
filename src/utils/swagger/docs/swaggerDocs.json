@@ -102,7 +102,7 @@
           }
         }
       },
-      "/v1/federate/google":{
+      "/v1/federate/login/google":{
         "get":{
           "summary": "Login and return acces token via Google",
           "description": "Use this endpoint to login user with Google.",

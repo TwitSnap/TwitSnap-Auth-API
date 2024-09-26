@@ -29,6 +29,13 @@ export class TokenSessionStrategy implements SessionStrategy {
         return this.generateTokenForUser(user);
     }
 
+    public async logInFederated(id: string, userService: UserService): Promise<string> {
+        const user = await userService.getUserById(id);
+
+        if (user == null) throw new InvalidCredentialsError(INVALID_CREDS_MSG);
+        return this.generateTokenForUser(user);
+    }
+
     /**
      * @function generateTokenForUser
      * @description Generates a token for the provided user.

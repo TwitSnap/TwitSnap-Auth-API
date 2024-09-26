@@ -6,6 +6,7 @@ import {InvalidCredentialsError} from "../services/application/errors/InvalidCre
 import {BadRequestError} from "../api/errors/BadRequestError";
 import {StandardDatabaseError} from "../db/errors/StandardDatabaseError"
 import {InvalidRegisterCredentialsError} from "../services/application/errors/InvalidRegisterCredentialsError";
+import { NoUserFoundsError } from '../services/application/errors/NoUserFoundError';
 
 /**
  * A utility class for various helper functions.
@@ -71,5 +72,6 @@ export class Helpers {
         Helpers._errorStatusCodeMap.set(BadRequestError, StatusCodes.BAD_REQUEST);
         Helpers._errorStatusCodeMap.set(UnknownTypeError,StatusCodes.BAD_REQUEST);
         Helpers._errorStatusCodeMap.set(InvalidTokenError,StatusCodes.BAD_REQUEST);
+        Helpers._errorStatusCodeMap.set(NoUserFoundsError,StatusCodes.BAD_REQUEST);
     }
 }

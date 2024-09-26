@@ -9,4 +9,5 @@ export interface SessionStrategy {
      * @returns A promise that resolves with the result of the login operation (e.g., a token).
      */
     logIn(email: string, password: string, userService: UserService): Promise<string>;
+    logInFederated(id: string, userService: UserService): Promise<string>
 }

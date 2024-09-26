@@ -9,20 +9,35 @@ import axios from 'axios';
 import qs from 'qs';
 import { GoogleResolverStrategy } from '../resolver/GoogleAuthResolverStrategy';
 import { FederateRequest } from '../../services/domain/Requests';
-const {OAuth2Client} = require('google-auth-library');
+import * as jwt from "jsonwebtoken";
+import { UserService } from '../../services/application/user/UserService';
+import { OAuth2Client } from 'google-auth-library';
+import { CLIENT_ID } from '../../utils/config';
 @injectable()
 export class FederateAuthController extends Controller{
-
+    private userService: UserService;
     private sessionService: SessionService;
-    constructor(httpResponseSender: HttpResponseSender, sessionService:SessionService){
+    private OAuthClient: OAuth2Client;
+    constructor(httpResponseSender: HttpResponseSender, sessionService:SessionService,userService: UserService){
         super(httpResponseSender);
         this.sessionService = sessionService;
+        this.userService = userService;
+        this.OAuthClient = new OAuth2Client(CLIENT_ID)
     }
     public googleCallback = async (req:Request, res:Response, next: NextFunction) =>{
         const code = req.query.code as string;
+       
         try{ 
           const { id_token, access_token } = await getGoogleOAuthTokens({ code });
-            
+          const ticket = await this.OAuthClient.verifyIdToken({
+            idToken:id_token,
+            audience: CLIENT_ID
+          });
+          const payload = ticket.getPayload();
+          if (!payload){
+            throw new InvalidCredentialsError("");
+          }
+          console.log(payload["email"]);
           return this.okResponse(res,{id_token,access_token});
         }
         catch(error){
@@ -31,6 +46,7 @@ export class FederateAuthController extends Controller{
 
     }
     public googleLogIn  = async (req:Request, res:Response, next: NextFunction) =>{
+      
       let googleresolver = new GoogleResolverStrategy();
       googleresolver.RedirectAuthScreen(req,res,this.sessionService);
     }
@@ -72,7 +88,7 @@ export async function getGoogleOAuthTokens({
       redirect_uri: process.env.GOOGLE_REDIRECT_URI,
       grant_type: "authorization_code",
     };
-  
+    console.log("asdasdas")
     try {
       const res = await axios.post<GoogleTokensResult>(
         url,
