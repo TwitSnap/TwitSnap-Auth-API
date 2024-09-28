@@ -6,7 +6,8 @@ dotenv.config();
 const requiredEnvVars = [
     'PORT', 'DB_HOST', 'DB_PORT', 'DB_USERNAME', 'DB_PASSWORD', 'DB_NAME', "JWT_SECRET",
     'DB_SYNCHRONIZE', 'DB_LOGGING', 'DB_TYPE', "LOG_ROUTE", "LOGGING",
-    "LOG_ERROR", "LOG_DEBUG", "LOG_INFO", "JWT_EXPIRATION_TIME"
+    "LOG_ERROR", "LOG_DEBUG", "LOG_INFO", "JWT_EXPIRATION_TIME", "USERS_MS_URI",
+    "GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH"
 ];
 
 Helpers.validateEnvVarsList(requiredEnvVars);
@@ -36,3 +37,6 @@ export const CLIENT_ID = process.env.CLIENT_ID;
 export const CLIENT_SECRET = process.env.CLIENT_SECRET;
 export const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
 
+// ? Other microservices info
+export const USERS_MS_URI = process.env.USERS_MS_URI as string;
+export const GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH = process.env.GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH as string;
