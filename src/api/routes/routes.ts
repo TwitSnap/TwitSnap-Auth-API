@@ -13,6 +13,5 @@ router.get("/v1/auth/:token", PassportAuthService.authenticate, userController.a
 
 router.get("/v1/test/login/google",federateAuthController.googleCallback);
 router.get("/v1/auth/federate/google/login",federateAuthController.googleLogIn);
-router.use("/v1/federate/google/authenticate",federateAuthController.googleAuthenticate);
 
 export default router;

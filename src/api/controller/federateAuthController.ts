@@ -6,9 +6,8 @@ import { HttpResponseSender } from './HttpResponseSender';
 import {NextFunction, Request, Response} from "express";
 import axios from 'axios';
 import qs from 'qs';
-import { GoogleResolverStrategy } from '../resolver/GoogleAuthResolverStrategy';
 import { OAuth2Client } from 'google-auth-library';
-import { CLIENT_ID } from '../../utils/config';
+import { CLIENT_ID, CLIENT_SECRET, GOOGLE_REDIRECT_URI } from '../../utils/config';
 
 @injectable()
 export class FederateAuthController extends Controller{
@@ -21,9 +20,21 @@ export class FederateAuthController extends Controller{
         this.OAuthClient = new OAuth2Client(CLIENT_ID)
     }
     public googleCallback = async (req:Request, res:Response, next: NextFunction) =>{
+      /*
+      Funcion para probar el login
+       */
         try{ 
-          let googleresolver = new GoogleResolverStrategy();
-          googleresolver.RedirectAuthScreen(req,res,this.sessionService);
+          let GOOGLE_OAUTH_URL="https://accounts.google.com/o/oauth2/v2/auth"
+          const GOOGLE_OAUTH_SCOPES = [
+          "https%3A//www.googleapis.com/auth/userinfo.email",
+          "https%3A//www.googleapis.com/auth/userinfo.profile",
+          ];
+
+          const state = "some_state";
+          const scopes = GOOGLE_OAUTH_SCOPES.join(" ");
+          const GOOGLE_OAUTH_CONSENT_SCREEN_URL = `${GOOGLE_OAUTH_URL}?client_id=${CLIENT_ID as string}&redirect_uri=${GOOGLE_REDIRECT_URI}&access_type=offline&response_type=code&state=${state}&scope=${scopes}`;
+            
+          res.redirect(GOOGLE_OAUTH_CONSENT_SCREEN_URL);
         }
         catch(error){
             next(error)
@@ -42,11 +53,7 @@ export class FederateAuthController extends Controller{
 
             const payload = ticket.getPayload();
 
-            if (!payload){
-              throw new InvalidCredentialsError("");
-            }
-
-            if (!payload["email"]){
+            if (!payload || !payload["email"]){
               throw new InvalidCredentialsError("");
             }
 
@@ -55,17 +62,6 @@ export class FederateAuthController extends Controller{
         } catch(error){
           next(error)
         }
-    }
-
-    public googleAuthenticate = async(req:Request,res:Response,next:NextFunction) =>{
-      try{
-        let googleresolver = new GoogleResolverStrategy();
-        await googleresolver.GoogleAuthenticate(req,res,this.sessionService);
-        this.okResponse(res,{});
-      }
-      catch(e){
-        next(e)
-      }
     }
 }
 
@@ -86,9 +82,9 @@ export async function getGoogleOAuthTokens({
   
     const values = {
       code,
-      client_id: process.env.CLIENT_ID,
-      client_secret: process.env.CLIENT_SECRET,
-      redirect_uri: process.env.GOOGLE_REDIRECT_URI,
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+      redirect_uri: GOOGLE_REDIRECT_URI,
       grant_type: "authorization_code",
     };
     try {

@@ -1,5 +1,3 @@
-import { InvalidTokenError } from '../api/resolver/errors/InvalidTokenError';
-import { UnknownTypeError } from '../api/resolver/errors/UnknownType';
 import { StatusCodes } from "http-status-codes";
 import { MissingEnvVarError } from "../services/application/errors/MissingEnvVarError";
 import {InvalidCredentialsError} from "../services/application/errors/InvalidCredentialsError";
@@ -70,8 +68,6 @@ export class Helpers {
         Helpers._errorStatusCodeMap.set(InvalidCredentialsError, StatusCodes.UNAUTHORIZED);
         Helpers._errorStatusCodeMap.set(InvalidRegisterCredentialsError, StatusCodes.CONFLICT);
         Helpers._errorStatusCodeMap.set(BadRequestError, StatusCodes.BAD_REQUEST);
-        Helpers._errorStatusCodeMap.set(UnknownTypeError,StatusCodes.BAD_REQUEST);
-        Helpers._errorStatusCodeMap.set(InvalidTokenError,StatusCodes.BAD_REQUEST);
         Helpers._errorStatusCodeMap.set(NoUserFoundsError,StatusCodes.BAD_REQUEST);
     }
 }
