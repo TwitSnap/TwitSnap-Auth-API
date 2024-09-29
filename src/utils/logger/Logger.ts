@@ -46,7 +46,7 @@ export class Logger {
 
 
     private formatLogFromEntity = (message: string, entity: Function): string => {
-        return `[[${entity}]] - ${message}`;
+        return `[[${entity.name}]] - ${message}`;
     }
 
     /**
