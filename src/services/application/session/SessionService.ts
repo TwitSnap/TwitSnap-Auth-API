@@ -31,10 +31,23 @@ export class SessionService{
         return this.strategy.logIn(id, password, this.userService);
     }
 
-    public async logInFederated(email: string){
+    /**
+     * Logs in a federated user (e.g., with OAuth or external provider).
+     * @param {string} email - The email of the federated user trying to log in.
+     * @returns {Promise<string>} A promise that resolves with the federated user session token or ID.
+     */
+    public async logInFederated(email: string): Promise<string>{
         const id = await this.getUserIdFromUserEmail(email);
         return this.strategy.logInFederated(id, this.userService);
     }
+
+    /**
+     * Handles errors related to the external HTTP request.
+     * @param {any} e - The error object from the failed request.
+     * @throws {InvalidCredentialsError} If the request returned a 404 status, indicating invalid credentials.
+     * @throws {ExternalServiceInternalError} If the request returned any other status, indicating an internal error in the external service.
+     * @throws {ExternalServiceConnectionError} If there was a connection issue with the external service.
+     */
 
     private handleRequestError = (e: any): void => {
         if(e.response){
@@ -51,10 +64,21 @@ export class SessionService{
         }
     }
 
+    /**
+     * Extracts the user ID from the HTTP response.
+     * @param {void | AxiosResponse<any, any>} response - The HTTP response containing the user data.
+     * @returns {string} The user ID extracted from the response.
+     */
     private getIdFromRequestResponse = (response: void | AxiosResponse<any, any>): string => {
        return response?.data;
     }
 
+    /**
+     * Retrieves the user ID from an external service based on the user's email.
+     * @param {string} email - The email of the user.
+     * @returns {Promise<string>} A promise that resolves with the user ID.
+     * @throws {InvalidExternalServiceResponseError} If the external service response is invalid.
+     */
     private getUserIdFromUserEmail = async (email: string): Promise<string> => {
         const getUserIdFromUserEmailEndpointUrl = USERS_MS_URI + GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH;
 

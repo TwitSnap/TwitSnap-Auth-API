@@ -1,4 +1,4 @@
-import { FederateAuthController } from './../../api/controller/federateAuthController';
+import { FederateAuthController } from '../../api/controller/FederateAuthController';
 import { container } from "tsyringe";
 import "reflect-metadata";
 import {DatabaseConnector} from "../../db/connectors/DatabaseConnector";
