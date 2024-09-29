@@ -29,6 +29,26 @@ export class Logger {
         this._logInfo = logInfo;
     }
 
+    public logDebugFromEntity = (message: string, entity: Function): void => {
+        const formattedMessage = this.formatLogFromEntity(message, entity);
+        this.logDebug(formattedMessage);
+    }
+
+    public logInfoFromEntity = (message: string, entity: Function): void => {
+        const formattedMessage = this.formatLogFromEntity(message, entity);
+        this.logInfo(formattedMessage);
+    }
+
+    public logErrorFromEntity = (message: string, entity: Function): void => {
+        const formattedMessage = this.formatLogFromEntity(message, entity);
+        this.logError(formattedMessage);
+    }
+
+
+    private formatLogFromEntity = (message: string, entity: Function): string => {
+        return `[[${entity}]] - ${message}`;
+    }
+
     /**
      * Logs an informational message using the current logging strategy.
      *

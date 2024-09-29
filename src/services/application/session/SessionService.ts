@@ -8,6 +8,7 @@ import {ExternalServiceInternalError} from "../errors/ExternalServiceInternalErr
 import {ExternalServiceConnectionError} from "../errors/ExternalServiceConnectionError";
 import {InvalidExternalServiceResponseError} from "../errors/InvalidExternalServiceResponseError";
 import {HttpRequester} from "../../../api/external/HttpRequester";
+import {logger} from "../../../utils/container/container";
 
 @injectable()
 export class SessionService{
@@ -27,8 +28,13 @@ export class SessionService{
      * @throws {Error} If any of the parameters inside userData is empty.
      */
     public logIn = async (email: string, password: string): Promise<string> => {
+        logger.logDebugFromEntity(`Attempting to logIn user with email: ${email}`, this.constructor);
+
         const id = await this.getUserIdFromUserEmail(email);
-        return this.strategy.logIn(id, password, this.userService);
+        const token = this.strategy.logIn(id, password, this.userService);
+
+        logger.logDebugFromEntity(`Attempt to logIn user with email ${email} was successful.`, this.constructor);
+        return token;
     }
 
     /**

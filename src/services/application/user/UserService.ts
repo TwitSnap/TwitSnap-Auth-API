@@ -2,8 +2,8 @@ import {User} from "../../domain/User";
 import {UserRepository} from "../../../db/repositories/interfaces/UserRepository";
 import {Encrypter} from "../../../utils/encrypter/Encrypter";
 import {inject, injectable} from "tsyringe";
-import {InvalidCredentialsError} from "../errors/InvalidCredentialsError";
 import {InvalidRegisterCredentialsError} from "../errors/InvalidRegisterCredentialsError";
+import {logger} from "../../../utils/container/container";
 
 const PASSWORD_MIN_LENGTH = 8;
 
@@ -24,11 +24,16 @@ export class UserService {
      * @return The created user.
      */
     public async register(id: string, password: string): Promise<User> {
+        logger.logDebugFromEntity(`Attempting to register user with id: ${id}`, this.constructor);
+
         await this.validateRegisterData(id, password);
         password = this.encrypter.encryptString(password);
 
-        const user = new User(id, password);
-        return this.userRepository.save(user);
+        let user = new User(id, password);
+        user = await this.userRepository.save(user);
+
+        logger.logDebugFromEntity(`Attempt to register user with id ${id} was successful`, this.constructor);
+        return user;
     }
 
     /**
