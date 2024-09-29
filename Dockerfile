@@ -11,7 +11,9 @@ COPY ["package.json", "package-lock.json", "./"]
 RUN npm install --production
 
 # Copy tsconfig and other necessary files
-COPY tsconfig.json .env ./
+#COPY tsconfig.json .env ./
+COPY tsconfig.json ./
+COPY ./src ./src
 
 # Build the TypeScript code
 RUN npm run build
