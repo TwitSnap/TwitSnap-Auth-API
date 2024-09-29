@@ -16,7 +16,7 @@ COPY tsconfig.json ./
 COPY ./src ./src
 
 # Build the TypeScript code
-ENTRYPOINT npm run build
+RUN npm run build
 
 # Use a better ENTRYPOINT or CMD for production-ready environment
-CMD ["npm", "run", "start"]
+ENTRYPOINT npm run start
