@@ -10,20 +10,20 @@ export class HttpRequester {
     ): Promise<T> => {
         // ? Logea la request que se va a hacer junto con su ID unico
         const requestId = this.getRequestUniqueId();
-        logger.logDebugFromEntity(`Attempting HTTP request...\n
+        logger.logDebugFromEntity(`Attempting HTTP request...
                                    ID: ${requestId}\n
                                    Verb: GET\n
                                    URL: ${url}\n
                                    Params: ${params}`
             , this.constructor);
 
-        // ? Obtiene una response en caso de que haya ido ok, en caso de error lo maneja
+        // ? Obtiene una response en caso de que haya ido ok, en caso de error lo catchea y handlea
         const response = await axios.get(url, params).catch(e => {
             logger.logDebugFromEntity(`Attempt HTTP request
                                         ID: ${requestId}\n
                                         Verb: GET\n
                                         URL: ${url}\n
-                                        Params: ${params}
+                                        Params: ${params}\n
                                         Result: FAILED`
                 , this.constructor);
             catchFunction(e)
@@ -34,7 +34,7 @@ export class HttpRequester {
                                         ID: ${requestId}\n
                                         Verb: GET\n
                                         URL: ${url}\n
-                                        Params: ${params}
+                                        Params: ${params}\n
                                         Result: SUCCESS`
                 , this.constructor);
         return extractFunction(response);
