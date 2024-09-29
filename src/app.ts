@@ -26,11 +26,3 @@ databaseConnector.initializeConnection().then(() => {
         logger.logInfo(`Server is running on port ${PORT}`);
     });
 });
-
-//TODO:
-//0. Testear lo hecho hasta ahora desde Postman
-//1. Terminar logIn con y sin identidad federada
-//2. Implementar authenticate usando Passport
-//3. Testear lo hecho desde Postman
-//4. Agregar tests unitarios
-//5. Verificar que el dockerfile este OK (incluyendo que no haya secretos en el .env)
