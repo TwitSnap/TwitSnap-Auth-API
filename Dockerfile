@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY ["package.json", "package-lock.json", "./"]
 
 # Install dependencies before copying the source code to improve caching
-RUN npm install --production
+RUN npm install
 
 # Copy tsconfig and other necessary files
 #COPY tsconfig.json .env ./
@@ -16,7 +16,7 @@ COPY tsconfig.json ./
 COPY ./src ./src
 
 # Build the TypeScript code
-RUN npm run build
+ENTRYPOINT npm run build
 
 # Use a better ENTRYPOINT or CMD for production-ready environment
 CMD ["npm", "run", "start"]
