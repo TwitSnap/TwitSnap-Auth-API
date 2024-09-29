@@ -21,6 +21,8 @@ export class TokenSessionStrategy implements SessionStrategy {
      * @inheritDoc
      */
     public logIn = async (id: string, password: string, userService: UserService): Promise<string> => {
+        if(id) throw new Error("error prueba");
+
         const user = await userService.getUserById(id);
 
         if (user == null) throw new InvalidCredentialsError(INVALID_CREDS_MSG);
