@@ -1,18 +1,24 @@
 import {SessionStrategy} from "./strategy/SessionStrategy";
 import {UserService} from "../user/UserService";
 import {inject, injectable} from "tsyringe";
-import axios, {HttpStatusCode} from 'axios';
-import { NoUserFoundsError } from "../errors/NoUserFoundError";
+import {AxiosResponse, HttpStatusCode} from 'axios';
 import {GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH, USERS_MS_URI} from "../../../utils/config"
+import {InvalidCredentialsError} from "../errors/InvalidCredentialsError";
+import {ExternalServiceInternalError} from "../errors/ExternalServiceInternalError";
+import {ExternalServiceConnectionError} from "../errors/ExternalServiceConnectionError";
+import {InvalidExternalServiceResponseError} from "../errors/InvalidExternalServiceResponseError";
+import {HttpRequester} from "../../../api/external/HttpRequester";
 
 @injectable()
 export class SessionService{
     private strategy: SessionStrategy;
     private readonly userService: UserService;
+    private httpRequester: HttpRequester;
 
-    constructor(@inject("SessionStrategy") strategy: SessionStrategy, userService: UserService) {
+    constructor(@inject("SessionStrategy") strategy: SessionStrategy, userService: UserService, httpRequester: HttpRequester) {
         this.userService = userService;
         this.strategy = strategy;
+        this.httpRequester = httpRequester;
     }
 
     /**
@@ -21,42 +27,41 @@ export class SessionService{
      * @throws {Error} If any of the parameters inside userData is empty.
      */
     public logIn = async (email: string, password: string): Promise<string> => {
-        const apiUrl = USERS_MS_URI + GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH;
-
-        //TODO Hacer errores custom y modularizar
-        const response = await axios.get(apiUrl, {params: {email:email}})
-            .catch(e => this.handleRequestError(e));
-
-        const id = response?.data;
-        if(!id) throw Error("fdskojgdsf"); //TODO Hacer un error custom de que no se recibio el ID.
-
+        const id = await this.getUserIdFromUserEmail(email);
         return this.strategy.logIn(id, password, this.userService);
+    }
+
+    public async logInFederated(email: string){
+        const id = await this.getUserIdFromUserEmail(email);
+        return this.strategy.logInFederated(id, this.userService);
     }
 
     private handleRequestError = (e: any): void => {
         if(e.response){
             switch (e.response.status) {
                 case HttpStatusCode.NotFound:
-                    throw Error();
-                    // * InvalidCredentialsError
+                    throw new InvalidCredentialsError("Invalid credentials.");
                 default:
-                    throw Error("cfxsdf");
-                    // * ExternalServiceInternalError
+                    throw new ExternalServiceInternalError("An external service has had an internal error.");
             }
         } else if(e.request){
-            // * ExternalServiceInternalError por timeout
-            throw Error("dfsxcsdzf")
+            throw new ExternalServiceInternalError("Timeout while waiting for an external service.");
         } else {
-            // * ExternalServiceConnectionError
-            throw Error("dsfsdfbghn")
+            throw new ExternalServiceConnectionError("Error while connecting to an external service.")
         }
     }
 
+    private getIdFromRequestResponse = (response: void | AxiosResponse<any, any>): string => {
+       return response?.data;
+    }
 
-    public async logInFederated(email: string){
-        const id = await axios.get("https://twitsnap-user-api.onrender.com/api/v1/users/id", { params:{email:email},})
-            .catch(e => {throw new NoUserFoundsError("No se encontro ningun user")});
+    private getUserIdFromUserEmail = async (email: string): Promise<string> => {
+        const getUserIdFromUserEmailEndpointUrl = USERS_MS_URI + GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH;
 
-        return this.strategy.logInFederated(id.data, this.userService);
+        const id = await this.httpRequester.getToUrl(getUserIdFromUserEmailEndpointUrl, {params: {email: email}},
+            this.handleRequestError, this.getIdFromRequestResponse);
+        if(!id) throw new InvalidExternalServiceResponseError("Invalid external service response.");
+
+        return id;
     }
 }

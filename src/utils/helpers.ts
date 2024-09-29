@@ -4,7 +4,9 @@ import {InvalidCredentialsError} from "../services/application/errors/InvalidCre
 import {BadRequestError} from "../api/errors/BadRequestError";
 import {StandardDatabaseError} from "../db/errors/StandardDatabaseError"
 import {InvalidRegisterCredentialsError} from "../services/application/errors/InvalidRegisterCredentialsError";
-import { NoUserFoundsError } from '../services/application/errors/NoUserFoundError';
+import {ExternalServiceConnectionError} from "../services/application/errors/ExternalServiceConnectionError";
+import {InvalidExternalServiceResponseError} from "../services/application/errors/InvalidExternalServiceResponseError";
+import {ExternalServiceInternalError} from "../services/application/errors/ExternalServiceInternalError";
 
 /**
  * A utility class for various helper functions.
@@ -68,6 +70,8 @@ export class Helpers {
         Helpers._errorStatusCodeMap.set(InvalidCredentialsError, StatusCodes.UNAUTHORIZED);
         Helpers._errorStatusCodeMap.set(InvalidRegisterCredentialsError, StatusCodes.CONFLICT);
         Helpers._errorStatusCodeMap.set(BadRequestError, StatusCodes.BAD_REQUEST);
-        Helpers._errorStatusCodeMap.set(NoUserFoundsError,StatusCodes.BAD_REQUEST);
+        Helpers._errorStatusCodeMap.set(ExternalServiceConnectionError, StatusCodes.INTERNAL_SERVER_ERROR);
+        Helpers._errorStatusCodeMap.set(InvalidExternalServiceResponseError, StatusCodes.INTERNAL_SERVER_ERROR);
+        Helpers._errorStatusCodeMap.set(ExternalServiceInternalError, StatusCodes.INTERNAL_SERVER_ERROR)
     }
 }
