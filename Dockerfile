@@ -1,19 +1,20 @@
-
 # Installs Node.js image
 FROM node:22-alpine3.19
 
-# sets the working directory for any RUN, CMD, COPY command
-# all files we put in the Docker container running the server will be in /usr/src/app (e.g. /usr/src/app/package.json)
+# sets the working directory
 WORKDIR /usr/src/app
 
-# Copies package.json, package-lock.json, tsconfig.json, .env to the root of WORKDIR
-COPY ["package.json", "package-lock.json", "tsconfig.json", "./"]
+# Copy package.json and lock file first to leverage caching
+COPY ["package.json", "package-lock.json", "./"]
 
-# Copies everything in the src directory to WORKDIR/src
-COPY ./src ./src
+# Install dependencies before copying the source code to improve caching
+RUN npm install --production
 
-# Installs all packages
-RUN npm install
+# Copy tsconfig and other necessary files
+COPY tsconfig.json .env ./
 
-# Runs the dev npm script to build & start the server
-CMD npm run dev
+# Build the TypeScript code
+RUN npm run build
+
+# Use a better ENTRYPOINT or CMD for production-ready environment
+CMD ["npm", "run", "start"]
