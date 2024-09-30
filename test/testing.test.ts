@@ -32,35 +32,41 @@ describe('UserController', () => {
     })
 
     it('should create record', async () => {
-        await request(app)
-        .post("/v1/auth/register")
-        .send({id:"unID",password:"unapassword"})
+        await register_user("unID","unapassword")
         .expect(201);
 
     });
 
     it("should return a token" , async()=>{
         
-        await request(app)
-        .post("/v1/auth/register")
-        .send({id:"unID",password:"unapassword"})
+        await register_user("unID","unapassword")
         .expect(201);
 
         mAxios.get.mockResolvedValue({data:"unID"});
 
-        const response = await request(app)
-        .post("/v1/auth/login")
-        .send({email:"unEmail",password:"unapassword"})
+        const response = await obtain_token("unemail","unapassword")
         .expect(200);
         const token = JSON.parse(response.text).token;
-        const {userId} = jwt.verify(token, JWT_SECRET as string) as jwt.JwtPayload;
+        const {userId} = obtain_id(token);
         expect(userId).toBe("unID");
 
-        
     });
 
-})
+    it("should return 204 for access granted", async () =>{
+        await register_user("unID", "unapassword");
 
+        mAxios.get.mockResolvedValue({data:"unID"});
+
+        const response = await obtain_token("unemail","unapassword");
+
+        const token = JSON.parse(response.text).token;
+
+        await request(app)
+        .get("/v1/auth/"+token)
+        .expect(204);
+    })
+
+})
 afterAll( (done) => {
     //connection.destroy().then(e =>{
     //    console.log("Desconexion de la BDD");
@@ -73,4 +79,18 @@ afterAll( (done) => {
 
 })
 
+const register_user = (id: string, password: string) =>{
+    return request(app)
+    .post("/v1/auth/register")
+    .send({id:id,password:password})
+}
 
+const obtain_token = (email:string, password:"unapassword") =>{
+    return request(app)
+    .post("/v1/auth/login")
+    .send({email:"unEmail",password:"unapassword"});
+}
+
+const obtain_id = (token:string) => {
+    return jwt.verify(token, JWT_SECRET as string) as jwt.JwtPayload
+}
