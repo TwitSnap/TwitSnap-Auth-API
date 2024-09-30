@@ -51,6 +51,6 @@
     "dev": "nodemon -L -e ts --exec \"npm run swagger && npm run build &&  npm start\"",
     "build": "tsc",
     "swagger": "node src/utils/swagger/swagger.js",
-    "test": "jest --runInBand --detectOpenHandles --forceExit --coverage"
+    "test": "jest --runInBand --forceExit --coverage"
   }
 }

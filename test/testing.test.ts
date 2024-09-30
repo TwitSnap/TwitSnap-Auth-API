@@ -32,16 +32,18 @@ describe('UserController', () => {
 
         await deleteRecord("unID");
     });
-    afterAll( (done) => {
-        connection.destroy().then(e =>{
-            console.log("Desconexion de la BDD");
-        });
-        databaseConnector.shutdownConnection();
 
-        done();
-    
-    })
+})
 
+afterAll( (done) => {
+    connection.destroy().then(e =>{
+        console.log("Desconexion de la BDD");
+    });
+    databaseConnector.shutdownConnection().then(e=>{
+        console.log("Principal Connector shut down")
+    });
+
+    done();
 
 })
 
