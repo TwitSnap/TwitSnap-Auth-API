@@ -4,6 +4,7 @@ import {NextFunction, Request, Response} from "express";
 import {UserService} from "../../services/application/user/UserService";
 import {SessionService} from "../../services/application/session/SessionService";
 import {injectable} from "tsyringe";
+import { logger } from "../../utils/container/container";
 
 @injectable()
 export class UserController extends Controller {
@@ -58,9 +59,8 @@ export class UserController extends Controller {
     }
 
     public decryptToken = async (req: Request, res: Response, next: NextFunction) => {
-        console.log(req.body.token)
         const user_id = this.sessionService.decryptToken(req.body.token);
-        console.log(user_id)
+        logger.logInfo("Se desencripto el token para el uuid: " + user_id);
         return this.okResponse(res,{user_id:user_id});
     }
 }
