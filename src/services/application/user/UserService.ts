@@ -6,13 +6,7 @@ import {InvalidRegisterCredentialsError} from "../errors/InvalidRegisterCredenti
 import {logger} from "../../../utils/container/container";
 import {TwitSnapAPIs} from "../../../api/external/TwitSnapAPIs";
 import {Helpers} from "../../../utils/helpers";
-import {
-    JWT_EXPIRATION_TIME,
-    JWT_NEW_PASSWORD,
-    JWT_NEW_PASSWORD_EXPIRATION_TIME,
-    JWT_SECRET
-} from "../../../utils/config";
-import {InvalidCredentialsError} from "../errors/InvalidCredentialsError";
+import {JWT_NEW_PASSWORD, JWT_NEW_PASSWORD_EXPIRATION_TIME,} from "../../../utils/config";
 
 const PASSWORD_MIN_LENGTH = 8;
 
@@ -75,5 +69,6 @@ export class UserService {
     public async forgotPassword(email: string): Promise<void> {
         const userId = await this.twitSnapAPIs.getUserIdFromUserEmail(email);
         const token = Helpers.generateToken({userId: userId}, (JWT_NEW_PASSWORD as string), JWT_NEW_PASSWORD_EXPIRATION_TIME as string);
+        return await this.twitSnapAPIs.sendResetPasswordNotification([email], token);
     }
 }

@@ -8,6 +8,7 @@ import {ExternalServiceConnectionError} from "../services/application/errors/Ext
 import {InvalidExternalServiceResponseError} from "../services/application/errors/InvalidExternalServiceResponseError";
 import {ExternalServiceInternalError} from "../services/application/errors/ExternalServiceInternalError";
 import * as jwt from "jsonwebtoken";
+import {ExternalServiceHTTPError} from "../api/external/ExternalServiceHTTPError";
 
 /**
  * A utility class for various helper functions.
@@ -86,5 +87,6 @@ export class Helpers {
         Helpers._errorStatusCodeMap.set(ExternalServiceConnectionError, StatusCodes.INTERNAL_SERVER_ERROR);
         Helpers._errorStatusCodeMap.set(InvalidExternalServiceResponseError, StatusCodes.INTERNAL_SERVER_ERROR);
         Helpers._errorStatusCodeMap.set(ExternalServiceInternalError, StatusCodes.INTERNAL_SERVER_ERROR)
+        Helpers._errorStatusCodeMap.set(ExternalServiceHTTPError, StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
