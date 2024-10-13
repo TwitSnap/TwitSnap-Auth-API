@@ -7,7 +7,9 @@ import {ExternalServiceInternalError} from "../../services/application/errors/Ex
 import {ExternalServiceConnectionError} from "../../services/application/errors/ExternalServiceConnectionError";
 import {logger} from "../../utils/container/container";
 import {ExternalServiceHTTPError} from "./ExternalServiceHTTPError";
+import {injectable} from "tsyringe";
 
+@injectable()
 export class TwitSnapAPIs{
     httpRequester: HttpRequester;
 

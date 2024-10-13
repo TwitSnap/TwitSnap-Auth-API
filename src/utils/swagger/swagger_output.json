@@ -59,6 +59,16 @@
         }
       }
     },
+    "/v1/auth/password": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/v1/test/login/google": {
       "get": {
         "description": "",
