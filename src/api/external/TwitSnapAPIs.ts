@@ -69,7 +69,7 @@ export class TwitSnapAPIs{
         const url = NOTIFICATIONS_MS_URI + SEND_NOTIFICATION_ENDPOINT_PATH;
 
         const data = {
-            type: "resetPassword",
+            type: "reset-password",
             params: {
                 token: token
             },
