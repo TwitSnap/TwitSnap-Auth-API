@@ -9,6 +9,7 @@ import {InvalidExternalServiceResponseError} from "../services/application/error
 import {ExternalServiceInternalError} from "../services/application/errors/ExternalServiceInternalError";
 import * as jwt from "jsonwebtoken";
 import {ExternalServiceHTTPError} from "../api/external/ExternalServiceHTTPError";
+import {InvalidTokenError, JwtPayload} from "jwt-decode";
 
 /**
  * A utility class for various helper functions.
@@ -50,6 +51,23 @@ export class Helpers {
         return jwt.sign(objectLiteral, secret, { expiresIn: expirationTime });
     }
 
+    public static tokenHasExpired = (token: string): boolean => {
+        const decodedToken = jwt.decode(token);
+
+        if (decodedToken === null || (typeof decodedToken === "string")) return true;
+
+        const currentTime = Math.floor(Date.now() / 1000);
+        return decodedToken.exp ? decodedToken.exp < currentTime : true;
+    }
+
+    public static getDataFromToken = (token: string, key: string): any => {
+        const decodedToken = jwt.decode(token);
+
+        if (decodedToken === null || (typeof decodedToken === "string")) throw new InvalidTokenError();
+
+        return decodedToken[key];
+    }
+
     /**
      * Maps an error to its corresponding HTTP status code.
      * If no mapping is found, returns 500 Internal Server Error.
@@ -88,5 +106,6 @@ export class Helpers {
         Helpers._errorStatusCodeMap.set(InvalidExternalServiceResponseError, StatusCodes.INTERNAL_SERVER_ERROR);
         Helpers._errorStatusCodeMap.set(ExternalServiceInternalError, StatusCodes.INTERNAL_SERVER_ERROR)
         Helpers._errorStatusCodeMap.set(ExternalServiceHTTPError, StatusCodes.INTERNAL_SERVER_ERROR);
+        Helpers._errorStatusCodeMap.set(InvalidTokenError, StatusCodes.UNAUTHORIZED);
     }
 }
