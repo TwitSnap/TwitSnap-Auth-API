@@ -57,4 +57,5 @@ export class UserService {
     public async getUserById(id: string): Promise<User | null> {
         return this.userRepository.getById(id);
     }
+
 }

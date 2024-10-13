@@ -7,7 +7,7 @@ const router = Router();
 router.post("/v1/auth/register", userController.register);
 router.post("/v1/auth/login", userController.logIn);
 router.get("/v1/auth/:token", PassportAuthService.authenticate, userController.authenticate);
-
+router.post("/v1/auth/decrypt",userController.decryptToken);
 
 
 

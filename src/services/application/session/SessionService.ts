@@ -2,14 +2,14 @@ import {SessionStrategy} from "./strategy/SessionStrategy";
 import {UserService} from "../user/UserService";
 import {inject, injectable} from "tsyringe";
 import {AxiosResponse, HttpStatusCode} from 'axios';
-import {GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH, USERS_MS_URI} from "../../../utils/config"
+import {GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH, JWT_SECRET, USERS_MS_URI} from "../../../utils/config"
 import {InvalidCredentialsError} from "../errors/InvalidCredentialsError";
 import {ExternalServiceInternalError} from "../errors/ExternalServiceInternalError";
 import {ExternalServiceConnectionError} from "../errors/ExternalServiceConnectionError";
 import {InvalidExternalServiceResponseError} from "../errors/InvalidExternalServiceResponseError";
 import {HttpRequester} from "../../../api/external/HttpRequester";
 import {logger} from "../../../utils/container/container";
-
+import * as jwt from "jsonwebtoken";
 @injectable()
 export class SessionService{
     private strategy: SessionStrategy;
@@ -45,6 +45,18 @@ export class SessionService{
     public async logInFederated(email: string): Promise<string>{
         const id = await this.getUserIdFromUserEmail(email);
         return this.strategy.logInFederated(id, this.userService);
+    }
+    /**
+     * Decrypts user token and returns id.
+     * @param {string} token - The token of the given user.
+     * @returns {string} A string of the id saved in the token.
+     */
+    public decryptToken = (token:string): string => {
+        console.log(token);
+        const decoded = jwt.verify(token, JWT_SECRET as string) as jwt.JwtPayload;
+        const {userId} = decoded;
+
+        return userId;
     }
 
     /**

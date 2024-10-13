@@ -56,4 +56,11 @@ export class UserController extends Controller {
             next(error);
         }
     }
+
+    public decryptToken = async (req: Request, res: Response, next: NextFunction) => {
+        console.log(req.body.token)
+        const user_id = this.sessionService.decryptToken(req.body.token);
+        console.log(user_id)
+        return this.okResponse(res,{user_id:user_id});
+    }
 }
