@@ -7,6 +7,7 @@ import {logger} from "../../../utils/container/container";
 import {TwitSnapAPIs} from "../../../api/external/TwitSnapAPIs";
 import {Helpers} from "../../../utils/helpers";
 import {JWT_NEW_PASSWORD, JWT_NEW_PASSWORD_EXPIRATION_TIME,} from "../../../utils/config";
+import {InvalidCredentialsError} from "../errors/InvalidCredentialsError";
 
 const PASSWORD_MIN_LENGTH = 8;
 
@@ -67,8 +68,22 @@ export class UserService {
     }
 
     public async forgotPassword(email: string): Promise<void> {
+        logger.logDebugFromEntity("Received request to reset password for user with email: " + email, this.constructor);
+
+        // ? Obtenemos ID del usuario a partir del email
         const userId = await this.twitSnapAPIs.getUserIdFromUserEmail(email);
+        logger.logDebugFromEntity("User found with email: " + email, this.constructor);
+
+        // ? Verificamos que sea un usuario registrado via TwitSnap y no via Google u otro servicio.
+        if (!await this.userIsRegistered(userId)) {
+            logger.logErrorFromEntity("User with email: " + email + " is not a TwitSnap user.", this.constructor);
+            throw new InvalidCredentialsError("Invalid credentials.")
+        }
+        logger.logDebugFromEntity("User with email: " + email + " is a TwitSnap user.", this.constructor);
+
+        // ? Enviar notificación de cambio de contraseña
         const token = Helpers.generateToken({userId: userId}, (JWT_NEW_PASSWORD as string), JWT_NEW_PASSWORD_EXPIRATION_TIME as string);
+        logger.logDebugFromEntity("Password reset token generated successfully. Sending notification to user with email: " + email, this.constructor);
         return await this.twitSnapAPIs.sendResetPasswordNotification([email], token);
     }
 }

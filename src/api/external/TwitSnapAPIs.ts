@@ -109,5 +109,7 @@ export class TwitSnapAPIs{
 
         logger.logErrorFromEntity(("Caught error: " + e.message), this.constructor);
         logger.logErrorFromEntity(("Throwing error: " + error.message), this.constructor);
+
+        throw error;
     }
 }

@@ -41,6 +41,8 @@ export class SessionService{
         const id = await this.twitSnapAPIs.getUserIdFromUserEmail(email);
         return this.strategy.logInFederated(id, this.userService);
     }
+
+    //TODO Quitar
     /**
      * Decrypts user token and returns id.
      * @param {string} token - The token of the given user.
