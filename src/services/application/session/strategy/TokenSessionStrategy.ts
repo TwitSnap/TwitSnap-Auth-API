@@ -6,6 +6,7 @@ import { JWT_SECRET, JWT_EXPIRATION_TIME } from "../../../../utils/config";
 import {Encrypter} from "../../../../utils/encrypter/Encrypter";
 import {inject, injectable} from "tsyringe";
 import {User} from "../../../domain/User";
+import {Helpers} from "../../../../utils/helpers";
 
 const INVALID_CREDS_MSG = "Invalid credentials.";
 
@@ -44,6 +45,6 @@ export class TokenSessionStrategy implements SessionStrategy {
      * @returns {string} A unique token for the user.
      */
     private generateTokenForUser = (user: User): string => {
-        return jwt.sign({userId: user.getId()}, (JWT_SECRET as string), {expiresIn: JWT_EXPIRATION_TIME});
+        return Helpers.generateToken({userId: user.getId()}, (JWT_SECRET as string), JWT_EXPIRATION_TIME as string);
     }
 }

@@ -7,6 +7,7 @@ import {InvalidRegisterCredentialsError} from "../services/application/errors/In
 import {ExternalServiceConnectionError} from "../services/application/errors/ExternalServiceConnectionError";
 import {InvalidExternalServiceResponseError} from "../services/application/errors/InvalidExternalServiceResponseError";
 import {ExternalServiceInternalError} from "../services/application/errors/ExternalServiceInternalError";
+import * as jwt from "jsonwebtoken";
 
 /**
  * A utility class for various helper functions.
@@ -34,6 +35,18 @@ export class Helpers {
      */
     public static validateEnvVar = (envVar: string): void => {
         if (!process.env[envVar]) throw new MissingEnvVarError(`Environment variable ${envVar} is missing`);
+    }
+
+    /**
+     * Generates a JWT token for the given object literal.
+     *
+     * @param objectLiteral The object literal to be included in the token payload.
+     * @param secret The secret key used to sign the token.
+     * @param expirationTime The expiration time for the token.
+     * @returns A signed JWT token.
+     */
+    public static generateToken = <T extends Object>(objectLiteral: T, secret: string, expirationTime: string): string => {
+        return jwt.sign(objectLiteral, secret, { expiresIn: expirationTime });
     }
 
     /**
