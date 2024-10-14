@@ -11,6 +11,7 @@ import * as jwt from "jsonwebtoken";
 import {ExternalServiceHTTPError} from "../api/external/ExternalServiceHTTPError";
 import {InvalidTokenError} from "jwt-decode";
 import {InvalidCredentialsFormat} from "../services/application/errors/InvalidCredentialsFormat";
+import {logger} from "./container/container";
 
 /**
  * A utility class for various helper functions.
@@ -62,6 +63,7 @@ export class Helpers {
     public static tokenIsValid = (token: string, secret: string): Promise<boolean> => {
         return new Promise((resolve) => {
             jwt.verify(token, secret, (err) => {
+                console.log(err);
                 if (err) return resolve(false);
                 return resolve(true);
             });
