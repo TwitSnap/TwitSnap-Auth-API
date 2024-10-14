@@ -9,7 +9,8 @@ import {InvalidExternalServiceResponseError} from "../services/application/error
 import {ExternalServiceInternalError} from "../services/application/errors/ExternalServiceInternalError";
 import * as jwt from "jsonwebtoken";
 import {ExternalServiceHTTPError} from "../api/external/ExternalServiceHTTPError";
-import {InvalidTokenError, JwtPayload} from "jwt-decode";
+import {InvalidTokenError} from "jwt-decode";
+import {InvalidCredentialsFormat} from "../services/application/errors/InvalidCredentialsFormat";
 
 /**
  * A utility class for various helper functions.
@@ -51,19 +52,22 @@ export class Helpers {
         return jwt.sign(objectLiteral, secret, { expiresIn: expirationTime });
     }
 
-    public static tokenHasExpired = (token: string): boolean => {
-        const decodedToken = jwt.decode(token);
+    public static tokenHasExpired = (token: string, secret: string): boolean => {
+        try {
+            const decodedToken = jwt.verify(token, secret);
 
-        if (decodedToken === null || (typeof decodedToken === "string")) return true;
+            if (typeof decodedToken === "string") return true;
 
-        const currentTime = Math.floor(Date.now() / 1000);
-        return decodedToken.exp ? decodedToken.exp < currentTime : true;
+            const currentTime = Math.floor(Date.now() / 1000);
+            return decodedToken.exp ? decodedToken.exp < currentTime : true;
+        } catch (e) {
+            return true;
+        }
     }
 
-    public static getDataFromToken = (token: string, key: string): any => {
-        const decodedToken = jwt.decode(token);
-
-        if (decodedToken === null || (typeof decodedToken === "string")) throw new InvalidTokenError();
+    public static getDataFromToken = (token: string, key: string, secret: string): any => {
+        const decodedToken = jwt.verify(token, secret);
+        if (typeof decodedToken === "string") throw new InvalidTokenError();
 
         return decodedToken[key];
     }
@@ -99,13 +103,17 @@ export class Helpers {
     private static initializeErrorStatusCodeMap = (): void => {
         Helpers._errorStatusCodeMap.set(MissingEnvVarError, StatusCodes.INTERNAL_SERVER_ERROR);
         Helpers._errorStatusCodeMap.set(StandardDatabaseError, StatusCodes.INTERNAL_SERVER_ERROR);
-        Helpers._errorStatusCodeMap.set(InvalidCredentialsError, StatusCodes.UNAUTHORIZED);
-        Helpers._errorStatusCodeMap.set(InvalidRegisterCredentialsError, StatusCodes.CONFLICT);
-        Helpers._errorStatusCodeMap.set(BadRequestError, StatusCodes.BAD_REQUEST);
         Helpers._errorStatusCodeMap.set(ExternalServiceConnectionError, StatusCodes.INTERNAL_SERVER_ERROR);
         Helpers._errorStatusCodeMap.set(InvalidExternalServiceResponseError, StatusCodes.INTERNAL_SERVER_ERROR);
         Helpers._errorStatusCodeMap.set(ExternalServiceInternalError, StatusCodes.INTERNAL_SERVER_ERROR)
         Helpers._errorStatusCodeMap.set(ExternalServiceHTTPError, StatusCodes.INTERNAL_SERVER_ERROR);
+        Helpers._errorStatusCodeMap.set(BadRequestError, StatusCodes.BAD_REQUEST);
+
+
+        Helpers._errorStatusCodeMap.set(InvalidRegisterCredentialsError, StatusCodes.CONFLICT);
+        Helpers._errorStatusCodeMap.set(InvalidCredentialsFormat, StatusCodes.CONFLICT);
+
         Helpers._errorStatusCodeMap.set(InvalidTokenError, StatusCodes.UNAUTHORIZED);
+        Helpers._errorStatusCodeMap.set(InvalidCredentialsError, StatusCodes.UNAUTHORIZED);
     }
 }

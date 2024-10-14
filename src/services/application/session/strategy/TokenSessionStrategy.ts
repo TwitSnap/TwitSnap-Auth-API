@@ -1,4 +1,3 @@
-import * as jwt from "jsonwebtoken";
 import { InvalidCredentialsError } from '../../errors/InvalidCredentialsError';
 import {SessionStrategy} from "./SessionStrategy";
 import {UserService} from "../../user/UserService";

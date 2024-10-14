@@ -44,7 +44,12 @@ export abstract class Controller {
     }
 
     protected getFieldOrBadRequestError = <T>(req: any, field: string): T => {
-        if(!req.body[field]) throw new BadRequestError(`${field} is required`);
+        if(!req.body[field]) throw new BadRequestError(`Field ${field} is required`);
         return req.body[field];
+    }
+
+    protected getParamOrBadRequestError = <T>(req: any, param: string): T => {
+        if(!req.params[param]) throw new BadRequestError(`Parameter ${param} is required`);
+        return req.body[param];
     }
 }

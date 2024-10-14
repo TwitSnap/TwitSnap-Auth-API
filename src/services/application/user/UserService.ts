@@ -8,6 +8,8 @@ import {TwitSnapAPIs} from "../../../api/external/TwitSnapAPIs";
 import {Helpers} from "../../../utils/helpers";
 import {JWT_NEW_PASSWORD, JWT_NEW_PASSWORD_EXPIRATION_TIME,} from "../../../utils/config";
 import {InvalidCredentialsError} from "../errors/InvalidCredentialsError";
+import {InvalidCredentialsFormat} from "../errors/InvalidCredentialsFormat";
+import {InvalidTokenError} from "jwt-decode";
 
 const PASSWORD_MIN_LENGTH = 8;
 
@@ -85,5 +87,32 @@ export class UserService {
         const token = Helpers.generateToken({userId: userId}, (JWT_NEW_PASSWORD as string), JWT_NEW_PASSWORD_EXPIRATION_TIME as string);
         logger.logDebugFromEntity("Password reset token generated successfully. Sending notification to user with email: " + email, this.constructor);
         return await this.twitSnapAPIs.sendResetPasswordNotification([email], token);
+    }
+
+    public async resetPasswordTokenHasExpired(token: string): Promise<boolean> {
+        return !Helpers.tokenHasExpired(token, JWT_NEW_PASSWORD as string);
+    }
+
+    public async updatePasswordWithToken(token: string, password: string): Promise<void> {
+        logger.logDebugFromEntity("Received request to update password with token: " + token + ".", this.constructor);
+
+        if (await this.resetPasswordTokenHasExpired(token)) throw new InvalidTokenError("Password reset token has expired.");
+        const userId = Helpers.getDataFromToken(token, "userId", JWT_NEW_PASSWORD as string);
+
+        return this.updatePassword(userId, password);
+    }
+
+    private async updatePassword(userId: string, password: string): Promise<void> {
+        logger.logDebugFromEntity("Received request to update password for user with id: " + userId + ".", this.constructor);
+
+        this.validateUpdatePasswordData(password);
+        password = this.encrypter.encryptString(password);
+
+        await this.userRepository.updateUserPassword(userId, password);
+        logger.logDebugFromEntity("Password updated successfully for user with id: " + userId + ".", this.constructor);
+    }
+
+    private validateUpdatePasswordData(password: string): void {
+        if (password.length < PASSWORD_MIN_LENGTH) throw new InvalidCredentialsFormat("Password must be at least 8 characters long.");
     }
 }

@@ -68,6 +68,29 @@ export class UserController extends Controller {
         }
     }
 
+    public resetPasswordTokenHasExpired = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const token = this.getParamOrBadRequestError(req, 'token') as string;
+            const hasExpired = this.userService.resetPasswordTokenHasExpired(token);
+
+            return this.okResponse(res, {hasExpired: hasExpired});
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    public updatePasswordWithToken = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const token = this.getFieldOrBadRequestError(req, 'token') as string;
+            const newPassword = this.getFieldOrBadRequestError(req, 'newPassword') as string;
+            await this.userService.updatePasswordWithToken(token, newPassword);
+
+            return this.okNoContentResponse(res);
+        } catch (error) {
+            next(error);
+        }
+    }
+
     //TODO Quitar
     public decryptToken = async (req: Request, res: Response, next: NextFunction) => {
         const user_id = this.sessionService.decryptToken(req.body.token);
