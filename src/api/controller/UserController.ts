@@ -134,6 +134,10 @@ export class UserController extends Controller {
     }
 
     //TODO Quitar
+    /**
+     * @deprecated
+     * This endpoint will be removed in future releases. userId will be attached to the request by gateway after authentication.
+     */
     public decryptToken = async (req: Request, res: Response, next: NextFunction) => {
         const user_id = this.sessionService.decryptToken(req.body.token);
         logger.logInfo("Se desencripto el token para el uuid: " + user_id);

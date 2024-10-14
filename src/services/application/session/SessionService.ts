@@ -44,9 +44,8 @@ export class SessionService{
 
     //TODO Quitar
     /**
-     * Decrypts user token and returns id.
-     * @param {string} token - The token of the given user.
-     * @returns {string} A string of the id saved in the token.
+     * @deprecated
+     * This will be removed in future releases.
      */
     public decryptToken = (token:string): string => {
         console.log(token);
