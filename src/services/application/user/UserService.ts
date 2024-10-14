@@ -57,6 +57,11 @@ export class UserService {
         if (password.length < PASSWORD_MIN_LENGTH) throw new InvalidRegisterCredentialsError("Password must be at least 8 characters long.");
     }
 
+    /**
+     * Checks if a user is registered.
+     * @param id The user's id.
+     * @return True if the user is registered, false otherwise.
+     */
     private async userIsRegistered(id: string): Promise<boolean> {
         return (await this.getUserById(id) != null);
     }
@@ -69,6 +74,11 @@ export class UserService {
         return this.userRepository.getById(id);
     }
 
+    /**
+   * Initiates the password reset process for the user with the given email.
+   * @param email The user's email address.
+   * @throws InvalidCredentialsError if the user is not registered via TwitSnap.
+   */
     public async forgotPassword(email: string): Promise<void> {
         logger.logDebugFromEntity("Received request to reset password for user with email: " + email, this.constructor);
 
@@ -89,19 +99,35 @@ export class UserService {
         return await this.twitSnapAPIs.sendResetPasswordNotification([email], token);
     }
 
-    public async resetPasswordTokenHasExpired(token: string): Promise<boolean> {
-        return !Helpers.tokenHasExpired(token, JWT_NEW_PASSWORD as string);
+    /**
+     * Checks if a password reset token is valid.
+     * @param token The password reset token.
+     * @return True if the token is valid, false otherwise.
+     */
+    public async resetPasswordTokenIsValid(token: string): Promise<boolean> {
+        return Helpers.tokenIsValid(token, JWT_NEW_PASSWORD as string);
     }
 
+    /**
+     * Updates the password for a user using a password reset token.
+     * @param token The password reset token.
+     * @param password The new password.
+     * @throws InvalidTokenError if the token has expired.
+     */
     public async updatePasswordWithToken(token: string, password: string): Promise<void> {
         logger.logDebugFromEntity("Received request to update password with token: " + token + ".", this.constructor);
 
-        if (await this.resetPasswordTokenHasExpired(token)) throw new InvalidTokenError("Password reset token has expired.");
+        if (!await this.resetPasswordTokenIsValid(token)) throw new InvalidTokenError("Password reset token has expired.");
         const userId = Helpers.getDataFromToken(token, "userId", JWT_NEW_PASSWORD as string);
 
         return this.updatePassword(userId, password);
     }
 
+    /**
+     * Updates the password for a user.
+     * @param userId The user's id.
+     * @param password The new password.
+     */
     private async updatePassword(userId: string, password: string): Promise<void> {
         logger.logDebugFromEntity("Received request to update password for user with id: " + userId + ".", this.constructor);
 
@@ -112,6 +138,11 @@ export class UserService {
         logger.logDebugFromEntity("Password updated successfully for user with id: " + userId + ".", this.constructor);
     }
 
+    /**
+     * Validates the data for updating a user's password.
+     * @param password The new password.
+     * @throws InvalidCredentialsFormat if the password is too short.
+     */
     private validateUpdatePasswordData(password: string): void {
         if (password.length < PASSWORD_MIN_LENGTH) throw new InvalidCredentialsFormat("Password must be at least 8 characters long.");
     }

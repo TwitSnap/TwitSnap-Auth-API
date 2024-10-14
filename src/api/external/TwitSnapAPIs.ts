@@ -56,6 +56,15 @@ export class TwitSnapAPIs{
     private getUserIdFromUserEmailErrorHandler = (e: any): void => {
         this.standardErrorHandler(e, this.getUserIdFromUserEmailResponseStatusErrorHandler);
     }
+
+    /**
+     * Only for operation: getUserIdFromUserEmailErrorHandler
+     *
+     * Generates an error based on the response status for getting the user ID from user email.
+     *
+     * @param {number} status - The HTTP status code.
+     * @returns {Error} The generated error object.
+     */
     private getUserIdFromUserEmailResponseStatusErrorHandler = (status: number): Error => {
         switch (status) {
                 case HttpStatusCode.NotFound:
@@ -64,6 +73,13 @@ export class TwitSnapAPIs{
                     return new ExternalServiceInternalError("An external service has had an internal error.");
             }
     }
+
+    /**
+     * Sends a reset password notification to the user.
+     * @param {string[]} destinations - The email addresses to send the notification to.
+     * @param {string} token - The reset password token.
+     * @throws {ExternalServiceHTTPError} If the external service returns an unexpected status code.
+     */
 
     public sendResetPasswordNotification = async (destinations: string[], token: string): Promise<void> => {
         const url = NOTIFICATIONS_MS_URI + SEND_NOTIFICATION_ENDPOINT_PATH;
@@ -85,10 +101,27 @@ export class TwitSnapAPIs{
         await this.httpRequester.postToUrl(url, data, errorHandler);
     }
 
+
+    /**
+     * Only for operation: sendResetPasswordNotificationErrorHandler
+     *
+     * Handles errors related to the external HTTP request.
+     * @param {any} e - The error object from the failed request.
+     * @throws {ExternalServiceHTTPError} If the request returned an unexpected status code.
+     */
     private sendResetPasswordNotificationErrorHandler = (e: any): void => {
         this.standardErrorHandler(e, this.sendResetPasswordNotificationResponseStatusErrorHandler);
     }
 
+
+    /**
+     * Only for operation: sendResetPasswordNotificationErrorHandler
+     *
+     * Generates an error based on the response status for sending the reset password notification.
+     *
+     * @param {number} status - The HTTP status code.
+     * @returns {Error} The generated error object.
+     */
     private sendResetPasswordNotificationResponseStatusErrorHandler = (status: number): Error => {
         switch (status) {
             default:
@@ -96,6 +129,13 @@ export class TwitSnapAPIs{
         }
     }
 
+
+    /**
+     * Handles errors related to the external HTTP request.
+     * @param {any} e - The error object from the failed request.
+     * @param {(status: number) => Error} responseStatusErrorHandler - The error handler for the response status.
+     * @throws {Error} The generated error object.
+     */
     private standardErrorHandler = (e: any, responseStatusErrorHandler: (status: number) => Error): void => {
         let error;
 

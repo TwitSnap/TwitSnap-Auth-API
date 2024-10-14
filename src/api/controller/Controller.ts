@@ -43,11 +43,27 @@ export abstract class Controller {
         this._responseSender.createdResponse(res, object);
     }
 
+    /**
+     * Retrieves the specified field from the request body. Throws a BadRequestError if the field is not present.
+     *
+     * @param req - The request object containing the body.
+     * @param field - The field to retrieve from the request body.
+     * @returns The value of the field from the request body.
+     * @throws {BadRequestError} If the field is not present in the request body.
+     */
     protected getFieldOrBadRequestError = <T>(req: any, field: string): T => {
         if(!req.body[field]) throw new BadRequestError(`Field ${field} is required`);
         return req.body[field];
     }
 
+    /**
+     * Retrieves the specified parameter from the request parameters. Throws a BadRequestError if the parameter is not present.
+     *
+     * @param req - The request object containing the parameters.
+     * @param param - The parameter to retrieve from the request parameters.
+     * @returns The value of the parameter from the request parameters.
+     * @throws {BadRequestError} If the parameter is not present in the request parameters.
+     */
     protected getParamOrBadRequestError = <T>(req: any, param: string): T => {
         if(!req.params[param]) throw new BadRequestError(`Parameter ${param} is required`);
         return req.body[param];

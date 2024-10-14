@@ -17,6 +17,13 @@ export class UserController extends Controller {
         this.sessionService = sessionService;
     }
 
+    /**
+     * Registers a new user with the provided ID and password.
+     *
+     * @param req - The request object containing user ID and password.
+     * @param res - The response object to send.
+     * @param next - The next function for error handling.
+     */
     public register = async (req: Request, res: Response, next: NextFunction) => {
         /*
             #swagger.parameters = registerUserDoc
@@ -33,6 +40,13 @@ export class UserController extends Controller {
         }
     }
 
+    /**
+     * Logs in a user with the provided email and password.
+     *
+     * @param req - The request object containing email and password.
+     * @param res - The response object to send.
+     * @param next - The next function for error handling.
+     */
     public logIn = async (req: Request, res: Response, next: NextFunction) => {
         /*
             #swagger.parameters = loginDoc.parameters
@@ -50,6 +64,13 @@ export class UserController extends Controller {
         }
     }
 
+    /**
+     * Authenticates a user based on the provided user ID.
+     *
+     * @param req - The request object containing user ID.
+     * @param res - The response object to send.
+     * @param next - The next function for error handling.
+     */
     public authenticate = async (req: Request, res: Response, next: NextFunction) => {
         try {
             return this.okResponse(res, {user_id: req.params.id});
@@ -58,6 +79,13 @@ export class UserController extends Controller {
         }
     }
 
+    /**
+     * Initiates the forgot password process for the provided email.
+     *
+     * @param req - The request object containing the email.
+     * @param res - The response object to send.
+     * @param next - The next function for error handling.
+     */
     public forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const email = this.getFieldOrBadRequestError(req, 'email') as string;
@@ -68,17 +96,31 @@ export class UserController extends Controller {
         }
     }
 
-    public resetPasswordTokenHasExpired = async (req: Request, res: Response, next: NextFunction) => {
+    /**
+     * Checks if the reset password token is valid.
+     *
+     * @param req - The request object containing the token.
+     * @param res - The response object to send.
+     * @param next - The next function for error handling.
+     */
+    public resetPasswordTokenIsValid = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const token = this.getParamOrBadRequestError(req, 'token') as string;
-            const hasExpired = this.userService.resetPasswordTokenHasExpired(token);
+            const isValid = this.userService.resetPasswordTokenIsValid(token);
 
-            return this.okResponse(res, {hasExpired: hasExpired});
+            return this.okResponse(res, {isValid: isValid});
         } catch (error) {
             next(error);
         }
     }
 
+    /**
+     * Updates the user's password using the provided reset password token and new password.
+     *
+     * @param req - The request object containing the token and new password.
+     * @param res - The response object to send.
+     * @param next - The next function for error handling.
+     */
     public updatePasswordWithToken = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const token = this.getFieldOrBadRequestError(req, 'token') as string;

@@ -52,7 +52,14 @@ export class Helpers {
         return jwt.sign(objectLiteral, secret, { expiresIn: expirationTime });
     }
 
-    public static tokenHasExpired = (token: string, secret: string): boolean => {
+    /**
+     * Verifies whether a token is valid.
+     *
+     * @param token The token to verify.
+     * @param secret The secret key used to sign the token.
+     * @returns True if the token is valid, false otherwise.
+     */
+    public static tokenIsValid = (token: string, secret: string): boolean => {
         try {
             const decodedToken = jwt.verify(token, secret);
 
@@ -65,6 +72,14 @@ export class Helpers {
         }
     }
 
+    /**
+     * Retrieves data from a token.
+     *
+     * @param token The token to retrieve data from.
+     * @param key The key of the data to retrieve.
+     * @param secret The secret key used to sign the token.
+     * @returns The data from the token.
+     */
     public static getDataFromToken = (token: string, key: string, secret: string): any => {
         const decodedToken = jwt.verify(token, secret);
         if (typeof decodedToken === "string") throw new InvalidTokenError();
