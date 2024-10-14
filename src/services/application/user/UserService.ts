@@ -118,7 +118,7 @@ export class UserService {
         logger.logDebugFromEntity("Received request to update password with token: " + token + ".", this.constructor);
 
         if (!await this.resetPasswordTokenIsValid(token)) throw new InvalidTokenError("Password reset token has expired.");
-        const userId = Helpers.getDataFromToken(token, "userId", JWT_NEW_PASSWORD as string);
+        const userId = await Helpers.getDataFromToken(token, "userId", JWT_NEW_PASSWORD as string);
 
         return this.updatePassword(userId, password);
     }

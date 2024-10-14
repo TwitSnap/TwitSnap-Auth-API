@@ -106,7 +106,7 @@ export class UserController extends Controller {
     public resetPasswordTokenIsValid = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const token = this.getParamOrBadRequestError(req, 'token') as string;
-            const isValid = this.userService.resetPasswordTokenIsValid(token);
+            const isValid = await this.userService.resetPasswordTokenIsValid(token);
 
             return this.okResponse(res, {isValid: isValid});
         } catch (error) {

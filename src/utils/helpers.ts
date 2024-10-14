@@ -76,11 +76,15 @@ export class Helpers {
      * @param secret The secret key used to sign the token.
      * @returns The data from the token.
      */
-    public static getDataFromToken = (token: string, key: string, secret: string): any => {
-        const decodedToken = jwt.verify(token, secret);
-        if (typeof decodedToken === "string") throw new InvalidTokenError();
+    public static getDataFromToken = (token: string, key: string, secret: string): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            jwt.verify(token, secret, (err, decoded) => {
+                if (err) return reject(new InvalidTokenError());
+                if (typeof decoded === "string" || typeof decoded === "undefined" || decoded === null) return reject(new InvalidTokenError());
 
-        return decodedToken[key];
+                resolve(decoded[key]);
+            });
+        });
     }
 
     /**
