@@ -41,17 +41,4 @@ export class SessionService{
         const id = await this.twitSnapAPIs.getUserIdFromUserEmail(email);
         return this.strategy.logInFederated(id, this.userService);
     }
-
-    //TODO Quitar
-    /**
-     * @deprecated
-     * This will be removed in future releases.
-     */
-    public decryptToken = (token:string): string => {
-        console.log(token);
-        const decoded = jwt.verify(token, JWT_SECRET as string) as jwt.JwtPayload;
-        const {userId} = decoded;
-
-        return userId;
-    }
 }

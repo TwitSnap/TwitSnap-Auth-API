@@ -15,10 +15,4 @@ router.get("/v1/auth/resetPasswordToken/valid/:token", userController.resetPassw
 router.get("/v1/test/login/google",federateAuthController.googleCallback);
 router.get("/v1/auth/federate/google/login",federateAuthController.googleLogIn);
 
-/**
- * @deprecated
- * This route will be removed in future releases.
- */
-router.post("/v1/auth/decrypt",userController.decryptToken);
-
 export default router;
