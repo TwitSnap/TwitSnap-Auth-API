@@ -105,7 +105,7 @@ export class UserService {
      * @return True if the token is valid, false otherwise.
      */
     public async resetPasswordTokenIsValid(token: string): Promise<boolean> {
-        return Helpers.tokenIsValid(token, JWT_NEW_PASSWORD as string);
+        return await Helpers.tokenIsValid(token, JWT_NEW_PASSWORD as string);
     }
 
     /**

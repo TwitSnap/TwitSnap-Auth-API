@@ -59,17 +59,13 @@ export class Helpers {
      * @param secret The secret key used to sign the token.
      * @returns True if the token is valid, false otherwise.
      */
-    public static tokenIsValid = (token: string, secret: string): boolean => {
-        try {
-            const decodedToken = jwt.verify(token, secret);
-
-            if (typeof decodedToken === "string") return true;
-
-            const currentTime = Math.floor(Date.now() / 1000);
-            return decodedToken.exp ? decodedToken.exp < currentTime : true;
-        } catch (e) {
-            return true;
-        }
+    public static tokenIsValid = (token: string, secret: string): Promise<boolean> => {
+        return new Promise((resolve) => {
+            jwt.verify(token, secret, (err) => {
+                if (err) return resolve(false);
+                return resolve(true);
+            });
+        });
     }
 
     /**
