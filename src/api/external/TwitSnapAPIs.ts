@@ -68,7 +68,7 @@ export class TwitSnapAPIs{
     private getUserIdFromUserEmailResponseStatusErrorHandler = (status: number): Error => {
         switch (status) {
                 case HttpStatusCode.NotFound:
-                    return new InvalidCredentialsError("Invalid credentials.");
+                    return new InvalidCredentialsError("Invalid credentials."); //TODO Revisar si este error es correcto o tendriamos que tirar otro
                 default:
                     return new ExternalServiceInternalError("An external service has had an internal error.");
             }
