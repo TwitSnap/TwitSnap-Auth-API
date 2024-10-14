@@ -12,9 +12,13 @@ router.post("/v1/auth/password", userController.forgotPassword);                
 router.patch("/v1/auth/password", userController.updatePasswordWithToken);                              // ? Ruta de actualización de contraseña
 router.get("/v1/auth/resetPasswordToken/valid/:token", userController.resetPasswordTokenIsValid);    // ? Ruta de validación de token de reseteo de contraseña
 
-router.post("/v1/auth/decrypt",userController.decryptToken);
 router.get("/v1/test/login/google",federateAuthController.googleCallback);
 router.get("/v1/auth/federate/google/login",federateAuthController.googleLogIn);
+
+/**
+ * @deprecated
+ * This route will be removed in future releases.
+ */
 router.post("/v1/auth/decrypt",userController.decryptToken);
 
 export default router;
