@@ -54,7 +54,7 @@ export class UserService {
     private async validateRegisterData(id: string, password: string):Promise<void> {
         if (await this.userIsRegistered(id)) throw new InvalidRegisterCredentialsError("User already exists.");
         
-        if (password.length < PASSWORD_MIN_LENGTH) throw new InvalidRegisterCredentialsError("Password must be at least 8 characters long.");
+        this.validatePassword(password);
     }
 
     /**
@@ -147,6 +147,10 @@ export class UserService {
      * @throws InvalidCredentialsFormat if the password is too short.
      */
     private validateUpdatePasswordData(password: string): void {
+        this.validatePassword(password);
+    }
+
+    private validatePassword(password: string): void {
         if (password.length < PASSWORD_MIN_LENGTH) throw new InvalidCredentialsFormat("Password must be at least 8 characters long.");
     }
 }
