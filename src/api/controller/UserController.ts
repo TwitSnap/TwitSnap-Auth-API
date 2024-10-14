@@ -73,7 +73,7 @@ export class UserController extends Controller {
      */
     public authenticate = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            return this.okResponse(res, {user_id: req.params.id});
+            return this.okResponse(res, {userId: req.params.id});
         } catch (error) {
             next(error);
         }
