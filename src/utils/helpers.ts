@@ -63,7 +63,6 @@ export class Helpers {
     public static tokenIsValid = (token: string, secret: string): Promise<boolean> => {
         return new Promise((resolve) => {
             jwt.verify(token, secret, (err) => {
-                console.log(err);
                 if (err) return resolve(false);
                 return resolve(true);
             });
