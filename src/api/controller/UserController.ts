@@ -5,6 +5,7 @@ import {UserService} from "../../services/application/user/UserService";
 import {SessionService} from "../../services/application/session/SessionService";
 import {injectable} from "tsyringe";
 import { logger } from "../../utils/container/container";
+import {User} from "../../services/domain/User";
 
 @injectable()
 export class UserController extends Controller {
@@ -73,7 +74,8 @@ export class UserController extends Controller {
      */
     public authenticate = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            return this.okResponse(res, {userId: req.params.id});
+            const user = req.user as User;
+            return this.okResponse(res, {userId: user.getId()});
         } catch (error) {
             next(error);
         }
