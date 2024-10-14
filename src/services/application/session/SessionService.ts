@@ -1,10 +1,9 @@
 import {SessionStrategy} from "./strategy/SessionStrategy";
 import {UserService} from "../user/UserService";
 import {inject, injectable} from "tsyringe";
-import {JWT_SECRET} from "../../../utils/config"
 import {logger} from "../../../utils/container/container";
-import * as jwt from "jsonwebtoken";
 import {TwitSnapAPIs} from "../../../api/external/TwitSnapAPIs";
+
 @injectable()
 export class SessionService{
     private strategy: SessionStrategy;

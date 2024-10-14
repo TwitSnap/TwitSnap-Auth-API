@@ -4,7 +4,6 @@ import {NextFunction, Request, Response} from "express";
 import {UserService} from "../../services/application/user/UserService";
 import {SessionService} from "../../services/application/session/SessionService";
 import {injectable} from "tsyringe";
-import { logger } from "../../utils/container/container";
 import {User} from "../../services/domain/User";
 
 @injectable()
