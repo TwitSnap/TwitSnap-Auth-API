@@ -20,34 +20,35 @@ export class TwitSnapAPIs{
     }
 
     /**
-     * Retrieves the user ID from an external service based on the user's email.
+     * Retrieves user data from an external service based on the user's email.
      * @param {string} email - The email of the user.
-     * @returns {Promise<string>} A promise that resolves with the user ID.
-     * @throws {InvalidExternalServiceResponseError} If the external service response is invalid.
+     * @returns {Promise<{ uid?: string; isBanned?: boolean }>} A promise that resolves with the user data, including the user's ID (`uid`) and ban status (`isBanned`).
+     * @throws {InvalidExternalServiceResponseError} If the external service response is invalid or missing required fields.
      */
-    public getUserIdFromUserEmail = async (email: string): Promise<string> => {
+    public getUserDataFromUserEmail = async (email: string): Promise<{ uid: string; isBanned: boolean }> => {
         const getUserIdFromUserEmailEndpointUrl = USERS_MS_URI + GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH;
 
-        const id = await this.httpRequester.getToUrl(getUserIdFromUserEmailEndpointUrl, {params: {email: email}},
-            this.getUserIdFromUserEmailErrorHandler, this.getUserIdFromUserEmailExtractor);
-        if(!id) throw new InvalidExternalServiceResponseError("Invalid external service response.");
+        const data = await this.httpRequester.getToUrl(getUserIdFromUserEmailEndpointUrl, {params: {email: email}},
+            this.getUserDataFromUserEmailErrorHandler, this.getUserIdFromUserEmailExtractor);
+        if(!data.isBanned || !data.uid) throw new InvalidExternalServiceResponseError("Invalid external service response. One or more mandatory fields are missing.");
 
-        return id;
+        return data as { uid: string; isBanned: boolean }; // ? Como ya chequeamos anteriormente que los campos estan, podemos castear con seguridad.
     }
 
     /**
-     * Only for operation: getUserIdFromUserEmailExtractor
-     *
-     * Extracts the user ID from the HTTP response.
+     * Extracts user data from the HTTP response.
      * @param {void | AxiosResponse<any, any>} response - The HTTP response containing the user data.
-     * @returns {string} The user ID extracted from the response.
+     * @returns {{ uid?: string; isBanned?: boolean }} An object containing the user's ID (`uid`) and ban status (`isBanned`). Fields may be undefined if not present in the response.
      */
-    private getUserIdFromUserEmailExtractor = (response: void | AxiosResponse<any, any>): string => {
-       return response?.data.uid;
+    private getUserIdFromUserEmailExtractor = (response: void | AxiosResponse<any, any>): { uid?: string; isBanned?: boolean } => {
+        return {
+            uid: response?.data.uid,
+            isBanned: response?.data.is_banned,
+        }
     }
 
     /**
-     * Only for operation: getUserIdFromUserEmailErrorHandler
+     * Only for operation: getUserDataFromUserEmailErrorHandler
      *
      * Handles errors related to the external HTTP request.
      * @param {any} e - The error object from the failed request.
@@ -55,19 +56,19 @@ export class TwitSnapAPIs{
      * @throws {ExternalServiceInternalError} If the request returned any other status, indicating an internal error in the external service.
      * @throws {ExternalServiceConnectionError} If there was a connection issue with the external service.
      */
-    private getUserIdFromUserEmailErrorHandler = (e: any): void => {
-        this.standardErrorHandler(e, this.getUserIdFromUserEmailResponseStatusErrorHandler);
+    private getUserDataFromUserEmailErrorHandler = (e: any): void => {
+        this.standardErrorHandler(e, this.getUserDataFromUserEmailResponseStatusErrorHandler);
     }
 
     /**
-     * Only for operation: getUserIdFromUserEmailErrorHandler
+     * Only for operation: getUserDataFromUserEmailErrorHandler
      *
      * Generates an error based on the response status for getting the user ID from user email.
      *
      * @param {number} status - The HTTP status code.
      * @returns {Error} The generated error object.
      */
-    private getUserIdFromUserEmailResponseStatusErrorHandler = (status: number): Error => {
+    private getUserDataFromUserEmailResponseStatusErrorHandler = (status: number): Error => {
         switch (status) {
                 case HttpStatusCode.NotFound:
                     return new InvalidCredentialsError("Invalid credentials."); //TODO Revisar si este error es correcto o tendriamos que tirar otro
@@ -162,7 +163,7 @@ export class TwitSnapAPIs{
      * @throws {ExternalServiceConnectionError} If there was a connection issue with the external service.
      */
         private getUserIdFromFirebaseErrorHandler = (e: any): void => {
-            this.standardErrorHandler(e, this.getUserIdFromUserEmailResponseStatusErrorHandler);
+            this.standardErrorHandler(e, this.getUserDataFromUserEmailResponseStatusErrorHandler);
         }
     /**
      * Handles errors related to the external HTTP request.

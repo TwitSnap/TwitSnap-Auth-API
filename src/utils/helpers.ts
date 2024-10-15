@@ -1,5 +1,5 @@
-import { StatusCodes } from "http-status-codes";
-import { MissingEnvVarError } from "../services/application/errors/MissingEnvVarError";
+import {StatusCodes} from "http-status-codes";
+import {MissingEnvVarError} from "../services/application/errors/MissingEnvVarError";
 import {InvalidCredentialsError} from "../services/application/errors/InvalidCredentialsError";
 import {BadRequestError} from "../api/errors/BadRequestError";
 import {StandardDatabaseError} from "../db/errors/StandardDatabaseError"
@@ -11,7 +11,7 @@ import * as jwt from "jsonwebtoken";
 import {ExternalServiceHTTPError} from "../api/external/ExternalServiceHTTPError";
 import {InvalidTokenError} from "jwt-decode";
 import {InvalidCredentialsFormat} from "../services/application/errors/InvalidCredentialsFormat";
-import {logger} from "./container/container";
+import {UserIsBannedError} from "../services/application/errors/UserIsBannedError";
 
 /**
  * A utility class for various helper functions.
@@ -123,13 +123,14 @@ export class Helpers {
         Helpers._errorStatusCodeMap.set(InvalidExternalServiceResponseError, StatusCodes.INTERNAL_SERVER_ERROR);
         Helpers._errorStatusCodeMap.set(ExternalServiceInternalError, StatusCodes.INTERNAL_SERVER_ERROR)
         Helpers._errorStatusCodeMap.set(ExternalServiceHTTPError, StatusCodes.INTERNAL_SERVER_ERROR);
-        Helpers._errorStatusCodeMap.set(BadRequestError, StatusCodes.BAD_REQUEST);
 
+        Helpers._errorStatusCodeMap.set(BadRequestError, StatusCodes.BAD_REQUEST);
 
         Helpers._errorStatusCodeMap.set(InvalidRegisterCredentialsError, StatusCodes.CONFLICT);
         Helpers._errorStatusCodeMap.set(InvalidCredentialsFormat, StatusCodes.CONFLICT);
 
         Helpers._errorStatusCodeMap.set(InvalidTokenError, StatusCodes.UNAUTHORIZED);
         Helpers._errorStatusCodeMap.set(InvalidCredentialsError, StatusCodes.UNAUTHORIZED);
+        Helpers._errorStatusCodeMap.set(UserIsBannedError, StatusCodes.UNAUTHORIZED);
     }
 }

@@ -5,6 +5,7 @@ import {logger} from "../../../utils/container/container";
 import {TwitSnapAPIs} from "../../../api/external/TwitSnapAPIs";
 import { Helpers } from "../../../utils/helpers";
 import { Encrypter } from "../../../utils/encrypter/Encrypter";
+import {UserIsBannedError} from "../errors/UserIsBannedError";
 
 @injectable()
 export class SessionService{
@@ -23,13 +24,15 @@ export class SessionService{
     /**
      * Delegates user login to the authentication strategy.
      * @returns A promise that resolves with the result of the login operation.
-     * @throws {Error} If any of the parameters inside userData is empty.
+     * @throws {Error} If any of the parameters inside userData is empty or user is banned.
      */
     public logIn = async (email: string, password: string): Promise<string> => {
         logger.logDebugFromEntity(`Attempting to logIn user with email: ${email}`, this.constructor);
 
-        const id = await this.twitSnapAPIs.getUserIdFromUserEmail(email);
-        const token = this.strategy.logIn(id, password, this.userService);
+        const userData = await this.twitSnapAPIs.getUserDataFromUserEmail(email);
+
+        if(userData.isBanned) throw new UserIsBannedError("User with email " + email + " is banned.");
+        const token = this.strategy.logIn(userData.uid, password, this.userService);
 
         logger.logDebugFromEntity(`Attempt to logIn user with email ${email} was successful.`, this.constructor);
         return token;

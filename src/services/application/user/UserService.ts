@@ -83,7 +83,7 @@ export class UserService {
         logger.logDebugFromEntity("Received request to reset password for user with email: " + email, this.constructor);
 
         // ? Obtenemos ID del usuario a partir del email
-        const userId = await this.twitSnapAPIs.getUserIdFromUserEmail(email);
+        const userId = await this.twitSnapAPIs.getUserDataFromUserEmail(email);
         logger.logDebugFromEntity("User found with email: " + email, this.constructor);
 
         // ? Verificamos que sea un usuario registrado via TwitSnap y no via Google u otro servicio.
