@@ -23,7 +23,7 @@ export class HttpRequester {
                                    ID: ${requestId}
                                    Verb: GET
                                    URL: ${url}
-                                   Params: ${params}`
+                                   Params: ${JSON.stringify(params)}`
             , this.constructor);
 
         // ? Obtiene una response en caso de que haya ido ok, en caso de error lo catchea y handlea
@@ -42,6 +42,7 @@ export class HttpRequester {
                                         ID: ${requestId}
                                         URL: ${url}
                                         Status: ${response?.status}
+                                        Data: ${JSON.stringify(response?.data)}
                                         Result: SUCCESS`
                 , this.constructor);
 
@@ -72,8 +73,8 @@ export class HttpRequester {
                                     ID: ${requestId}
                                     Verb: POST
                                     URL: ${url}
-                                    Params: ${params}
-                                    Data: ${data}`
+                                    Params: ${JSON.stringify(params)}
+                                    Data: ${JSON.stringify(data)}`
                 , this.constructor);
 
             // ? Obtiene una response en caso de que haya ido ok, en caso de error lo catchea y handlea
@@ -82,6 +83,7 @@ export class HttpRequester {
                                             ID: ${requestId}
                                             URL: ${url}
                                             Status: ${e.response?.status}
+                                            Data: ${JSON.stringify(e.response?.data)}
                                             Result: FAILED`
                     , this.constructor);
                 catchFunction(e)
@@ -92,6 +94,7 @@ export class HttpRequester {
                                             ID: ${requestId}
                                             URL: ${url}
                                             Status: ${response?.status}
+                                            Data: ${JSON.stringify(response?.data)}
                                             Result: SUCCESS`
                     , this.constructor);
 
