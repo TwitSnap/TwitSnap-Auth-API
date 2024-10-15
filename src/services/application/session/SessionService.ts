@@ -3,7 +3,6 @@ import {UserService} from "../user/UserService";
 import {inject, injectable} from "tsyringe";
 import {logger} from "../../../utils/container/container";
 import {TwitSnapAPIs} from "../../../api/external/TwitSnapAPIs";
-import { Helpers } from "../../../utils/helpers";
 import { Encrypter } from "../../../utils/encrypter/Encrypter";
 import {UserIsBannedError} from "../errors/UserIsBannedError";
 
@@ -53,7 +52,5 @@ export class SessionService{
             await this.userService.register(id,this.encrypter.encryptString(id))
             return id;
         }
-        
-        
     }
 }
