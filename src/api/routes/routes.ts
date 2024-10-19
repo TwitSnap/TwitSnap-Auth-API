@@ -9,7 +9,7 @@ router.post("/v1/auth/login", userController.logIn);
 router.get("/v1/auth/:token", PassportAuthService.authenticate, userController.authenticate);
 router.post("/v1/auth/decrypt",userController.decryptToken);
 
-
+router.post("/v1/auth/password", userController.forgotPassword);
 
 router.get("/v1/test/login/google",federateAuthController.googleCallback);
 router.get("/v1/auth/federate/google/login",federateAuthController.googleLogIn);

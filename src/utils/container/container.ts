@@ -17,6 +17,7 @@ import {TypeORMDatabaseConnectorStrategy} from "../../db/connectors/TypeORMDatab
 import {DatabaseConnectorStrategy} from "../../db/connectors/DatabaseConnectorStrategy";
 import {DataSource} from "typeorm";
 import {LOGGING, LOG_DEBUG, LOG_ERROR, LOG_INFO} from "../config";
+import {TwitSnapAPIs} from "../../api/external/TwitSnapAPIs";
 
 // ? Register all dependencies
 container.registerSingleton<Encrypter>("Encrypter", BcryptEncrypter);
@@ -37,3 +38,4 @@ export const databaseConnector = container.resolve(DatabaseConnector<DataSource,
 export const userController = container.resolve(UserController);
 export const userService = container.resolve(UserService);
 export const federateAuthController = container.resolve(FederateAuthController);
+export const twitSnapAPIs = container.resolve(TwitSnapAPIs);

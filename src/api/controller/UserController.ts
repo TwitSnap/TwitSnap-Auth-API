@@ -61,7 +61,8 @@ export class UserController extends Controller {
     public forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const email = this.getFieldOrBadRequestError(req, 'email') as string;
-
+            await this.userService.forgotPassword(email);
+            return this.okNoContentResponse(res);
         } catch (error) {
             next(error);
         }
