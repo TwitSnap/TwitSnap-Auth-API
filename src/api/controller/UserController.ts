@@ -23,10 +23,10 @@ export class UserController extends Controller {
         */
 
         try {
-            this.getFieldOrBadRequestError(req, 'id');
-            this.getFieldOrBadRequestError(req, 'password');
+            const id = this.getFieldOrBadRequestError(req, 'id') as string;
+            const password = this.getFieldOrBadRequestError(req, 'password') as string;
 
-            await this.userService.register(req.body.id, req.body.password);
+            await this.userService.register(id, password);
             return this.createdResponse(res, {message: 'User created successfully'});
         } catch (error) {
             next(error);
@@ -40,19 +40,28 @@ export class UserController extends Controller {
         */
 
         try {
-            this.getFieldOrBadRequestError(req, 'email');
-            this.getFieldOrBadRequestError(req, 'password');
+            const email = this.getFieldOrBadRequestError(req, 'email') as string;
+            const password = this.getFieldOrBadRequestError(req, 'password') as string;
 
-            const token = await this.sessionService.logIn(req.body.email, req.body.password);
+            const token = await this.sessionService.logIn(email, password);
             return this.okResponse(res, {token: token});
         } catch (error) {
             next(error);
         }
     }
 
-    public authenticate = async (_req: Request, res: Response, next: NextFunction) => {
+    public authenticate = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            return this.okNoContentResponse(res);
+            return this.okResponse(res, {user_id: req.params.id});
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    public forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const email = this.getFieldOrBadRequestError(req, 'email') as string;
+
         } catch (error) {
             next(error);
         }
@@ -61,6 +70,6 @@ export class UserController extends Controller {
     public decryptToken = async (req: Request, res: Response, next: NextFunction) => {
         const user_id = this.sessionService.decryptToken(req.body.token);
         logger.logInfo("Se desencripto el token para el uuid: " + user_id);
-        return this.okResponse(res,{user_id:user_id});
+        return this.okResponse(res, {user_id: user_id});
     }
 }

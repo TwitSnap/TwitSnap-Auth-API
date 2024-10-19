@@ -4,6 +4,9 @@ import {Encrypter} from "../../../utils/encrypter/Encrypter";
 import {inject, injectable} from "tsyringe";
 import {InvalidRegisterCredentialsError} from "../errors/InvalidRegisterCredentialsError";
 import {logger} from "../../../utils/container/container";
+import {TwitSnapAPIs} from "../../../api/external/TwitSnapAPIs";
+import {Helpers} from "../../../utils/helpers";
+import {JWT_NEW_PASSWORD, JWT_NEW_PASSWORD_EXPIRATION_TIME,} from "../../../utils/config";
 
 const PASSWORD_MIN_LENGTH = 8;
 
@@ -11,10 +14,12 @@ const PASSWORD_MIN_LENGTH = 8;
 export class UserService {
     userRepository: UserRepository;
     encrypter: Encrypter;
+    twitSnapAPIs: TwitSnapAPIs;
 
-    constructor(@inject("UserRepository") userRepository: UserRepository, @inject("Encrypter") encrypter: Encrypter) {
+    constructor(@inject("UserRepository") userRepository: UserRepository, @inject("Encrypter") encrypter: Encrypter, twitSnapAPIs: TwitSnapAPIs) {
         this.userRepository = userRepository;
         this.encrypter = encrypter;
+        this.twitSnapAPIs = twitSnapAPIs;
     }
 
     /**
@@ -44,10 +49,13 @@ export class UserService {
      */
 
     private async validateRegisterData(id: string, password: string):Promise<void> {
-        let user = await this.getUserById(id);
-        if (user != null) throw new InvalidRegisterCredentialsError("User already exists.");
+        if (await this.userIsRegistered(id)) throw new InvalidRegisterCredentialsError("User already exists.");
         
         if (password.length < PASSWORD_MIN_LENGTH) throw new InvalidRegisterCredentialsError("Password must be at least 8 characters long.");
+    }
+
+    private async userIsRegistered(id: string): Promise<boolean> {
+        return (await this.getUserById(id) != null);
     }
 
     /**
@@ -58,4 +66,9 @@ export class UserService {
         return this.userRepository.getById(id);
     }
 
+    public async forgotPassword(email: string): Promise<void> {
+        const userId = await this.twitSnapAPIs.getUserIdFromUserEmail(email);
+        const token = Helpers.generateToken({userId: userId}, (JWT_NEW_PASSWORD as string), JWT_NEW_PASSWORD_EXPIRATION_TIME as string);
+        return await this.twitSnapAPIs.sendResetPasswordNotification([email], token);
+    }
 }

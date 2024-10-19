@@ -7,7 +7,8 @@ const requiredEnvVars = [
     'PORT', 'DB_HOST', 'DB_PORT', 'DB_USERNAME', 'DB_PASSWORD', 'DB_NAME', "JWT_SECRET",
     'DB_SYNCHRONIZE', 'DB_LOGGING', 'DB_TYPE', "LOG_ROUTE", "LOGGING",
     "LOG_ERROR", "LOG_DEBUG", "LOG_INFO", "JWT_EXPIRATION_TIME", "USERS_MS_URI",
-    "GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH"
+    "GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH", "JWT_NEW_PASSWORD", "JWT_NEW_PASSWORD_EXPIRATION_TIME",
+    "NOTIFICATIONS_MS_URI", "SEND_NOTIFICATION_ENDPOINT_PATH",
 ];
 
 Helpers.validateEnvVarsList(requiredEnvVars);
@@ -15,6 +16,9 @@ Helpers.validateEnvVarsList(requiredEnvVars);
 // ? Server config
 export const PORT = process.env.PORT;
 export const JWT_EXPIRATION_TIME = process.env.JWT_EXPIRATION_TIME;
+export const JWT_SECRET = process.env.JWT_SECRET;
+export const JWT_NEW_PASSWORD = process.env.JWT_NEW_PASSWORD;
+export const JWT_NEW_PASSWORD_EXPIRATION_TIME = process.env.JWT_NEW_PASSWORD_EXPIRATION_TIME;
 
 // ? Logger config
 export const LOG_ROUTE = process.env.LOG_ROUTE;
@@ -32,7 +36,6 @@ export const DB_NAME = process.env.DB_NAME;
 export const DB_SYNCHRONIZE = process.env.DB_SYNCHRONIZE;
 export const DB_LOGGING = process.env.DB_LOGGING;
 export const DB_TYPE = process.env.DB_TYPE;
-export const JWT_SECRET = process.env.JWT_SECRET;
 export const CLIENT_ID = process.env.CLIENT_ID;
 export const CLIENT_SECRET = process.env.CLIENT_SECRET;
 export const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
@@ -40,3 +43,5 @@ export const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
 // ? Other microservices info
 export const USERS_MS_URI = process.env.USERS_MS_URI as string;
 export const GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH = process.env.GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH as string;
+export const NOTIFICATIONS_MS_URI = process.env.NOTIFICATIONS_MS_URI as string;
+export const SEND_NOTIFICATION_ENDPOINT_PATH = process.env.SEND_NOTIFICATION_ENDPOINT_PATH as string;
