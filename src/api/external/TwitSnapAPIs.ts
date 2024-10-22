@@ -43,7 +43,7 @@ export class TwitSnapAPIs{
      * @returns {string} The user ID extracted from the response.
      */
     private getUserIdFromUserEmailExtractor = (response: void | AxiosResponse<any, any>): string => {
-       return response?.data;
+       return response?.data.uid;
     }
 
     /**
