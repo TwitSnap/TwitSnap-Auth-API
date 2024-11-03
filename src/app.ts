@@ -15,7 +15,6 @@ export var admin = require("firebase-admin");
 const app = express();
 const passport = PassportAuthService.getPassport();
 
-let serviceAccount = require("./twitsnap-auth-firebase-adminsdk-352iq-fe1e77f044.json");
 const settingsCert = {
         type: TYPE,
         project_id: PROJECT_ID,
