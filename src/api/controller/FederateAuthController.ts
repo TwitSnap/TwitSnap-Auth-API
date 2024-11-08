@@ -47,13 +47,14 @@ export class FederateAuthController extends Controller{
       const code = req.query.code as string;
        
         try{
+          /*
             logger.logDebug("El codigo que se quiere utilizar es: " + code);
 
             const decoded = await admin.auth().verifyIdToken(code);
             const user = await admin.auth().getUser(decoded.uid)
             const email = user.providerData[0]!.email;
             logger.logInfo("El mail Del usuario que se quiere logear es " + email!);
-
+          */
             const token = await this.sessionService.logInFederated(code);
             return this.okResponse(res,{token:token});
         } catch(error){
