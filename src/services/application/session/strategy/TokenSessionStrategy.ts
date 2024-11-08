@@ -1,11 +1,12 @@
 import { InvalidCredentialsError } from '../../errors/InvalidCredentialsError';
 import {SessionStrategy} from "./SessionStrategy";
 import {UserService} from "../../user/UserService";
-import { JWT_SECRET, JWT_EXPIRATION_TIME } from "../../../../utils/config";
+import { JWT_SECRET, JWT_EXPIRATION_TIME, USERS_MS_URI } from "../../../../utils/config";
 import {Encrypter} from "../../../../utils/encrypter/Encrypter";
 import {inject, injectable} from "tsyringe";
 import {User} from "../../../domain/User";
 import {Helpers} from "../../../../utils/helpers";
+import axios from 'axios';
 
 const INVALID_CREDS_MSG = "Invalid credentials.";
 
@@ -29,10 +30,8 @@ export class TokenSessionStrategy implements SessionStrategy {
         return this.generateTokenForUser(user);
     }
 
-    public async logInFederated(id: string, userService: UserService): Promise<string> {
-        const user = await userService.getUserById(id);
-
-        if (user == null) throw new InvalidCredentialsError(INVALID_CREDS_MSG);
+    public logInFederated(id: string): string {
+        const user : User = new User(id,"")
         return this.generateTokenForUser(user);
     }
 

@@ -54,7 +54,7 @@ export class FederateAuthController extends Controller{
             const email = user.providerData[0]!.email;
             logger.logInfo("El mail Del usuario que se quiere logear es " + email!);
 
-            const token = await this.sessionService.logInFederated(email);
+            const token = await this.sessionService.logInFederated(code);
             return this.okResponse(res,{token:token});
         } catch(error){
           next(error)

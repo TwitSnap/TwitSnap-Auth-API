@@ -133,6 +133,37 @@ export class TwitSnapAPIs{
 
 
     /**
+     *
+     * Generates an error based on the response status for sending the reset password notification.
+     *
+     * @param {token} string - Firebase Token of the user.
+     * @returns {Error} The generated error object.
+     */
+    public getUserIdFromFirebaseToken = async (token:string): Promise<string> =>{
+        const url = USERS_MS_URI + "/api/v1/register/google"
+        const data = {token:token}
+        const id = await this.httpRequester.postToUrl(url,data,this.getUserIdFromFirebaseErrorHandler,{} ,this.getUserIdFromUserResponseExtractor)
+        if(!id) throw new InvalidExternalServiceResponseError("Invalid external service response.");
+        return id;
+    }
+
+    private getUserIdFromUserResponseExtractor = (response: void | AxiosResponse<any, any>): string => {
+        return response?.data;
+     }
+
+        /**
+     * Only for operation: getUserIdFromFirebaseToken
+     *
+     * Handles errors related to the external HTTP request.
+     * @param {any} e - The error object from the failed request.
+     * @throws {InvalidCredentialsError} If the request returned a 404 status, indicating invalid credentials.
+     * @throws {ExternalServiceInternalError} If the request returned any other status, indicating an internal error in the external service.
+     * @throws {ExternalServiceConnectionError} If there was a connection issue with the external service.
+     */
+        private getUserIdFromFirebaseErrorHandler = (e: any): void => {
+            this.standardErrorHandler(e, this.getUserIdFromUserEmailResponseStatusErrorHandler);
+        }
+    /**
      * Handles errors related to the external HTTP request.
      * @param {any} e - The error object from the failed request.
      * @param {(status: number) => Error} responseStatusErrorHandler - The error handler for the response status.

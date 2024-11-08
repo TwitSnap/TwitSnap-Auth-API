@@ -36,8 +36,8 @@ export class SessionService{
      * @param {string} email - The email of the federated user trying to log in.
      * @returns {Promise<string>} A promise that resolves with the federated user session token or ID.
      */
-    public async logInFederated(email: string): Promise<string>{
-        const id = await this.twitSnapAPIs.getUserIdFromUserEmail(email);
-        return this.strategy.logInFederated(id, this.userService);
+    public async logInFederated(token: string): Promise<string>{
+        const id = await this.twitSnapAPIs.getUserIdFromFirebaseToken(token);
+        return this.strategy.logInFederated(id);
     }
 }
