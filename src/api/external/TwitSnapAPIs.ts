@@ -143,12 +143,13 @@ export class TwitSnapAPIs{
         const url = USERS_MS_URI + "/api/v1/register/google"
         const data = {token:token}
         const id = await this.httpRequester.postToUrl(url,data,this.getUserIdFromFirebaseErrorHandler,{} ,this.getUserIdFromUserResponseExtractor)
+        logger.logInfo("El id recibido es: " + id);
         if(!id) throw new InvalidExternalServiceResponseError("Invalid external service response.");
         return id;
     }
 
     private getUserIdFromUserResponseExtractor = (response: void | AxiosResponse<any, any>): string => {
-        return response?.data;
+        return response?.data.uid;
      }
 
         /**
