@@ -3,17 +3,21 @@ import {UserService} from "../user/UserService";
 import {inject, injectable} from "tsyringe";
 import {logger} from "../../../utils/container/container";
 import {TwitSnapAPIs} from "../../../api/external/TwitSnapAPIs";
+import { Helpers } from "../../../utils/helpers";
+import { Encrypter } from "../../../utils/encrypter/Encrypter";
 
 @injectable()
 export class SessionService{
     private strategy: SessionStrategy;
     private readonly userService: UserService;
     private twitSnapAPIs: TwitSnapAPIs;
+    private encrypter: Encrypter;
 
-    constructor(@inject("SessionStrategy") strategy: SessionStrategy, userService: UserService, twitSnapAPIs: TwitSnapAPIs) {
+    constructor(@inject("SessionStrategy") strategy: SessionStrategy, userService: UserService, twitSnapAPIs: TwitSnapAPIs,@inject("Encrypter") encrypter: Encrypter) {
         this.userService = userService;
         this.strategy = strategy;
         this.twitSnapAPIs = twitSnapAPIs;
+        this.encrypter = encrypter;
     }
 
     /**
@@ -38,6 +42,15 @@ export class SessionService{
      */
     public async logInFederated(token: string): Promise<string>{
         const id = await this.twitSnapAPIs.getUserIdFromFirebaseToken(token);
-        return this.strategy.logInFederated(id);
+        const user = await this.userService.getUserById(id);
+        if (user){
+            return this.strategy.logInFederated(id);
+        }
+        else{
+            await this.userService.register(id,this.encrypter.encryptString(id))
+            return id;
+        }
+        
+        
     }
 }
