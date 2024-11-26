@@ -29,13 +29,10 @@ export class TwitSnapAPIs{
         const getUserIdFromUserEmailEndpointUrl = USERS_MS_URI + GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH;
 
         const data = await this.httpRequester.getToUrl(getUserIdFromUserEmailEndpointUrl, {params: {email: email}},
-            this.getUserDataFromUserEmailErrorHandler, this.getUserIdFromUserEmailExtractor);
+            this.getUserDataFromUserEmailErrorHandler, this.getUserDataFromUserEmailExtractor);
 
-        logger.logDebug(typeof data.uid);
-        logger.logDebug(typeof data.isBanned);
-
-        if(!data.isBanned) throw new InvalidExternalServiceResponseError("Invalid external service response. isBanned field is missing.");
-        if(!data.uid) throw new InvalidExternalServiceResponseError("Invalid external service response. uid field is missing.");
+        if(data.isBanned === undefined) throw new InvalidExternalServiceResponseError("Invalid external service response. isBanned field is missing.");
+        if(data.uid === undefined) throw new InvalidExternalServiceResponseError("Invalid external service response. uid field is missing.");
 
         return data as { uid: string; isBanned: boolean }; // ? Como ya chequeamos anteriormente que los campos estan, podemos castear con seguridad.
     }
@@ -45,10 +42,7 @@ export class TwitSnapAPIs{
      * @param {void | AxiosResponse<any, any>} response - The HTTP response containing the user data.
      * @returns {{ uid?: string; isBanned?: boolean }} An object containing the user's ID (`uid`) and ban status (`isBanned`). Fields may be undefined if not present in the response.
      */
-    private getUserIdFromUserEmailExtractor = (response: void | AxiosResponse<any, any>): { uid?: string; isBanned?: boolean } => {
-        logger.logDebug(response?.data.uid);
-        logger.logDebug(response?.data.is_banned);
-
+    private getUserDataFromUserEmailExtractor = (response: void | AxiosResponse<any, any>): { uid?: string; isBanned?: boolean } => {
         return {
             uid: response?.data.uid,
             isBanned: response?.data.is_banned,
