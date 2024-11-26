@@ -31,6 +31,9 @@ export class TwitSnapAPIs{
         const data = await this.httpRequester.getToUrl(getUserIdFromUserEmailEndpointUrl, {params: {email: email}},
             this.getUserDataFromUserEmailErrorHandler, this.getUserIdFromUserEmailExtractor);
 
+        logger.logDebug(typeof data.uid);
+        logger.logDebug(typeof data.isBanned);
+
         if(!data.isBanned) throw new InvalidExternalServiceResponseError("Invalid external service response. isBanned field is missing.");
         if(!data.uid) throw new InvalidExternalServiceResponseError("Invalid external service response. uid field is missing.");
 
