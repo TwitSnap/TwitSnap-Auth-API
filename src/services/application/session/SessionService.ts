@@ -30,8 +30,8 @@ export class SessionService{
 
         const userData = await this.twitSnapAPIs.getUserDataFromUserEmail(email);
 
-        if(userData.isBanned) throw new UserIsBannedError("User with email " + email + " is banned.");
         const token = this.strategy.logIn(userData.uid, password, this.userService);
+        if(userData.isBanned) throw new UserIsBannedError("User with email " + email + " is banned.");
 
         logger.logDebugFromEntity(`Attempt to logIn user with email ${email} was successful.`, this.constructor);
         return token;
