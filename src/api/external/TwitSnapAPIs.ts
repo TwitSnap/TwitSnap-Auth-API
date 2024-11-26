@@ -30,7 +30,9 @@ export class TwitSnapAPIs{
 
         const data = await this.httpRequester.getToUrl(getUserIdFromUserEmailEndpointUrl, {params: {email: email}},
             this.getUserDataFromUserEmailErrorHandler, this.getUserIdFromUserEmailExtractor);
-        if(!data.isBanned || !data.uid) throw new InvalidExternalServiceResponseError("Invalid external service response. One or more mandatory fields are missing.");
+
+        if(!data.isBanned) throw new InvalidExternalServiceResponseError("Invalid external service response. isBanned field is missing.");
+        if(!data.uid) throw new InvalidExternalServiceResponseError("Invalid external service response. uid field is missing.");
 
         return data as { uid: string; isBanned: boolean }; // ? Como ya chequeamos anteriormente que los campos estan, podemos castear con seguridad.
     }
@@ -41,6 +43,9 @@ export class TwitSnapAPIs{
      * @returns {{ uid?: string; isBanned?: boolean }} An object containing the user's ID (`uid`) and ban status (`isBanned`). Fields may be undefined if not present in the response.
      */
     private getUserIdFromUserEmailExtractor = (response: void | AxiosResponse<any, any>): { uid?: string; isBanned?: boolean } => {
+        logger.logDebug(response?.data.uid);
+        logger.logDebug(response?.data.is_banned);
+
         return {
             uid: response?.data.uid,
             isBanned: response?.data.is_banned,
