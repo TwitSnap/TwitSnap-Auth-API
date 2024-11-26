@@ -1,14 +1,13 @@
 import { InvalidCredentialsError } from '../../errors/InvalidCredentialsError';
 import {SessionStrategy} from "./SessionStrategy";
 import {UserService} from "../../user/UserService";
-import { JWT_SECRET, JWT_EXPIRATION_TIME, USERS_MS_URI } from "../../../../utils/config";
+import { JWT_SECRET, JWT_EXPIRATION_TIME } from "../../../../utils/config";
 import {Encrypter} from "../../../../utils/encrypter/Encrypter";
 import {inject, injectable} from "tsyringe";
 import {User} from "../../../domain/User";
 import {Helpers} from "../../../../utils/helpers";
-import axios from 'axios';
 
-const INVALID_CREDS_MSG = "Invalid credentials.";
+const INVALID_CREDS_MSG = "Incorrect email or password. Please check your credentials and try again.";
 
 @injectable()
 export class TokenSessionStrategy implements SessionStrategy {
