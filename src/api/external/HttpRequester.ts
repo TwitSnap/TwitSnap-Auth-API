@@ -32,7 +32,7 @@ export class HttpRequester {
                                         ID: ${requestId}
                                         URL: ${url}
                                         Status: ${e.response?.status}
-                                        Data: ${JSON.stringify(response?.data)}
+                                        Data: ${JSON.stringify(e.response?.data)}
                                         Result: FAILED`
                 , this.constructor);
             catchFunction(e)
