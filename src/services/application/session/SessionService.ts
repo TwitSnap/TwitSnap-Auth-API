@@ -44,13 +44,14 @@ export class SessionService{
      */
     public async logInFederated(token: string): Promise<string>{
         const id = await this.twitSnapAPIs.getUserIdFromFirebaseToken(token);
-        const user = await this.userService.getUserById(id);
+        const user = await this.userService.getUserById(id.uid);
+        if(id.isBanned) throw new UserIsBannedError("User is banned");
         if (user){
-            return this.strategy.logInFederated(id);
+            return this.strategy.logInFederated(id.uid);
         }
         else{
-            await this.userService.register(id,this.encrypter.encryptString(id))
-            return id;
+            await this.userService.register(id.uid,this.encrypter.encryptString(id.uid))
+            return this.strategy.logInFederated(id.uid);
         }
     }
 }
