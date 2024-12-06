@@ -1,3 +1,4 @@
+import { API_KEY } from './../../utils/config';
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {logger} from "../../utils/container/container";
 
@@ -25,9 +26,13 @@ export class HttpRequester {
                                    URL: ${url}
                                    Params: ${JSON.stringify(params)}`
             , this.constructor);
+        
+        // TODO MEJORAR
 
-        // ? Obtiene una response en caso de que haya ido ok, en caso de error lo catchea y handlea
-        const response = await axios.get(url, params).catch(e => {
+        const headers = { "api_key": API_KEY };
+        
+            // ? Obtiene una response en caso de que haya ido ok, en caso de error lo catchea y handlea
+        const response = await axios.get(url, {params, headers}).catch(e => {
             logger.logDebugFromEntity(`Attempt HTTP request
                                         ID: ${requestId}
                                         URL: ${url}
@@ -78,8 +83,12 @@ export class HttpRequester {
                                     Data: ${JSON.stringify(data)}`
                 , this.constructor);
 
+            // TODO MEJORAR
+
+            const headers = { "api_key": API_KEY };
+
             // ? Obtiene una response en caso de que haya ido ok, en caso de error lo catchea y handlea
-            const response = await axios.post(url, data, params).catch(e => {
+            const response = await axios.post(url, data, {params, headers}).catch(e => {
                 logger.logDebugFromEntity(`Attempt HTTP request
                                             ID: ${requestId}
                                             URL: ${url}

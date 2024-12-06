@@ -39,18 +39,19 @@ export class SessionService{
 
     /**
      * Logs in a federated user (e.g., with OAuth or external provider).
-     * @param {string} email - The email of the federated user trying to log in.
+     * @param {string} token - El token de inicio de sesion con google.
      * @returns {Promise<string>} A promise that resolves with the federated user session token or ID.
      */
     public async logInFederated(token: string): Promise<string>{
         const id = await this.twitSnapAPIs.getUserIdFromFirebaseToken(token);
-        const user = await this.userService.getUserById(id);
+        const user = await this.userService.getUserById(id.uid);
+        if(id.isBanned) throw new UserIsBannedError("User is banned");
         if (user){
-            return this.strategy.logInFederated(id);
+            return this.strategy.logInFederated(id.uid);
         }
         else{
-            await this.userService.register(id,this.encrypter.encryptString(id))
-            return id;
+            await this.userService.register(id.uid,this.encrypter.encryptString(id.uid))
+            return this.strategy.logInFederated(id.uid);
         }
     }
 }

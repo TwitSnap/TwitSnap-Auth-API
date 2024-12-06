@@ -21,6 +21,7 @@ import {LOGGING, LOG_DEBUG, LOG_ERROR, LOG_INFO} from "../config";
 // ? Register all dependencies
 container.registerSingleton<Encrypter>("Encrypter", BcryptEncrypter);
 
+
 container.register<LoggingStrategy>("LoggingStrategy", { useClass: WinstonLoggerStrategy});
 container.register<boolean>("logging", {useValue: (LOGGING === "true") });
 container.register<boolean>("logDebug", {useValue: (LOG_DEBUG === "true") });

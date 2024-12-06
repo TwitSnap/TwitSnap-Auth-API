@@ -142,17 +142,22 @@ export class TwitSnapAPIs{
      * @param {token} string - Firebase Token of the user.
      * @returns {Error} The generated error object.
      */
-    public getUserIdFromFirebaseToken = async (token:string): Promise<string> =>{
+    public getUserIdFromFirebaseToken = async (token:string): Promise< { uid: string; isBanned: boolean }> =>{
         const url = USERS_MS_URI + "/api/v1/register/google"
         const data = {token:token}
-        const id = await this.httpRequester.postToUrl(url,data,this.getUserIdFromFirebaseErrorHandler,{} ,this.getUserIdFromUserResponseExtractor)
-        logger.logInfo("El id recibido es: " + id);
-        if(!id) throw new InvalidExternalServiceResponseError("Invalid external service response.");
-        return id;
+        const user = await this.httpRequester.postToUrl(url,data,this.getUserIdFromFirebaseErrorHandler,{} ,this.getUserIdFromUserResponseExtractor)
+        logger.logInfo("El id recibido es: " + user);
+        if (!user) throw new InvalidExternalServiceResponseError("Invalid external service response.")
+        if(user.uid == undefined) throw new InvalidExternalServiceResponseError("Invalid external service response.");
+        if (user.isBanned == undefined) throw new InvalidExternalServiceResponseError("Invalid external service response.");
+        return user as { uid: string; isBanned: boolean };
     }
 
-    private getUserIdFromUserResponseExtractor = (response: void | AxiosResponse<any, any>): string => {
-        return response?.data.uid;
+    private getUserIdFromUserResponseExtractor = (response: void | AxiosResponse<any, any>):  { uid?: string; isBanned?: boolean } => {
+        return {
+            uid: response?.data.uid,
+            isBanned: response?.data.is_banned,
+        }
      }
 
         /**
