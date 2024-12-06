@@ -28,7 +28,7 @@ export class TwitSnapAPIs{
     public getUserDataFromUserEmail = async (email: string): Promise<{ uid: string; isBanned: boolean }> => {
         const getUserIdFromUserEmailEndpointUrl = USERS_MS_URI + GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH;
 
-        const data = await this.httpRequester.getToUrl(getUserIdFromUserEmailEndpointUrl, {params: {email: email}},
+        const data = await this.httpRequester.getToUrl(getUserIdFromUserEmailEndpointUrl, {email: email},
             this.getUserDataFromUserEmailErrorHandler, this.getUserDataFromUserEmailExtractor);
 
         if(data.isBanned === undefined) throw new InvalidExternalServiceResponseError("Invalid external service response. isBanned field is missing.");

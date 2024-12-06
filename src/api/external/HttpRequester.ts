@@ -1,4 +1,4 @@
-import { API_KEY } from './../../utils/config';
+import { API_KEY } from '../../utils/config';
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {logger} from "../../utils/container/container";
 
@@ -14,7 +14,7 @@ export class HttpRequester {
      */
     public getToUrl = async <T>(
         url: string,
-        params: AxiosRequestConfig<any> | undefined,
+        params: Record<string, any>,
         catchFunction: (error: any) => void,
         extractFunction: (response: void | AxiosResponse<any, any>) => T
     ): Promise<T> => {
@@ -31,7 +31,7 @@ export class HttpRequester {
 
         const headers = { "api_key": API_KEY };
         
-            // ? Obtiene una response en caso de que haya ido ok, en caso de error lo catchea y handlea
+        // ? Obtiene una response en caso de que haya ido ok, en caso de error lo catchea y handlea
         const response = await axios.get(url, {params, headers}).catch(e => {
             logger.logDebugFromEntity(`Attempt HTTP request
                                         ID: ${requestId}
