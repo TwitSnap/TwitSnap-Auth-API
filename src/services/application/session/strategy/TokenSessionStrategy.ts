@@ -29,6 +29,9 @@ export class TokenSessionStrategy implements SessionStrategy {
         return this.generateTokenForUser(user);
     }
 
+    /**
+     * @inheritDoc
+     */
     public logInFederated(id: string): string {
         const user : User = new User(id,"")
         return this.generateTokenForUser(user);

@@ -39,7 +39,7 @@ export class SessionService{
 
     /**
      * Logs in a federated user (e.g., with OAuth or external provider).
-     * @param {string} email - The email of the federated user trying to log in.
+     * @param {string} token - El token de inicio de sesion con google.
      * @returns {Promise<string>} A promise that resolves with the federated user session token or ID.
      */
     public async logInFederated(token: string): Promise<string>{

@@ -39,3 +39,4 @@ Para empezar a correr esta api se necesitara tener docker instalado en su maquin
 - **POST /v1/auth/password**: Envía un correo para recuperar la contraseña.
 - **PATCH /v1/auth/password**: Valida un token para actualizar la contraseña.
 - **GET /v1/auth/resetPasswordToken/valid/:token**: Valida un token para recuperar la contraseña.
+- **GET /v1/auth/federate/google/login**: Recibe un token {code:token} de google firebase por query y registra/inicia sesion al usuario
