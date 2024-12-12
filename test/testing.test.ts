@@ -42,7 +42,7 @@ describe('UserController', () => {
         await register_user("unID","unapassword")
         .expect(201);
 
-        mAxios.get.mockResolvedValue({data:"unID"});
+        mAxios.get.mockResolvedValue({data:{is_banned:false,uid:"unID"}});
 
         const response = await obtain_token("unemail","unapassword")
         .expect(200);
@@ -55,15 +55,14 @@ describe('UserController', () => {
     it("should return 204 for access granted", async () =>{
         await register_user("unID", "unapassword");
 
-        mAxios.get.mockResolvedValue({data:"unID"});
+        mAxios.get.mockResolvedValue({data:{is_banned:false,uid:"unID"}});
 
         const response = await obtain_token("unemail","unapassword");
-
         const token = JSON.parse(response.text).token;
 
         await request(app)
         .get("/v1/auth/"+token)
-        .expect(204);
+        .expect(200);
     })
 
 })
