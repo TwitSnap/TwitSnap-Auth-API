@@ -9,5 +9,11 @@ export interface SessionStrategy {
      * @returns A promise that resolves with the result of the login operation (e.g., a token).
      */
     logIn(email: string, password: string, userService: UserService): Promise<string>;
-    logInFederated(id: string, userService: UserService): Promise<string>
+
+        /**
+     * Logs the user in with google.
+     * @param id - The id of the user trying to log in with federated account.
+     * @returns A promise that resolves with the result of the login operation (e.g., a token).
+     */
+    logInFederated(id: string): string
 }

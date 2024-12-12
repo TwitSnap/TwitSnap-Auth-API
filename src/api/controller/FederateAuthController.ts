@@ -7,7 +7,10 @@ import {NextFunction, Request, Response} from "express";
 import axios from 'axios';
 import qs from 'qs';
 import { OAuth2Client } from 'google-auth-library';
-import { CLIENT_ID, CLIENT_SECRET, GOOGLE_REDIRECT_URI } from '../../utils/config';
+import { CLIENT_ID_GOOGLE, CLIENT_SECRET, GOOGLE_REDIRECT_URI } from '../../utils/config';
+import { admin } from '../../app';
+import { logger } from '../../utils/container/container';
+import { log } from 'winston';
 
 @injectable()
 export class FederateAuthController extends Controller{
@@ -17,7 +20,7 @@ export class FederateAuthController extends Controller{
     constructor(httpResponseSender: HttpResponseSender, sessionService:SessionService){
         super(httpResponseSender);
         this.sessionService = sessionService;
-        this.OAuthClient = new OAuth2Client(CLIENT_ID)
+        this.OAuthClient = new OAuth2Client(CLIENT_ID_GOOGLE)
     }
     public googleCallback = async (req:Request, res:Response, next: NextFunction) =>{
       /*
@@ -32,7 +35,7 @@ export class FederateAuthController extends Controller{
 
           const state = "some_state";
           const scopes = GOOGLE_OAUTH_SCOPES.join(" ");
-          const GOOGLE_OAUTH_CONSENT_SCREEN_URL = `${GOOGLE_OAUTH_URL}?client_id=${CLIENT_ID as string}&redirect_uri=${GOOGLE_REDIRECT_URI}&access_type=offline&response_type=code&state=${state}&scope=${scopes}`;
+          const GOOGLE_OAUTH_CONSENT_SCREEN_URL = `${GOOGLE_OAUTH_URL}?client_id=${CLIENT_ID_GOOGLE as string}&redirect_uri=${GOOGLE_REDIRECT_URI}&access_type=offline&response_type=code&state=${state}&scope=${scopes}`;
             
           res.redirect(GOOGLE_OAUTH_CONSENT_SCREEN_URL);
         }
@@ -44,20 +47,7 @@ export class FederateAuthController extends Controller{
       const code = req.query.code as string;
        
         try{
-            const { id_token } = await getGoogleOAuthTokens({ code });
-
-            const ticket = await this.OAuthClient.verifyIdToken({
-              idToken: id_token,
-              audience: CLIENT_ID
-            });
-
-            const payload = ticket.getPayload();
-
-            if (!payload || !payload["email"]){
-              throw new InvalidCredentialsError("");
-            }
-
-            const token = await this.sessionService.logInFederated(payload["email"]);
+            const token = await this.sessionService.logInFederated(code);
             return this.okResponse(res,{token:token});
         } catch(error){
           next(error)
@@ -82,7 +72,7 @@ export async function getGoogleOAuthTokens({
   
     const values = {
       code,
-      client_id: CLIENT_ID,
+      client_id: CLIENT_ID_GOOGLE,
       client_secret: CLIENT_SECRET,
       redirect_uri: GOOGLE_REDIRECT_URI,
       grant_type: "authorization_code",

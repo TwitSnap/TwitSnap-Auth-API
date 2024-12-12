@@ -38,7 +38,7 @@ export class TypeORMDatabaseConnectorStrategy implements DatabaseConnectorStrate
         return this.instance.destroy();
     };
 
-        /**
+    /**
      * Gets the `DataSource` instance.
      *
      * This method returns the `readonly` `_instance` of `DataSource`.

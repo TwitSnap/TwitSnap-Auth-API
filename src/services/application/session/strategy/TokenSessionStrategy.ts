@@ -1,4 +1,3 @@
-import * as jwt from "jsonwebtoken";
 import { InvalidCredentialsError } from '../../errors/InvalidCredentialsError';
 import {SessionStrategy} from "./SessionStrategy";
 import {UserService} from "../../user/UserService";
@@ -6,8 +5,9 @@ import { JWT_SECRET, JWT_EXPIRATION_TIME } from "../../../../utils/config";
 import {Encrypter} from "../../../../utils/encrypter/Encrypter";
 import {inject, injectable} from "tsyringe";
 import {User} from "../../../domain/User";
+import {Helpers} from "../../../../utils/helpers";
 
-const INVALID_CREDS_MSG = "Invalid credentials.";
+const INVALID_CREDS_MSG = "Incorrect email or password. Please check your credentials and try again.";
 
 @injectable()
 export class TokenSessionStrategy implements SessionStrategy {
@@ -29,10 +29,11 @@ export class TokenSessionStrategy implements SessionStrategy {
         return this.generateTokenForUser(user);
     }
 
-    public async logInFederated(id: string, userService: UserService): Promise<string> {
-        const user = await userService.getUserById(id);
-
-        if (user == null) throw new InvalidCredentialsError(INVALID_CREDS_MSG);
+    /**
+     * @inheritDoc
+     */
+    public logInFederated(id: string): string {
+        const user : User = new User(id,"")
         return this.generateTokenForUser(user);
     }
 
@@ -44,6 +45,6 @@ export class TokenSessionStrategy implements SessionStrategy {
      * @returns {string} A unique token for the user.
      */
     private generateTokenForUser = (user: User): string => {
-        return jwt.sign({userId: user.getId()}, (JWT_SECRET as string), {expiresIn: JWT_EXPIRATION_TIME});
+        return Helpers.generateToken({userId: user.getId()}, (JWT_SECRET as string), JWT_EXPIRATION_TIME as string);
     }
 }

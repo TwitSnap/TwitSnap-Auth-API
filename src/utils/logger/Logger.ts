@@ -29,22 +29,46 @@ export class Logger {
         this._logInfo = logInfo;
     }
 
+    /**
+     * Logs a debug message using the current logging strategy specifing entity.
+     *
+     * @param message - The message to log.
+     * @param entity - The entity that is logging the message.
+     */
     public logDebugFromEntity = (message: string, entity: Function): void => {
         const formattedMessage = this.formatLogFromEntity(message, entity);
         this.logDebug(formattedMessage);
     }
 
+    /**
+     * Logs a info message using the current logging strategy specifing entity.
+     *
+     * @param message - The message to log.
+     * @param entity - The entity that is logging the message.
+     */
     public logInfoFromEntity = (message: string, entity: Function): void => {
         const formattedMessage = this.formatLogFromEntity(message, entity);
         this.logInfo(formattedMessage);
     }
 
+    /**
+     * Logs an error message using the current logging strategy specifing entity.
+     *
+     * @param message - The message to log.
+     * @param entity - The entity that is logging the message.
+     */
     public logErrorFromEntity = (message: string, entity: Function): void => {
         const formattedMessage = this.formatLogFromEntity(message, entity);
         this.logError(formattedMessage);
     }
 
 
+    /**
+     * Formats the log message with the entity name.
+     * @param message
+     * @param entity
+     * @returns The formatted log message.
+     */
     private formatLogFromEntity = (message: string, entity: Function): string => {
         return `[[${entity.name}]] - ${message}`;
     }
