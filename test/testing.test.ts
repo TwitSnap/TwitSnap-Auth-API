@@ -65,6 +65,19 @@ describe('UserController', () => {
         .expect(200);
     })
 
+    it("should return 401 for unauthorized", async () =>{
+        await register_user("unID", "unapassword");
+
+        mAxios.get.mockResolvedValue({data:{is_banned:true,uid:"unID"}});
+
+        const response = await obtain_token("unemail","unapassword");
+        const token = JSON.parse(response.text).token;
+
+        await request(app)
+        .get("/v1/auth/"+token)
+        .expect(401);
+    })
+
 })
 afterAll( (done) => {
     //connection.destroy().then(e =>{
