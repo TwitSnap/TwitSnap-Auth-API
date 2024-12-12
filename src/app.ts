@@ -45,3 +45,5 @@ databaseConnector.initializeConnection().then(() => {
         logger.logInfo(`Server is running on port ${PORT}`);
     });
 });
+
+export default app;

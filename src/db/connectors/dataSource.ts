@@ -15,7 +15,7 @@ export const AppDataSource = new DataSource(getDatabaseConfig());
  *
  * @returns {DataSourceOptions} The configuration object for TypeORM.
  */
-function getDatabaseConfig(): DataSourceOptions {
+export function getDatabaseConfig(): DataSourceOptions {
     const dbType = DB_TYPE as "postgres"; //TODO: Esta linea hace ruido.
     const dbPort = parseInt(DB_PORT as string);
     const dbSynchronize = DB_SYNCHRONIZE === "true";
