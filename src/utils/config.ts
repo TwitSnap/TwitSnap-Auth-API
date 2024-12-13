@@ -8,7 +8,7 @@ const requiredEnvVars = [
     'DB_SYNCHRONIZE', 'DB_LOGGING', 'DB_TYPE', "LOG_ROUTE", "LOGGING",
     "LOG_ERROR", "LOG_DEBUG", "LOG_INFO", "JWT_EXPIRATION_TIME", "USERS_MS_URI",
     "GET_USER_ID_FROM_USER_EMAIL_ENDPOINT_PATH", "JWT_NEW_PASSWORD", "JWT_NEW_PASSWORD_EXPIRATION_TIME",
-    "NOTIFICATIONS_MS_URI", "SEND_NOTIFICATION_ENDPOINT_PATH",
+    "NOTIFICATIONS_MS_URI", "SEND_NOTIFICATION_ENDPOINT_PATH", "API_KEY"
 ];
 
 Helpers.validateEnvVarsList(requiredEnvVars);
@@ -19,6 +19,7 @@ export const JWT_EXPIRATION_TIME = process.env.JWT_EXPIRATION_TIME;
 export const JWT_SECRET = process.env.JWT_SECRET;
 export const JWT_NEW_PASSWORD = process.env.JWT_NEW_PASSWORD;
 export const JWT_NEW_PASSWORD_EXPIRATION_TIME = process.env.JWT_NEW_PASSWORD_EXPIRATION_TIME;
+export const API_KEY = process.env.API_KEY as string;
 
 // ? Logger config
 export const LOG_ROUTE = process.env.LOG_ROUTE;
